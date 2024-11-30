@@ -4,7 +4,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 
 export default function Calendar() {
     return (
-        <div className="">
+        <div style={{width:'100%'}} className="">
             <FullCalendar
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
