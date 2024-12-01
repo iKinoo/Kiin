@@ -11,7 +11,7 @@ export class SubjectsRepositoryImpl implements SubjectsRepository {
         this._dataSource = dataSource;
 
     }
-    getAll(): Subject[] {
+    getAll(): Promise<Subject[]> {
         return this._dataSource.getAll();
     }
 
