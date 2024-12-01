@@ -1,5 +1,5 @@
+import Link from "next/link";
 import testing from "./test";
-import RoutesIndex from "./presentation/RoutesIndex";
 
 export default function Home() {
   testing();
@@ -7,8 +7,10 @@ export default function Home() {
     
     <div className="bg-white text-black">
       <main className="">
-          <RoutesIndex />
-      </main>
+      <div>
+            <h1>Landing Page</h1>
+            <Link style={{backgroundColor:'blue', color:'white',borderRadius:'2rem'}} href='/calendar'>Comenzar</Link>
+        </div>      </main>
       
     </div>
   );
