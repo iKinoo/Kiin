@@ -1,7 +1,6 @@
 'use client'
+import Link from 'next/link'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-
 interface NavBarProps {
     darkTheme?: boolean,
     links: {label: string, route: string}[]
@@ -15,9 +14,9 @@ const NavBar: React.FC<NavBarProps> = ({ darkTheme = false, links }) => {
                 {
                     links.map((link, index) => (
                         <li key={index}>
-                            <NavLink to={`/${link.route}`}>
+                            <Link href={`/${link.route}`}>
                                 {link.label}
-                            </NavLink>
+                            </Link>
                         </li>
                     ))
                 }
