@@ -1,33 +1,86 @@
 import { CoursesDataSource } from "@/domain/datasources/CoursesDataSource";
 import { Course } from "@/domain/entities/Course";
-import { Subject } from "@/domain/entities/Subject";
-import { CoursesModelDao } from "./CoursesModelDAO";
+import { CoursesModelDao } from "./data/CoursesModelDAO";
+import { ProfessorsRepositoryImpl } from "../repositories/ProfessorsRepositoryImpl";
+import { ProfessorsCsvDataSource } from "./ProfessorsCsvDataSource";
+import { SubjectsRepositoryImpl } from "../repositories/SubjectsRepositoryImpl";
+import { SubjectsCsvDataSource } from "./SubjectsCSvDataSource";
+import { Session } from "@/domain/entities/Session";
+import { ProfessorsRepository } from "@/domain/repositories/ProfessorsRepository";
+import { SubjectsRepository } from "@/domain/repositories/SubjectsRepository";
+import { CourseCSV } from "../models/CourseModel";
+import moment from "moment";
 
 
 export class CoursesCsvDatasource implements CoursesDataSource {
 
     private courses: Course[] = [];
-    
-    private subjects: Subject[] = [];
-
-    getAll(): Promise<Course[]> {
-        throw new Error("Method not implemented.");
-    }
+    private professorsRepository: ProfessorsRepository = new ProfessorsRepositoryImpl(new ProfessorsCsvDataSource());
+    private subjectsRepository: SubjectsRepository = new SubjectsRepositoryImpl(new SubjectsCsvDataSource());
 
 
-    async getCourses() {
-        
+    async getAll(): Promise<Course[]> {
+
         const results = await CoursesModelDao.getCourses();
+        const professors = await this.professorsRepository.getAll();
+        const subjects = await this.subjectsRepository.getAll();
 
-        
 
         for (const result of results) {
 
-            if (this.subjects.find(subject => ((subject.name === result.Asignatura) && (subject.degree === result.PE))) === undefined) {
-                this.subjects.push(new Subject(result.Asignatura, result.Modelo, true, result.Tipo, result.PE, parseInt(result.Semestre)));
+            const professor = professors.find(professor => (
+                (professor.names === result.Nombres) && (professor.lastNames === result.Apellidos)
+            ));
+
+            const subject = subjects.find(subject => (
+                subject.name === result.Asignatura
+            ));
+
+            const sessions = this.getSessions(result);
+
+
+            if (professor && subject) {
+                this.courses.push(new Course(subject, professor, sessions, parseInt(result.GRUPO), result.Modalidad));
             }
+
 
         }
 
+        return this.courses;
     }
+
+    getSessions(result: CourseCSV): Session[] {
+
+        const sessions: Session[] = [];
+
+        const days = new Map<keyof CourseCSV, keyof CourseCSV>([
+            ["Lunes", "Aula1"],
+            ["Martes", "Aula2"],
+            ["Miercoles", "Aula3"],
+            ["Jueves", "Aula4"],
+            ["Viernes", "Aula5"],
+        ]);
+
+        for (const day of days) {
+            if (!result[day[0]]) {
+                continue;
+            }
+            const hours = this.getHours(result[day[0]]);
+            const session = new Session(day[0], hours[0], hours[1], result[day[1]]);
+            sessions.push(session);
+        }
+
+        return sessions;
+    }
+
+    getHours(time: string): moment.Moment[] {
+        const hours = time.split('-');
+        if (hours.length === 2) {
+            return [moment(hours[0], 'HH:mm'), moment(hours[1], 'HH:mm')];
+        }
+        return [moment(), moment()];
+    }
+
+
+
 }

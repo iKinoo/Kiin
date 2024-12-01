@@ -1,5 +1,5 @@
 import csvParser from "csv-parser";
-import { CourseCSV } from "../models/CourseModel";
+import { CourseCSV } from "../../models/CourseModel";
 import fs from 'fs'; // Importar el módulo de sistema de archivos
 
 export class CoursesModelDao {

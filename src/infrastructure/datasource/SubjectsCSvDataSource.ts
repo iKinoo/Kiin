@@ -1,4 +1,4 @@
-import { CoursesModelDao } from "./CoursesModelDAO";
+import { CoursesModelDao } from "./data/CoursesModelDAO";
 import { SubjectsDatasource } from "@/domain/datasources/SubjectsDataSource";
 import { Subject } from "@/domain/entities/Subject";
 

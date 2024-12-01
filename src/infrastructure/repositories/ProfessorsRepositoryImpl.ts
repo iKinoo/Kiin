@@ -10,7 +10,7 @@ export class ProfessorsRepositoryImpl implements ProfessorsRepository {
         this._dataSource = dataSource;
 
     }
-    getAll(): Professor[] {
+    getAll(): Promise<Professor[]> {
         return this._dataSource.getAll();
     }
 
