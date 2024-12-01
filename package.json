@@ -13,6 +13,7 @@
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "csv-parser": "^3.0.0",
     "moment": "^2.30.1",
     "next": "15.0.3",
     "react": "^18.3.1",

@@ -11,7 +11,7 @@ export class CoursesRepositoryImpl implements CoursesRepository {
 
     }
 
-    getAll(): Course[] {
+    getAll(): Promise<Course[]> {
         return this._dataSource.getAll();
     }
 }

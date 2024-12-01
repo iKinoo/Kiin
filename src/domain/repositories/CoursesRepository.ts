@@ -2,6 +2,6 @@ import { Course } from "../entities/Course";
 
 export interface CoursesRepository {
 
-    getAll(): Course[];
+    getAll(): Promise<Course[]>;
 
 }
