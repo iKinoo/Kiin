@@ -1,5 +1,5 @@
 "use client"
-import Category from '@/app/domain/models/Category'
+import Category from '@/domain/entities/Category'
 import React, { useEffect } from 'react'
 import CategorySelector from '@/app/presentation/components/CategorySelector';
 
