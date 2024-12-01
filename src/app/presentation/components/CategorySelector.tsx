@@ -1,4 +1,4 @@
-import Category from '@/app/domain/models/Category';
+import Category from '@/domain/entities/Category';
 import React, { useState } from 'react'
 interface CategoryProps {
     category: Category;
