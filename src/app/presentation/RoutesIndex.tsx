@@ -3,7 +3,7 @@ import React from 'react'
 import LandingPage from "@/app/presentation/pages/LandingPage";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from '@/app/presentation/components/NavBar';
-import Calendar from "@/app/CalendarTest";
+import Calendar from "@/app/presentation/components/Calendar";
 import FilterSelector from "@/app/presentation/pages/FilterSelector";
 const RoutesIndex = () => {
     const links = [
