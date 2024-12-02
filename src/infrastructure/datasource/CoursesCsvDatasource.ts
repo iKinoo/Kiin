@@ -21,6 +21,10 @@ export class CoursesCsvDatasource implements CoursesDataSource {
 
     async getAll(): Promise<Course[]> {
 
+        if (this.courses.length > 0) {
+            return this.courses;
+        }
+
         const results = await CoursesModelDao.getCourses();
         const professors = await this.professorsRepository.getAll();
         const subjects = await this.subjectsRepository.getAll();
@@ -40,7 +44,9 @@ export class CoursesCsvDatasource implements CoursesDataSource {
 
 
             if (professor && subject) {
-                this.courses.push(new Course(subject, professor, sessions, parseInt(result.GRUPO), result.Modalidad));
+                
+                const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+                this.courses.push(new Course(subject, professor, sessions, parseInt(result.GRUPO), result.Modalidad, color));
             }
 
 

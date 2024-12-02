@@ -7,7 +7,6 @@ export class ProfessorsCsvDataSource implements ProfessorsDataSource {
     private professors: Professor[] = [];
 
     async getAll(): Promise<Professor[]> {
-
         const results = await CoursesModelDao.getCourses();
 
         for (const result of results) {
