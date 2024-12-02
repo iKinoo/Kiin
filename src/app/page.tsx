@@ -1,5 +1,6 @@
-import Link from "next/link"
-import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDataSource";
+import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
+import React from "react";
+import HomeContent from "./HomeContent";
 
 export default async function Home() {
 
@@ -12,13 +13,10 @@ export default async function Home() {
 
   return (
 
-    <div className="bg-white text-black">
+    <div>
       <main className="">
-        <div>
-          <h1>Landing Page</h1>
-          <Link style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} href='/calendar'>Comenzar</Link>
-        </div>      </main>
-
+        <HomeContent />
+      </main>
     </div>
   );
 }

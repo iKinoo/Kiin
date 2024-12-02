@@ -1,11 +1,12 @@
+'use client'
 import React from 'react'
-import FilterSelector from '@/app/presentation/components/FilterSelector'
-import Calendar from '@/app/presentation/components/Calendar'
+import Calendar from '@/app/components/Calendar'
+import SideBar from '../components/SideBar'
 
 const CalendarPage = () => {
     return (
         <div className='bg-white text-black' style={{ display: 'flex', justifyContent: 'first baseline', alignItems: 'first baseline', gap: '20px', padding: '10px' }}>
-            <FilterSelector />
+            <SideBar />
             <Calendar />
         </div>
     )
