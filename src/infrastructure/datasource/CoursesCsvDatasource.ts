@@ -11,76 +11,76 @@ import { SubjectsRepository } from "@/domain/repositories/SubjectsRepository";
 import { CourseCSV } from "../models/CourseModel";
 import moment from "moment";
 
-
 export class CoursesCsvDatasource implements CoursesDataSource {
+  private courses: Course[] = [];
+  private professorsRepository: ProfessorsRepository =
+    new ProfessorsRepositoryImpl(new ProfessorsCsvDataSource());
+  private subjectsRepository: SubjectsRepository = new SubjectsRepositoryImpl(
+    new SubjectsCsvDataSource()
+  );
 
-    private courses: Course[] = [];
-    private professorsRepository: ProfessorsRepository = new ProfessorsRepositoryImpl(new ProfessorsCsvDataSource());
-    private subjectsRepository: SubjectsRepository = new SubjectsRepositoryImpl(new SubjectsCsvDataSource());
+  async getAll(): Promise<Course[]> {
+    const results = await CoursesModelDao.getCourses();
+    const professors = await this.professorsRepository.getAll();
+    const subjects = await this.subjectsRepository.getAll();
 
+    for (const result of results) {
+      const professor = professors.find(
+        (professor) =>
+          professor.names === result.Nombres &&
+          professor.lastNames === result.Apellidos
+      );
 
-    async getAll(): Promise<Course[]> {
+      const subject = subjects.find(
+        (subject) => subject.name === result.Asignatura
+      );
 
-        const results = await CoursesModelDao.getCourses();
-        const professors = await this.professorsRepository.getAll();
-        const subjects = await this.subjectsRepository.getAll();
+      const sessions = this.getSessions(result);
 
-
-        for (const result of results) {
-
-            const professor = professors.find(professor => (
-                (professor.names === result.Nombres) && (professor.lastNames === result.Apellidos)
-            ));
-
-            const subject = subjects.find(subject => (
-                subject.name === result.Asignatura
-            ));
-
-            const sessions = this.getSessions(result);
-
-
-            if (professor && subject) {
-                this.courses.push(new Course(subject, professor, sessions, parseInt(result.GRUPO), result.Modalidad));
-            }
-
-
-        }
-
-        return this.courses;
+      if (professor && subject) {
+        this.courses.push(
+          new Course(
+            subject,
+            professor,
+            sessions,
+            parseInt(result.GRUPO),
+            result.Modalidad
+          )
+        );
+      }
     }
 
-    getSessions(result: CourseCSV): Session[] {
+    return this.courses;
+  }
 
-        const sessions: Session[] = [];
+  getSessions(result: CourseCSV): Session[] {
+    const sessions: Session[] = [];
 
-        const days = new Map<keyof CourseCSV, keyof CourseCSV>([
-            ["Lunes", "Aula1"],
-            ["Martes", "Aula2"],
-            ["Miercoles", "Aula3"],
-            ["Jueves", "Aula4"],
-            ["Viernes", "Aula5"],
-        ]);
+    const days = new Map<keyof CourseCSV, keyof CourseCSV>([
+      ["Lunes", "Aula1"],
+      ["Martes", "Aula2"],
+      ["Miercoles", "Aula3"],
+      ["Jueves", "Aula4"],
+      ["Viernes", "Aula5"],
+    ]);
 
-        for (const day of days) {
-            if (!result[day[0]]) {
-                continue;
-            }
-            const hours = this.getHours(result[day[0]]);
-            const session = new Session(day[0], hours[0], hours[1], result[day[1]]);
-            sessions.push(session);
-        }
-
-        return sessions;
+    for (const day of days) {
+      if (!result[day[0]]) {
+        continue;
+      }
+      const hours = this.getHours(result[day[0]]);
+      const session = new Session(day[0], hours[0], hours[1], result[day[1]]);
+      sessions.push(session);
     }
 
-    getHours(time: string): moment.Moment[] {
-        const hours = time.split('-');
-        if (hours.length === 2) {
-            return [moment(hours[0], 'HH:mm'), moment(hours[1], 'HH:mm')];
-        }
-        return [moment(), moment()];
+    return sessions;
+  }
+
+  getHours(time: string): moment.Moment[] {
+    const hours = time.split("-");
+    if (hours.length === 2) {
+      return [moment(hours[0], "HH:mm"), moment(hours[1], "HH:mm")];
     }
-
-
-
+    return [moment(), moment()];
+  }
 }
