@@ -1,8 +1,8 @@
-import React from "react";
-import HomeContent from "./HomeContent";
+import Link from "next/link"
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
+import HomeContent from "./HomeContent";
 
 export default async function Home() {
   const professors = new ProfessorsCsvDataSource();
