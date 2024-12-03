@@ -58,6 +58,14 @@ const TemporaryForm: React.FC = () => {
     setIsOpen(false); // Cierra el formulario después del envío
   };
 
+  const formLabel = (value: string) => {
+    return (
+      <label className="text-white">
+        {value}
+      </label>
+    )
+  }
+
   return (
     <div className="mb-4 flex flex-col items-start relative">
       {/* Botón para abrir el formulario */}
@@ -75,12 +83,12 @@ const TemporaryForm: React.FC = () => {
       {isOpen && (
         <div
           ref={formRef}
-          className="left-3/4 z-50 form-container absolute bg-slate-200 p-4 rounded-lg shadow-lg dark:bg-gray-800 text-white"
+          className="left-3/4 z-50 form-container absolute bg-slate-200 p-4 rounded-lg shadow-lg dark:bg-gray-800"
         >
           <form onSubmit={handleSubmit}>
             {/* Campo Color */}
             <div>
-              <label>Color:</label>
+              {formLabel('Color:')}
               <input
                 type="color"
                 name="color"
@@ -91,7 +99,7 @@ const TemporaryForm: React.FC = () => {
 
             {/* Campo Nombre */}
             <div>
-              <label>Nombre:</label>
+              {formLabel('Nombre:')}
               <input
                 type="text"
                 name="name"
@@ -103,7 +111,7 @@ const TemporaryForm: React.FC = () => {
 
             {/* Campo Descripción */}
             <div>
-              <label>Descripción:</label>
+              {formLabel('Descripción:')}
               <textarea
                 name="description"
                 value={formData.description}
@@ -113,7 +121,7 @@ const TemporaryForm: React.FC = () => {
 
             {/* Campo Hora de Comienzo */}
             <div>
-              <label>Comienzo (hora:minutos):</label>
+              {formLabel('Inicio (hora:minutos):')}
               <input
                 type="time"
                 name="startTime"
@@ -125,7 +133,7 @@ const TemporaryForm: React.FC = () => {
 
             {/* Campo Hora de Finalización */}
             <div>
-              <label>Final (hora:minutos):</label>
+              {formLabel('Final (hora:minutos):')}
               <input
                 type="time"
                 name="endTime"
