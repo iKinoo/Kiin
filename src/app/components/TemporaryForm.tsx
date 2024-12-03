@@ -20,11 +20,17 @@ const TemporaryForm: React.FC = () => {
     endTime: "",
   });
   const formRef = useRef<HTMLDivElement>(null); // Referencia para detectar clics fuera del formulario
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Cerrar el formulario si se hace clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+      const willDismiss = formRef.current && 
+      !formRef.current.contains(event.target as Node)  &&
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target as Node)
+
+      if (willDismiss) {
         setIsOpen(false);
       }
     };
@@ -57,6 +63,7 @@ const TemporaryForm: React.FC = () => {
       {/* Botón para abrir el formulario */}
       <div className="flex flex-row justify-items-center items-centers">
         <button
+          ref={buttonRef}
           onClick={() => setIsOpen((prev) => !prev)}
           className="w-30 btn-open-form flex items-center hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
