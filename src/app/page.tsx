@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDataSource";
+import React from "react";
+import HomeContent from "./HomeContent";
+import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
 
@@ -12,21 +13,10 @@ export default async function Home() {
   console.log(await courses.getAll());
 
   return (
-    <div className="bg-white text-black">
+
+    <div>
       <main className="">
-        <div>
-          <h1>Landing Page</h1>
-          <Link
-            style={{
-              backgroundColor: "blue",
-              color: "white",
-              borderRadius: "2rem",
-            }}
-            href="/calendar"
-          >
-            Comenzar
-          </Link>
-        </div>{" "}
+        <HomeContent />
       </main>
     </div>
   );

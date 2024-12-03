@@ -1,6 +1,6 @@
 import { Course } from "@/domain/entities/Course";
 import { Subject } from "@/domain/entities/Subject";
-import { CoursesCsvDatasource } from "./CoursesCsvDataSource";
+import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
 
 export class Filtration {
   //union filter

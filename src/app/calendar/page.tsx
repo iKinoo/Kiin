@@ -1,7 +1,7 @@
 import React from "react";
-import FilterSelector from "@/app/presentation/components/FilterSelector";
-import Calendar from "@/app/presentation/components/Calendar";
-import TemporaryForm from "@/app/presentation/components/TemporaryForm";
+import FilterSelector from "../components/FilterSelector";
+import SideBar from '../components/SideBar'
+import Calendar from "../components/Calendar";
 
 const CalendarPage = () => {
   return (
@@ -15,7 +15,7 @@ const CalendarPage = () => {
         padding: "10px",
       }}
     >
-      <TemporaryForm />
+      <SideBar />
       <FilterSelector />
       <Calendar />
     </div>
