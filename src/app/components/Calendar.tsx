@@ -34,8 +34,7 @@ export default function Calendar() {
     }, []);
 
     return (
-        <div className="w-full h-full">
-            <FullCalendar
+        <FullCalendar
                 dayHeaderFormat={{ weekday: 'long'  }}
                 locale={"es-MX"}
                 slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
@@ -51,6 +50,5 @@ export default function Calendar() {
                     events
                 }
             />
-        </div>
     );
 }

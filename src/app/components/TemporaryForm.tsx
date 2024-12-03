@@ -53,27 +53,22 @@ const TemporaryForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="mb-4 flex flex-col items-start relative">
       {/* Botón para abrir el formulario */}
-      <button
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="btn-open-form"
-      >
-        {isOpen ? "Cerrar formulario" : "Abrir formulario"}
-      </button>
+      <div className="flex flex-row justify-items-center items-centers">
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="w-30 btn-open-form flex items-center hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        >
+          {isOpen ? "Cerrar" : "Agregar Clase"}
+        </button>
+      </div>
 
       {/* Formulario desplegable */}
       {isOpen && (
         <div
           ref={formRef}
-          className="form-container"
-          style={{
-            position: "absolute",
-            background: "#f9f9f9",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          }}
+          className="left-3/4 z-50 form-container absolute bg-slate-200 p-4 rounded-lg shadow-lg dark:bg-gray-800 text-white"
         >
           <form onSubmit={handleSubmit}>
             {/* Campo Color */}
@@ -132,7 +127,6 @@ const TemporaryForm: React.FC = () => {
                 required
               />
             </div>
-
             {/* Botón de Submit */}
             <button type="submit" className="btn-submit">
               Enviar
