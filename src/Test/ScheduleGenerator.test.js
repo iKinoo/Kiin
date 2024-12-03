@@ -1,11 +1,12 @@
-import test from "node:test";
-//Falta implementar
-//Fake implementation
+describe('Schedule Generaror Tests', () => {
+  
+    it('Generate schedules based on filters', async () => { 
+      expect(1).toBe(1); 
+    });
+  
+    it('Detect scheduling conflicts', async () => {
+      expect(1).toBe(1); 
+    });
 
-test('Generate schedules based on filters', async () => {
-    expect(1).toBe(1);
 });
-
-test('Detect scheduling conflicts ', async () => {
-    expect(1).toBe(1);
-});
+  

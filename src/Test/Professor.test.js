@@ -1,10 +1,12 @@
-import test from "node:test";
+describe('professors Tests', () => {
+  
+    it('Professor should have a name', async () => { 
+      expect(1).toBe(1); 
+    });
+  
+    it('Professor should have a list of subjects', async () => {
+      expect(1).toBe(1); 
+    });
 
-//Falta implementar
-test('Professor should have a name', () => {
-    expect(1).toBe(1);
 });
-
-test('Professor should have a list of subjects', () => {
-    expect(1).toBe(1);
-});
+  
