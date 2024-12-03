@@ -40,6 +40,98 @@ body {
   display: flex;
   width: 100%;
   gap: 1rem;
-  align-items:right;
-  justify-items:right;
+  align-items: right;
+  justify-items: right;
+}
+
+.btn-open-form {
+  background-color: #0070f3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-open-form:hover {
+  background-color: #005bb5;
+}
+
+.form-container {
+  width: 300px;
+  top: 50px;
+  left: 20%;
+  transform: translateX(-50%);
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: none;
+}
+
+.btn-submit {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #218838;
+}
+
+input[type="color"] {
+  /* Elimina los estilos predeterminados */
+  appearance: none; /* Para navegadores basados en Chromium */
+  -webkit-appearance: none; /* Para Safari */
+  border: none;
+  padding: 0;
+  width: 40px; /* Tamaño ajustable */
+  height: 40px; /* Tamaño ajustable */
+  cursor: pointer;
+
+  /* Borde y fondo para mejor visibilidad */
+  border-radius: 8px; /* Bordes redondeados */
+  background-color: transparent;
+  box-shadow: 0 0 0 2px #ccc; /* Borde gris */
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none; /* Elimina el borde interno */
+  border-radius: 8px; /* Bordes redondeados para el área del color */
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: none;
+}
+
+/* Efecto hover */
+input[type="color"]:hover {
+  box-shadow: 0 0 0 2px #888; /* Cambia el color del borde */
+}
+
+/* Efecto cuando está enfocado */
+input[type="color"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #007bff; /* Borde azul para indicar enfoque */
 }
