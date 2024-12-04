@@ -69,7 +69,6 @@ const CalendarPage = () => {
         const newFilter = getNewFilter(category, value);
         setCurrentFilters(newFilter);
         console.log(newFilter)
-        filterCourses(newFilter);
     }
 
     const getNewFilter = (category: Category, value: string) => {
@@ -77,7 +76,7 @@ const CalendarPage = () => {
         var degress = currentFilters.degrees
         var semesters = currentFilters.semesters;
         var subjects = currentFilters.subjects;
-        
+
         switch (category.title) {
             case 'Profesor':
                 professors = professors.includes(value)
@@ -115,7 +114,7 @@ const CalendarPage = () => {
             className="bg-white text-black h-full flex flex-row"
         >
             <SideBar>
-                <FilterSelector categories={categories} onClick={handleClickFilter} />
+                <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)}/>
             </SideBar>
             <div className="w-5/6 p-5 h-full">
                 <TemporaryForm />
