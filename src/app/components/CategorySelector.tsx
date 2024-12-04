@@ -53,15 +53,13 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                 <DropdownIcon />
             </button>
 
-            {isVisible && (
-                <ul
-                    className="py-2 space-y-2"
+            <ul
+                    className={`${isVisible ? 'block' : 'hidden'} py-2 space-y-2`}
                 >
                     {category.values.map((value, index) => (
                         <ValueCell key={index} value={value} onClick={() => onClick(category, value)} />
                     ))}
                 </ul>
-            )}
         </li>
     );
 };

@@ -17,12 +17,35 @@ const CalendarPage = () => {
     const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel([], [], [], []));
     const [categories, setCategories] = React.useState<Category[]>([]);
 
-    const mapCategories = () => {
+    const mapCategories = async () => {
+        const data = new CoursesCsvDatasource();
+        const courses = await data.getAll();
+        var professorsFullName: string[] = []
+        var degress: string[] = []
+        var subjects: string[] = []
+        var semesters: number[] = []
+        courses.forEach(course =>{
+            professorsFullName.push(course.professor.fullName())
+            if (!degress.includes(course.subject.degree)) {
+                degress.push(course.subject.degree)
+            }
+
+            if (!subjects.includes(course.subject.name)) {
+                subjects.push(course.subject.name)
+            }
+
+            if (!semesters.includes(course.subject.semestre) && course.subject.semestre > 0 ) {
+                semesters.push(course.subject.semestre)
+            }
+
+        })
+
+        console.log(semesters)
         setCategories([
-            new Category('Carrera', ['IS(2016)', 'LCC']),
-            new Category('Semestre', ['5']),
-            new Category('Profesor', []),
-            new Category('Materia', []),
+            new Category('Carrera', degress),
+            new Category('Semestre', semesters.sort((a,b) => a - b).map((val) => val.toString())),
+            new Category('Profesor', professorsFullName),
+            new Category('Materia', subjects),
         ])
 
     }
