@@ -2,19 +2,20 @@ import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvData
 import fetchMock from 'jest-fetch-mock';
 import { Course } from "../domain/entities/Course";
 import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
-import { Filtration } from "@/infrastructure/datasource/CourseFiltration";
+import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
+import FilterModel from "@/infrastructure/models/FilterModel";
 jest.mock('node-fetch');
 
 
 describe('Filtration Tests', () => {
   let courseImporter: CoursesCsvDatasource;
   let courses:  Course[];
-  let filter : Filtration;
+  let filter : FilterImpl;
 
     beforeEach(async () => {
       fetchMock.resetMocks();
-      filter = new Filtration();
+      filter = new FilterImpl(new FilterModel([""],[],[""],[""]));
       courseImporter = new CoursesCsvDatasource();
       courses = await courseImporter.getAll();
     });
@@ -31,6 +32,7 @@ describe('Filtration Tests', () => {
         }
       }
     });
+
 
     it('Filter by modality', async () => {
       const modalities = ["Presencial", "Acompañamiento", "Ordinario"];

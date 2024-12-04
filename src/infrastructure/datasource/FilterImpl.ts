@@ -1,34 +1,37 @@
 import { Course } from "@/domain/entities/Course";
 import { Subject } from "@/domain/entities/Subject";
 import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
+import { Filter } from "@/domain/entities/Filter";
+import { CoursesRepositoryImpl } from "../repositories/CoursesRepositoryImpl";
+import FilterModel from "../models/FilterModel";
 
-export class Filtration {
+export class FilterImpl implements Filter {
+
+  private _model: FilterModel;
+  constructor(
+    model: FilterModel
+  ) {
+    this._model = model;
+  }
+
   //union filter
   async filter(
-    degrees: string[],
-    semesters: number[],
-    professors: string[],
-    subjects: string[]
+
   ) {
-    const coursesDataSource = new CoursesCsvDatasource();
+    const coursesDataSource = new CoursesRepositoryImpl(new CoursesCsvDatasource());
     const allCourses: Course[] = await coursesDataSource.getAll();
     const filtered: Course[] = [];
-    for (const course of allCourses) {
-      if (
-        this.matchDegree(course, degrees) ||
-        this.matchSemester(course, semesters) ||
-        this.matchProfessor(course, professors) ||
-        this.matchSubjects(course, subjects)
-      ) {
-        filtered.push(course);
-      }
-    }
+
+    const degreeFiltered = this.filterByDegree(allCourses, this._model.degrees[0]);
+    const semesterFiltered = this.filterBySemester(degreeFiltered, this._model.semesters[0]);
+
+    filtered.push(...semesterFiltered);
     return filtered;
   }
 
   matchDegree(course: Course, degrees: string[]): boolean {
     for (const degree of degrees) {
-      if (course.subject.degree == degree) {
+      if (course.subject.degrees.includes(degree)) {
         return true;
       }
     }
@@ -74,6 +77,15 @@ export class Filtration {
     return list.filter((course) => course.professor.fullName() == value);
   }
   filterBySubjects(list: Course[], value: string) {
-    return list.filter((course) => course.subject.name == value);
+    return list.filter((course) => {
+      const degrees = course.subject.degrees;
+      return degrees.includes(value);
+    });
+  }
+  filterBySemester(list: Course[], value: number) {
+    return list.filter((course) => course.subject.semestre == value);
+  }
+  filterByDegree(list: Course[], value: string) {
+    return list.filter((course) => course.subject.degrees.includes(value));
   }
 }

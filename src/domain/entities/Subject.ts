@@ -39,4 +39,8 @@ export class Subject {
     get semestre(): number {
         return this._semestre;
     }
+
+    get degrees(): string[] {
+        return this.degree.split('-').map((degree) => degree.trim());
+    }
 }
