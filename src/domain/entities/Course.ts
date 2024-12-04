@@ -8,7 +8,6 @@ export class Course {
   private _sessions: Session[];
   private _group: number;
   private _modality: string;
-  private _color: string;
 
   constructor();
   constructor(
@@ -26,14 +25,14 @@ export class Course {
     sessions?: Session[],
     group?: number,
     modality?: string,
-    _color?: string
+
   ) {
     this._subject = subject ?? new Subject();
     this._professor = professor ?? new Professor();
     this._sessions = sessions ?? [];
     this._group = group ?? 0;
     this._modality = modality ?? "";
-    this._color = _color ?? "";
+
   }
 
   get modality() {
@@ -53,8 +52,5 @@ export class Course {
 
   public get group(): number {
     return this._group;
-  }
-  public get color(): string {
-    return this._color;
   }
 }

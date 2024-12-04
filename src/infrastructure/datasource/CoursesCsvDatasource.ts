@@ -10,6 +10,7 @@ import { ProfessorsRepository } from "@/domain/repositories/ProfessorsRepository
 import { SubjectsRepository } from "@/domain/repositories/SubjectsRepository";
 import { CourseCSV } from "../models/CourseModel";
 import moment from "moment";
+import { Filter } from "@/domain/entities/Filter";
 
 
 export class CoursesCsvDatasource implements CoursesDataSource {
@@ -37,14 +38,14 @@ export class CoursesCsvDatasource implements CoursesDataSource {
             ));
 
             const subject = subjects.find(subject => (
-                subject.name === result.Asignatura
+                subject.name === result.Asignatura && subject.degree === result.PE
             ));
 
             const sessions = this.getSessions(result);
 
 
             if (professor && subject) {
-                
+
                 const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
                 this.courses.push(new Course(subject, professor, sessions, parseInt(result.GRUPO), result.Modalidad, color));
             }
@@ -53,6 +54,10 @@ export class CoursesCsvDatasource implements CoursesDataSource {
         }
 
         return this.courses;
+    }
+
+    async getCoursesByFilter(filter: Filter): Promise<Course[]> {
+        return filter.filter(await this.getAll());
     }
 
     getSessions(result: CourseCSV): Session[] {
