@@ -1,18 +1,18 @@
 class Category {
-    private title: string;
-    private values: string[];
+    private _title: string;
+    private _values: string[];
 
     constructor(title: string, values: string[]) {
-        this.title = title;
-        this.values = values;
+        this._title = title;
+        this._values = values;
     }
 
-    public getTitle(): string {
-        return this.title;
+    get title(): string {
+        return this._title;
     }
 
-    public getValues(): string[] {
-        return this.values;
+    get values(): string[] {
+        return this._values;
     }
 }
 

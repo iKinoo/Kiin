@@ -9,16 +9,27 @@ import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvData
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
+import Category from "@/domain/entities/Category";
 
 
 const CalendarPage = () => {
     const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
-    const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel(['IS(2016)'], [5], [], []));
-    const defaultFilters = new FilterModel(['IS(2016)'], [5], [], [])
+    const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel([], [], [], []));
+    const [categories, setCategories] = React.useState<Category[]>([]);
 
-    const filterCourses = (filters: FilterModel) => {
+    const mapCategories = () => {
+        setCategories([
+            new Category('Carrera', ['IS(2016)', 'LCC']),
+            new Category('Semestre', ['5']),
+            new Category('Profesor', []),
+            new Category('Materia', []),
+        ])
+
+    }
+
+    const filterCourses = async (filters: FilterModel) => {
         const data = new CoursesCsvDatasource();
-        
+
         const days = {
             "Lunes": "02",
             "Martes": "03",
@@ -27,31 +38,76 @@ const CalendarPage = () => {
             "Viernes": "06",
         }
         const filter = new FilterImpl(filters);
+        const courses = await data.getCoursesByFilter(filter)
+        if (courses.length === 0) {
+            setEvents([]);
+            return;
+        }
+        const generator = new ScheduleGenerator();
+        const schedule = generator.generateSchedules(courses);
+        const eventsData = schedule[0].flatMap((course) => {
 
-        data.getCoursesByFilter(filter).then((courses) => {
-            
-            const generator = new ScheduleGenerator();
-            const schedule = generator.generateSchedules(courses);
-            const eventsData = schedule[54].flatMap((course) => {
+            const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
 
-                const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+            return course.sessions.map((session) => ({
+                borderColor: 'black',
+                color: color,
+                title: course.subject.name,
+                start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
+                end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
+            }))
+        }
+        );
+        setEvents(eventsData);
+    }
 
-                return course.sessions.map((session) => ({
-                    borderColor: 'black',
-                    color: color,
-                    title: course.subject.name,
-                    start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
-                    end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
-                }))
-            }
-            );
-            setEvents(eventsData);
+    const handleClickFilter = (category: Category, value: string) => {
+        const index = categories.findIndex(c => c.title === category.title)
 
-        });
+        if (index === -1) { return }
+
+        const newFilter = getNewFilter(category, value);
+        setCurrentFilters(newFilter);
+        console.log(newFilter)
+        filterCourses(newFilter);
+    }
+
+    const getNewFilter = (category: Category, value: string) => {
+        var professors = currentFilters.professors;
+        var degress = currentFilters.degrees
+        var semesters = currentFilters.semesters;
+        var subjects = currentFilters.subjects;
+        
+        switch (category.title) {
+            case 'Profesor':
+                professors = professors.includes(value)
+                ? professors.filter(professor => professor !== value)
+                : [...professors, value]
+                break;
+            case 'Carrera':
+                degress = degress.includes(value) 
+                ? degress.filter(degree => degree !== value)
+                : [...degress, value]
+                break;
+            case 'Semestre':
+                semesters = semesters.includes(parseInt(value))
+                ? semesters.filter(semester => semester !== parseInt(value))
+                : [...semesters, parseInt(value)]
+                break;
+            case 'Materia':
+                subjects = subjects.includes(value)
+                ? subjects.filter(subject => subject !== value)
+                : [...subjects, value]
+                break;
+        }
+
+        return new FilterModel(degress, semesters, professors, subjects)
+
     }
 
     useEffect(() => {
-        filterCourses(defaultFilters);
+        // filterCourses(defaultFilters);
+        mapCategories();
     }, []);
 
     return (
@@ -59,11 +115,11 @@ const CalendarPage = () => {
             className="bg-white text-black h-full flex flex-row"
         >
             <SideBar>
-                <FilterSelector />
+                <FilterSelector categories={categories} onClick={handleClickFilter} />
             </SideBar>
             <div className="w-5/6 p-5 h-full">
                 <TemporaryForm />
-                <Calendar events={events}/>
+                <Calendar events={events} />
 
             </div>
         </div>

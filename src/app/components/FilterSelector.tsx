@@ -3,16 +3,12 @@ import Category from '@/domain/entities/Category'
 import React, { useEffect } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 
-const FilterSelector = () => {
-    const [categories, setCategories] = React.useState<Category[]>([]);
+interface FilterSelectorProps {
+    categories: Category[]
+    onClick: (category: Category, value: string) => void
+}
+const FilterSelector: React.FC<FilterSelectorProps> = ({categories, onClick}) => {
 
-    useEffect(() => {
-        const newCategories = [
-            new Category('Licenciatura', ['LIS', 'LIC', 'LCC']),
-            new Category('Semestre', ['1', '2', '3']),
-        ]
-        setCategories(newCategories)
-    }, [])
     return (
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
@@ -26,7 +22,7 @@ const FilterSelector = () => {
                 </li>
                 {
                     categories.map((category, index) => (
-                        <CategorySelector key={index} category={category} />
+                        <CategorySelector key={index} category={category} onClick={onClick} />
                     ))
                 }
                 <li>
