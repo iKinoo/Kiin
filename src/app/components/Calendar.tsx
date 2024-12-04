@@ -1,48 +1,15 @@
 'use client'
-import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
-import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
-import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
+
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
 import { useEffect, useState } from 'react';
 
-export default function Calendar() {
-    const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
-
-    useEffect(() => {
-        const data = new CoursesCsvDatasource();
-
-        const days = {
-            "Lunes": "02",
-            "Martes": "03",
-            "Miercoles": "04",
-            "Jueves": "05",
-            "Viernes": "06",
-        }
-
-        data.getCoursesByFilter(new FilterImpl(['IS(2016)'], [5], [], [])).then((courses) => {
-            const generator = new ScheduleGenerator();
-            const schedule = generator.generateSchedules(courses);
-            console.log(schedule);
-
-            const eventsData = schedule[54].flatMap((course) => {
-
-                const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
-
-                return course.sessions.map((session) => ({
-                    borderColor: 'black',
-                    color: color,
-                    title: course.subject.name,
-                    start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
-                    end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
-                }))
-            }
-            );
-            setEvents(eventsData);
-
-        });
-    }, []);
+interface CalendarProps {
+    events: { color: string; title: string; start: string; end: string; }[]
+}
+const Calendar: React.FC<CalendarProps> = ({ events }) => {
+    
 
     return (
         <FullCalendar
@@ -63,3 +30,5 @@ export default function Calendar() {
         />
     );
 }
+
+export default Calendar
