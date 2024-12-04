@@ -9,6 +9,9 @@ export class CoursesModelDao {
     }
 
     const response = await fetch('/api/courses');
+    /* Url for testing
+    const response = await fetch('http://localhost:3000/api/courses');
+    */
     if (!response.ok) {
       console.error('Error fetching courses:', response.statusText);
       return [];
