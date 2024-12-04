@@ -22,7 +22,6 @@ const TemporaryForm: React.FC<{onSubmit: (formData: FormData) => void}> = ({onSu
   const formRef = useRef<HTMLDivElement>(null); // Referencia para detectar clics fuera del formulario
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Cerrar el formulario si se hace clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const willDismiss = formRef.current && 
@@ -40,7 +39,6 @@ const TemporaryForm: React.FC<{onSubmit: (formData: FormData) => void}> = ({onSu
     };
   }, []);
 
-  // Manejar los cambios en los campos del formulario
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -51,11 +49,10 @@ const TemporaryForm: React.FC<{onSubmit: (formData: FormData) => void}> = ({onSu
     }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData); // Enviar los datos del formulario al componente padre
-    setIsOpen(false); // Cierra el formulario después del envío
+    onSubmit(formData); 
+    setIsOpen(false);
   };
 
   const formLabel = (value: string) => {
