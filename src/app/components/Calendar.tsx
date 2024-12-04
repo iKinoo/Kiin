@@ -1,5 +1,6 @@
 'use client'
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -20,8 +21,13 @@ export default function Calendar() {
             "Viernes": "06",
         }
 
-        data.getCoursesByFilter(new FilterImpl(['IS(2016)'],[],[],[])).then((courses) => {
-            console.log(courses);
+        const dataDegree = new DegreesCsvDataSource();
+        dataDegree.getAll().then((degrees) => {
+            console.log(degrees);
+        })
+
+        data.getCoursesByFilter(new FilterImpl(['IS(2016)'], [], [], [])).then((courses) => {
+
             const eventsData = courses.flatMap((course) =>
                 course.sessions.map((session) => ({
                     color: course.color,
@@ -37,7 +43,7 @@ export default function Calendar() {
     return (
         <div className="w-full h-full">
             <FullCalendar
-                dayHeaderFormat={{ weekday: 'long'  }}
+                dayHeaderFormat={{ weekday: 'long' }}
                 locale={"es-MX"}
                 slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
                 // headerToolbar= {false}
