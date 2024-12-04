@@ -3,24 +3,15 @@ import { Subject } from "@/domain/entities/Subject";
 import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
 import { Filter } from "@/domain/entities/Filter";
 import { CoursesRepositoryImpl } from "../repositories/CoursesRepositoryImpl";
+import FilterModel from "../models/FilterModel";
 
 export class FilterImpl implements Filter {
 
-  private _degrees: string[];
-  private _semesters: number[];
-  private _professors: string[];
-  private _subjects: string[];
-
+  private _model: FilterModel;
   constructor(
-    degrees: string[],
-    semesters: number[],
-    professors: string[],
-    subjects: string[]
+    model: FilterModel
   ) {
-    this._degrees = degrees;
-    this._semesters = semesters;
-    this._professors = professors;
-    this._subjects = subjects
+    this._model = model;
   }
 
   //union filter
@@ -31,12 +22,10 @@ export class FilterImpl implements Filter {
     const allCourses: Course[] = await coursesDataSource.getAll();
     const filtered: Course[] = [];
 
-    const degreeFiltered = this.filterByDegree(allCourses, this._degrees[0]);
-    const semesterFiltered = this.filterBySemester(degreeFiltered, this._semesters[0]);
+    const degreeFiltered = this.filterByDegree(allCourses, this._model.degrees[0]);
+    const semesterFiltered = this.filterBySemester(degreeFiltered, this._model.semesters[0]);
 
     filtered.push(...semesterFiltered);
-
-
     return filtered;
   }
 
