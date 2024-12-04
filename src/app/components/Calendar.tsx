@@ -1,4 +1,5 @@
 'use client'
+import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import FullCalendar from '@fullcalendar/react'
@@ -20,37 +21,45 @@ export default function Calendar() {
             "Viernes": "06",
         }
 
-        data.getCoursesByFilter(new FilterImpl(['IS(2016)'],[5],[],[])).then((courses) => {
-            console.log(courses);
-            const eventsData = courses.flatMap((course) =>
-                course.sessions.map((session) => ({
+        data.getCoursesByFilter(new FilterImpl(['IS(2016)'], [5], [], [])).then((courses) => {
+            const generator = new ScheduleGenerator();
+            const schedule = generator.generateSchedules(courses);
+            console.log(schedule);
+
+            const eventsData = schedule[54].flatMap((course) => {
+
+                const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+
+                return course.sessions.map((session) => ({
                     borderColor: 'black',
-                    color: '#' + Math.floor(Math.random() * 16777215).toString(16),
+                    color: color,
                     title: course.subject.name,
                     start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
                     end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
                 }))
+            }
             );
             setEvents(eventsData);
+
         });
     }, []);
 
     return (
         <FullCalendar
-                dayHeaderFormat={{ weekday: 'long'  }}
-                locale={"es-MX"}
-                slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                // headerToolbar= {false}
-                allDaySlot={false}
-                slotMinTime="07:00:00"
-                slotMaxTime={"22:00:00"}
-                // height="100%"
-                hiddenDays={[0, 6]}
-                plugins={[timeGridPlugin]}
-                initialView="timeGridWeek"
-                events={
-                    events
-                }
-            />
+            dayHeaderFormat={{ weekday: 'long' }}
+            locale={"es-MX"}
+            slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            // headerToolbar= {false}
+            allDaySlot={false}
+            slotMinTime="07:00:00"
+            slotMaxTime={"22:00:00"}
+            // height="100%"
+            hiddenDays={[0, 6]}
+            plugins={[timeGridPlugin]}
+            initialView="timeGridWeek"
+            events={
+                events
+            }
+        />
     );
 }
