@@ -3,6 +3,11 @@ import Category from '@/domain/entities/Category'
 import React, { useEffect } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 
+/**
+ * Definicion general del componente de filtrado
+ * @returns Estructura general del filtrado
+ */
+
 const FilterSelector = () => {
     const [categories, setCategories] = React.useState<Category[]>([]);
 

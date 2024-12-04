@@ -1,5 +1,6 @@
-
-
+/**
+ * Abstraccion de una materia escolar 
+ */
 export class Subject {
 
     private _type: string;

@@ -1,10 +1,21 @@
 import Category from '@/domain/entities/Category';
 import React, { useState } from 'react'
+
+/**
+ * Definicion de la seleccion de filtros y sus componentes
+ */
+
+/**
+ * Propiedades de categoría
+ */
 interface CategoryProps {
     category: Category;
     // color: string;
 }
 
+/**
+ * @returns Icono de despliegue de filtros especificos
+ */
 const DropdownIcon = () => {
     return (
         <svg
@@ -25,6 +36,11 @@ const DropdownIcon = () => {
     )
 }
 
+/**
+ * Composicion y comportamiento de la seleccion de filtros por categoría
+ * @param category categoría del filtro
+ * @returns componente de seleccion de filtros en base a una categoria
+ */
 const CategorySelector: React.FC<CategoryProps> = ({ category }) => {
     const [isVisible, setIsVisible] = useState(false);
 

@@ -3,6 +3,10 @@ import React from 'react'
 import NavBar from './components/NavBar';
 import Link from 'next/link';
 
+/**
+ * Define la estructura, componentes y referencias de la página principal
+ * @returns componente principal de la ruta de entrada
+ */
 const HomeContent: React.FC = () => {
     const links = [
       { label: 'Inicio', route: '' },

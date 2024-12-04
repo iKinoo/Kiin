@@ -2,15 +2,25 @@
 
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
-
 import { useEffect, useState } from 'react';
 
+/**
+ * Componente calendario del horario, sus componentes y metodo principal
+ */
+
+/**
+ * Propiedades que tendra la vista principal del componente horario
+ */
 interface CalendarProps {
     events: { color: string; title: string; start: string; end: string; }[]
 }
-const Calendar: React.FC<CalendarProps> = ({ events }) => {
-    
 
+/**
+ * Define los componentes y el comportamiento del horario
+ * @param events sesiones de clases del horario
+ * @returns Estructura del calendario
+ */
+const Calendar: React.FC<CalendarProps> = ({ events }) => {
     return (
         <FullCalendar
             dayHeaderFormat={{ weekday: 'long' }}

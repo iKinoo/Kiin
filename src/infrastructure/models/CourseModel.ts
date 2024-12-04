@@ -1,3 +1,6 @@
+/**
+ * Atributos que contienen los cursos sacados directamente de la fuente de datos CSV
+ */
 export interface CourseCSV {
     Periodo: string;
     Tipo: string;

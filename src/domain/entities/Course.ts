@@ -2,6 +2,9 @@ import { Professor } from "./Professor";
 import { Subject } from "./Subject";
 import { Session } from "./Session";
 
+/**
+ * Abstraccion de un curso escolar
+ */
 export class Course {
   private _subject: Subject;
   private _professor: Professor;

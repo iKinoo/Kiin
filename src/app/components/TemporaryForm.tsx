@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-
+/**
+ * Datos que tendra el formulario
+ */
 interface FormData {
   color: string;
   name: string;
@@ -10,8 +12,12 @@ interface FormData {
   endTime: string; // Formato "HH:mm"
 }
 
+/**
+ * Definicio del formulario desplegable, sus propiedades y componentes
+ * @returns Estrucura del formulario desplegable
+ */
 const TemporaryForm: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     color: "",
     name: "",
@@ -19,10 +25,9 @@ const TemporaryForm: React.FC = () => {
     startTime: "",
     endTime: "",
   });
-  const formRef = useRef<HTMLDivElement>(null); // Referencia para detectar clics fuera del formulario
+  const formRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Cerrar el formulario si se hace clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const willDismiss = formRef.current && 
@@ -40,7 +45,6 @@ const TemporaryForm: React.FC = () => {
     };
   }, []);
 
-  // Manejar los cambios en los campos del formulario
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -51,11 +55,10 @@ const TemporaryForm: React.FC = () => {
     }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData); // Acción con los datos del formulario
-    setIsOpen(false); // Cierra el formulario después del envío
+    console.log("Datos enviados:", formData);
+    setIsOpen(false);
   };
 
   const formLabel = (value: string) => {
@@ -86,7 +89,6 @@ const TemporaryForm: React.FC = () => {
           className="left-3/4 z-50 form-container absolute bg-slate-200 p-4 rounded-lg shadow-lg dark:bg-gray-800"
         >
           <form onSubmit={handleSubmit}>
-            {/* Campo Color */}
             <div>
               {formLabel('Color:')}
               <input
@@ -97,7 +99,6 @@ const TemporaryForm: React.FC = () => {
               />
             </div>
 
-            {/* Campo Nombre */}
             <div>
               {formLabel('Nombre:')}
               <input
@@ -109,7 +110,6 @@ const TemporaryForm: React.FC = () => {
               />
             </div>
 
-            {/* Campo Descripción */}
             <div>
               {formLabel('Descripción:')}
               <textarea
@@ -119,7 +119,6 @@ const TemporaryForm: React.FC = () => {
               ></textarea>
             </div>
 
-            {/* Campo Hora de Comienzo */}
             <div>
               {formLabel('Inicio (hora:minutos):')}
               <input
@@ -131,7 +130,6 @@ const TemporaryForm: React.FC = () => {
               />
             </div>
 
-            {/* Campo Hora de Finalización */}
             <div>
               {formLabel('Final (hora:minutos):')}
               <input
@@ -142,7 +140,6 @@ const TemporaryForm: React.FC = () => {
                 required
               />
             </div>
-            {/* Botón de Submit */}
             <button type="submit" className="btn-submit">
               Enviar
             </button>

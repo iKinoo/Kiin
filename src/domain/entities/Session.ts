@@ -1,6 +1,9 @@
 import moment from "moment";
 import { Moment } from "moment";
 
+/**
+ * Abstraccion de una sesión de clases
+ */
 export class Session {
 
     private _day: string;

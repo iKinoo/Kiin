@@ -1,3 +1,7 @@
+
+/**
+ * Abstraccion de una categoria de filtrado
+ */
 class Category {
     private title: string;
     private values: string[];

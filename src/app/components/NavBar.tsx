@@ -1,10 +1,24 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
+
+/**
+ * Componente reutilizable para una barra de navegacion
+ */
+
+/**
+ * interface para los links que tendrá la barra de navegacion
+ */
 interface NavBarProps {
     links: { label: string, route: string }[]
 }
 
+/**
+ * componente link individual de la barra de navegacion
+ * @param link enlace de cada item
+ * @param index orden del item
+ * @returns Estructura de link
+ */
 const navBarItem = (link: { label: string, route: string }, index: number) => {
     return (
         <li key={index} className="flex items-center justify-center">
@@ -19,6 +33,10 @@ const navBarItem = (link: { label: string, route: string }, index: number) => {
     )
 }
 
+/**
+ * componente logo reutilizable
+ * @returns Estructura del logo de la barra de navegacion
+ */
 const AppLogo = () => {
     return (
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -34,6 +52,11 @@ const AppLogo = () => {
     )
 }
 
+/**
+ * Definicion general de la barra de navegacion y sus componentes
+ * @param links  enlaces
+ * @returns Estructura
+ */
 const NavBar: React.FC<NavBarProps> = ({ links }) => {
     return (
 

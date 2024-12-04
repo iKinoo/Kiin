@@ -1,5 +1,8 @@
 import { CourseCSV } from "../../models/CourseModel";
 
+/**
+ * Objeto de Acceso a Datos para obtencion de cursos
+ */
 export class CoursesModelDao {
   private static _results: CourseCSV[] = [];
 

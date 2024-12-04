@@ -1,3 +1,6 @@
+/**
+ * abstraccion del modelo de filtrado
+ */
 class FilterModel {
     private _degrees: string[];
     private _semesters: number[];

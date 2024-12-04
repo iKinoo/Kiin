@@ -10,7 +10,10 @@ import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
 
-
+/**
+ * Define la estructura y propiedades de la ruta /calendar
+ * @returns Estructura general de la pagina calendar
+ */
 const CalendarPage = () => {
     const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
     const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel(['IS(2016)'], [5], [], []));

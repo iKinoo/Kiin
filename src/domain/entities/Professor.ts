@@ -1,3 +1,6 @@
+/**
+ * Abstraccion de un profesor
+ */
 export class Professor {
   private _names: string;
   private _lastNames: string;
@@ -17,6 +20,9 @@ export class Professor {
     return this._lastNames;
   }
 
+  /**
+   * obtencion del nombre completo del profesor 
+   * */
   fullName(): string {
     return `${this._names} ${this._lastNames}`;
   }

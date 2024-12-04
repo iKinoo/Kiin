@@ -1,4 +1,10 @@
 import React from 'react'
+
+/**
+ * Barra lateral reutilizable
+ * @param children componentes que contiene 
+ * @returns Estructura de la barra lateral
+ */
 const SideBar = ({ children }: Readonly<{
   children: React.ReactNode;
 }>) => {

@@ -12,14 +12,19 @@ import { CourseCSV } from "../models/CourseModel";
 import moment from "moment";
 import { Filter } from "@/domain/entities/Filter";
 
-
+/**
+ * Clase ORM personal para la obtencion de cursos directamente desde la fuente CSV
+ */
 export class CoursesCsvDatasource implements CoursesDataSource {
 
     private courses: Course[] = [];
     private professorsRepository: ProfessorsRepository = new ProfessorsRepositoryImpl(new ProfessorsCsvDataSource());
     private subjectsRepository: SubjectsRepository = new SubjectsRepositoryImpl(new SubjectsCsvDataSource());
 
-
+    /**
+     * Obtencion de todos los datos y mapeo a su tipo de dato abstracto
+     * @returns Todos los cursos provistos por la fuente de datos
+     */
     async getAll(): Promise<Course[]> {
 
         if (this.courses.length > 0) {
@@ -56,10 +61,20 @@ export class CoursesCsvDatasource implements CoursesDataSource {
         return this.courses;
     }
 
+    /**
+     * Filtrado de cursos
+     * @param filter limites para la obtencion de cursos
+     * @returns cursos filtrados
+     */
     async getCoursesByFilter(filter: Filter): Promise<Course[]> {
         return filter.filter(await this.getAll());
     }
 
+    /**
+     * Mapeo de atributos de sesion para su abstraccion
+     * @param result curso sacado directo de la fuente de datos
+     * @returns Sesiones de un curso
+     */
     getSessions(result: CourseCSV): Session[] {
 
         const sessions: Session[] = [];
@@ -84,6 +99,11 @@ export class CoursesCsvDatasource implements CoursesDataSource {
         return sessions;
     }
 
+    /**
+     * Mapeo de horas para la abstraccion de sesiones
+     * @param time cadena de hora directa de la fuente
+     * @returns horas en su formato
+     */
     getHours(time: string): moment.Moment[] {
         const hours = time.split('-');
         if (hours.length === 2) {

@@ -2,7 +2,9 @@ import { Course } from "./Course";
 import { Professor } from "./Professor";
 import { Subject } from "./Subject";
 
-
+/**
+ * Abstraccion de un horario
+ */
 export class Schedule {
 
     private _id: number;
