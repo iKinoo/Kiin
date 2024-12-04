@@ -1,5 +1,6 @@
 'use client'
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
@@ -19,11 +20,12 @@ export default function Calendar() {
             "Viernes": "06",
         }
 
-        data.getAll().then((courses) => {
+        data.getCoursesByFilter(new FilterImpl(['IS(2016)'],[5],[],[])).then((courses) => {
             console.log(courses);
             const eventsData = courses.flatMap((course) =>
                 course.sessions.map((session) => ({
-                    color: course.color,
+                    borderColor: 'black',
+                    color: '#' + Math.floor(Math.random() * 16777215).toString(16),
                     title: course.subject.name,
                     start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
                     end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
