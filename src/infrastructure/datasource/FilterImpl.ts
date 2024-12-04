@@ -1,24 +1,41 @@
 import { Course } from "@/domain/entities/Course";
 import { Subject } from "@/domain/entities/Subject";
 import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
+import { Filter } from "@/domain/entities/Filter";
+import { CoursesRepositoryImpl } from "../repositories/CoursesRepositoryImpl";
 
-export class Filtration {
-  //union filter
-  async filter(
+export class FilterImpl implements Filter {
+
+  private _degrees: string[];
+  private _semesters: number[];
+  private _professors: string[];
+  private _subjects: string[];
+
+  constructor(
     degrees: string[],
     semesters: number[],
     professors: string[],
     subjects: string[]
   ) {
-    const coursesDataSource = new CoursesCsvDatasource();
+    this._degrees = degrees;
+    this._semesters = semesters;
+    this._professors = professors;
+    this._subjects = subjects
+  }
+
+  //union filter
+  async filter(
+    
+  ) {
+    const coursesDataSource = new CoursesRepositoryImpl(new CoursesCsvDatasource());
     const allCourses: Course[] = await coursesDataSource.getAll();
     const filtered: Course[] = [];
     for (const course of allCourses) {
       if (
-        this.matchDegree(course, degrees) ||
-        this.matchSemester(course, semesters) ||
-        this.matchProfessor(course, professors) ||
-        this.matchSubjects(course, subjects)
+        this.matchDegree(course, this._degrees) ||
+        this.matchSemester(course, this._semesters) ||
+        this.matchProfessor(course, this._professors) ||
+        this.matchSubjects(course, this._subjects)
       ) {
         filtered.push(course);
       }
@@ -28,7 +45,7 @@ export class Filtration {
 
   matchDegree(course: Course, degrees: string[]): boolean {
     for (const degree of degrees) {
-      if (course.subject.degree == degree) {
+      if (course.subject.degree === degree) {
         return true;
       }
     }
