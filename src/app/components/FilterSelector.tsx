@@ -3,22 +3,20 @@ import Category from '@/domain/entities/Category'
 import React, { useEffect } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 
-<<<<<<< HEAD
 /**
- * Definicion general del componente de filtrado
- * @returns Estructura general del filtrado
+ * categorias y eventos del selector de filtros
  */
-
-const FilterSelector = () => {
-    const [categories, setCategories] = React.useState<Category[]>([]);
-=======
 interface FilterSelectorProps {
     categories: Category[]
     onClick: (category: Category, value: string) => void
     onSubmit:() => void
 }
+/**
+ * Define las relaciones del selector de filtros con sus eventos y componentes
+ * @param params eventos y categorias de su interface
+ * @returns estructura del selector de filtros
+ */
 const FilterSelector: React.FC<FilterSelectorProps> = ({categories, onClick, onSubmit}) => {
->>>>>>> dev
 
     return (
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">

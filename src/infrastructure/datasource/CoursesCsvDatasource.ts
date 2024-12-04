@@ -13,7 +13,7 @@ import moment from "moment";
 import { Filter } from "@/domain/entities/Filter";
 
 /**
- * Clase ORM personal para la obtencion de cursos directamente desde la fuente CSV
+ * Clase de mapeo para la obtencion de cursos directamente desde la fuente CSV
  */
 export class CoursesCsvDatasource implements CoursesDataSource {
 

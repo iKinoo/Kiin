@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * Clase para realizar cambios de paginas para observar los horarios generados
+ */
 type PaginationProps = {
   onPrevious: () => void;
   onNext: () => void;
@@ -7,6 +10,11 @@ type PaginationProps = {
   isNextDisabled?: boolean;
 };
 
+/**
+ * Definicion de los componentes de cambio de pagina y sus eventos
+ * @param params ordenamiento de horarios
+ * @returns estructura de los botones de paginacion
+ */
 const Pagination: React.FC<PaginationProps> = ({
   onPrevious,
   onNext,

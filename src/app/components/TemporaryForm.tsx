@@ -82,7 +82,6 @@ const TemporaryForm: React.FC = () => {
         </button>
       </div>
 
-      {/* Formulario desplegable */}
       {isOpen && (
         <div
           ref={formRef}

@@ -2,13 +2,9 @@
 
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
-<<<<<<< HEAD
-import { useEffect, useState } from 'react';
-=======
 
 import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
->>>>>>> dev
 
 /**
  * Componente calendario del horario, sus componentes y metodo principal
@@ -23,15 +19,13 @@ interface CalendarProps {
     onChangePage: (page: number) => void
 }
 
-<<<<<<< HEAD
 /**
- * Define los componentes y el comportamiento del horario
- * @param events sesiones de clases del horario
+ * Composicion del componente calendario
+ * @param events eventos a manejar
+ * @param totalPages cantidad de horarios fenerados
+ * @param onChangePage evento dado a ejecutar en un cambio de pagina
  * @returns Estructura del calendario
  */
-const Calendar: React.FC<CalendarProps> = ({ events }) => {
-=======
-
 const Calendar: React.FC<CalendarProps> = ({ events, totalPages, onChangePage }) => {
     const [page, setPage] = useState(0);
 
@@ -39,7 +33,6 @@ const Calendar: React.FC<CalendarProps> = ({ events, totalPages, onChangePage })
         setPage(page)
         onChangePage(page)
     }
->>>>>>> dev
     return (
         <div >
             <Pagination onNext={() => {onChange(page + 1)}} onPrevious={() => {onChange(page - 1)}} isNextDisabled={page == totalPages} isPreviousDisabled={page == 0} />

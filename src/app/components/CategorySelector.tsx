@@ -36,18 +36,14 @@ const DropdownIcon = () => {
     )
 }
 
-<<<<<<< HEAD
 /**
- * Composicion y comportamiento de la seleccion de filtros por categoría
- * @param category categoría del filtro
- * @returns componente de seleccion de filtros en base a una categoria
+ * Seleccion de un valor de un filtro
+ * @param value valor del filtro
+ * @param onClick evento dado
+ * @returns estructura del boton de seleccion
  */
-const CategorySelector: React.FC<CategoryProps> = ({ category }) => {
-    const [isVisible, setIsVisible] = useState(false);
-=======
 const ValueCell:React.FC<{value: string; onClick: () => void;}> = ({ value, onClick }) => {
     const [isSelected, setIsSelected] = useState(false);
->>>>>>> dev
 
     return (
         <button
@@ -59,6 +55,12 @@ const ValueCell:React.FC<{value: string; onClick: () => void;}> = ({ value, onCl
     )
 }
 
+/**
+ * selector cada categoria que desplegara los valores de cada categoria
+ * @param category categoria dada
+ * @param onClick evento dado
+ * @returns estructura de una categoria
+ */
 const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
     const [isVisible, setIsVisible] = useState(false);
     return (

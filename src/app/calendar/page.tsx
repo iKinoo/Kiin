@@ -22,6 +22,7 @@ const CalendarPage = () => {
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [schedule, setSchedule] = React.useState<Course[][]>([]);
 
+    //carga las categorias con los datos disponibles de los cursos
     const mapCategories = async () => {
         const data = new CoursesCsvDatasource();
         const courses = await data.getAll();
@@ -55,6 +56,7 @@ const CalendarPage = () => {
 
     }
 
+    //dado un filtro cambia los horarios y eventos del calendario
     const filterCourses = async (filters: FilterModel) => {
         const data = new CoursesCsvDatasource();
 
@@ -71,6 +73,7 @@ const CalendarPage = () => {
         setEvents(eventsData);
     }
 
+    //devuelve los eventos en el formato adecuado
     const getEvents = (schedule: Course[][], index: number) => {
         return schedule[index].flatMap((course) => {
             const days = {
@@ -93,11 +96,11 @@ const CalendarPage = () => {
         );
     }
 
+    //manejadores de eventos
     const onChangeSchedulePage = (page: number) => {
         const eventsData = getEvents(schedule, page);
         setEvents(eventsData);
     }
-
     const handleClickFilter = (category: Category, value: string) => {
         const index = categories.findIndex(c => c.title === category.title)
 
@@ -108,6 +111,7 @@ const CalendarPage = () => {
         console.log(newFilter)
     }
 
+    //obtiene la seleccion de filtros y actualiza la lista de filtros
     const getNewFilter = (category: Category, value: string) => {
         var professors = currentFilters.professors;
         var degress = currentFilters.degrees
@@ -146,6 +150,7 @@ const CalendarPage = () => {
         mapCategories();
     }, []);
 
+    //estructura html de la pagina
     return (
         <div
             className="bg-white text-black h-full flex flex-row"
