@@ -3,7 +3,7 @@ import React from "react";
 import FilterSelector from "../components/FilterSelector";
 import SideBar from '../components/SideBar'
 import Calendar from "../components/Calendar";
-import TemporaryForm from "../components/TemporaryForm";
+import TemporaryForm, { FormData } from "../components/TemporaryForm";
 import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
+import { Subject } from "@/domain/entities/Subject";
 
 
 const CalendarPage = () => {
@@ -138,6 +139,11 @@ const CalendarPage = () => {
 
     }
 
+    const handleAddSubject = (formData: FormData) => {
+        const newSubject: Subject = new Subject()
+
+    }
+
     useEffect(() => {
         // filterCourses(defaultFilters);
         mapCategories();
@@ -151,7 +157,7 @@ const CalendarPage = () => {
                 <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)} />
             </SideBar>
             <div className="w-5/6 p-5 h-full justify-end items-end">
-                <TemporaryForm />
+                <TemporaryForm onSubmit={handleAddSubject}/>
                 <Calendar events={events} totalPages={schedule.length - 1} onChangePage={onChangeSchedulePage} />
 
             </div>

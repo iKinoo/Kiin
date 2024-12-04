@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 
-interface FormData {
+export interface FormData {
   color: string;
   name: string;
   description: string;
@@ -10,7 +10,7 @@ interface FormData {
   endTime: string; // Formato "HH:mm"
 }
 
-const TemporaryForm: React.FC = () => {
+const TemporaryForm: React.FC<{onSubmit: (formData: FormData) => void}> = ({onSubmit}) => {
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad
   const [formData, setFormData] = useState<FormData>({
     color: "",
@@ -54,7 +54,7 @@ const TemporaryForm: React.FC = () => {
   // Manejar el envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData); // Acción con los datos del formulario
+    onSubmit(formData); // Enviar los datos del formulario al componente padre
     setIsOpen(false); // Cierra el formulario después del envío
   };
 
