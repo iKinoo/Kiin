@@ -3,7 +3,7 @@ import React from "react";
 import FilterSelector from "../components/FilterSelector";
 import SideBar from '../components/SideBar'
 import Calendar from "../components/Calendar";
-import TemporaryForm from "../components/TemporaryForm";
+import TemporaryForm, { FormData } from "../components/TemporaryForm";
 import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
+import { Subject } from "@/domain/entities/Subject";
+import Pagination from "../components/Pagination";
 
 
 const CalendarPage = () => {
@@ -18,6 +20,7 @@ const CalendarPage = () => {
     const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel([], [], [], []));
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [schedule, setSchedule] = React.useState<Course[][]>([]);
+    const [page, setPage] = useState(0);
 
     const mapCategories = async () => {
         const data = new CoursesCsvDatasource();
@@ -41,8 +44,6 @@ const CalendarPage = () => {
             }
 
         })
-
-        console.log(semesters)
         setCategories([
             new Category('Carrera', degress),
             new Category('Semestre', semesters.sort((a, b) => a - b).map((val) => val.toString())),
@@ -139,7 +140,6 @@ const CalendarPage = () => {
     }
 
     useEffect(() => {
-        // filterCourses(defaultFilters);
         mapCategories();
     }, []);
 
@@ -150,9 +150,17 @@ const CalendarPage = () => {
             <SideBar>
                 <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)} />
             </SideBar>
-            <div className="w-5/6 p-5 h-full justify-end items-end">
-                <TemporaryForm />
-                <Calendar events={events} totalPages={schedule.length - 1} onChangePage={onChangeSchedulePage} />
+            <div className="w-5/6 flex flex-col p-5 h-full">
+                <div className="flex justify-end p-2">
+                    <Pagination
+                        onNext={() => onChangeSchedulePage(page + 1)}
+                        onPrevious={() => onChangeSchedulePage(page - 1)}
+                        isNextDisabled={page >= schedule.length - 1}
+                        isPreviousDisabled={page >= 0}
+                    />
+                </div>
+
+                <Calendar events={events} />
 
             </div>
         </div>

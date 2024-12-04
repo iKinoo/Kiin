@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 
-interface FormData {
+export interface FormData {
   color: string;
   name: string;
   description: string;
@@ -10,7 +10,7 @@ interface FormData {
   endTime: string; // Formato "HH:mm"
 }
 
-const TemporaryForm: React.FC = () => {
+const TemporaryForm: React.FC<{onSubmit: (formData: FormData) => void}> = ({onSubmit}) => {
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad
   const [formData, setFormData] = useState<FormData>({
     color: "",
@@ -22,7 +22,6 @@ const TemporaryForm: React.FC = () => {
   const formRef = useRef<HTMLDivElement>(null); // Referencia para detectar clics fuera del formulario
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Cerrar el formulario si se hace clic fuera de él
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const willDismiss = formRef.current && 
@@ -40,7 +39,6 @@ const TemporaryForm: React.FC = () => {
     };
   }, []);
 
-  // Manejar los cambios en los campos del formulario
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -51,11 +49,10 @@ const TemporaryForm: React.FC = () => {
     }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData); // Acción con los datos del formulario
-    setIsOpen(false); // Cierra el formulario después del envío
+    onSubmit(formData); 
+    setIsOpen(false);
   };
 
   const formLabel = (value: string) => {

@@ -14,7 +14,7 @@ const Pagination: React.FC<PaginationProps> = ({
   isNextDisabled = false,
 }) => {
   return (
-    <div style={{width:'100px'}} className="flex justify-center items-center bg-gray-800 py-2 px-4 rounded-lg">
+    <div className="flex justify-center items-center bg-gray-800 px-0 rounded-lg">
       <button
         className={`text-white text-xl px-4 py-2 rounded-md ${
           isPreviousDisabled ? "text-gray-500 cursor-not-allowed" : "hover:bg-gray-700"
