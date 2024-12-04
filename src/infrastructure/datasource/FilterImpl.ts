@@ -25,27 +25,24 @@ export class FilterImpl implements Filter {
 
   //union filter
   async filter(
-    
+
   ) {
     const coursesDataSource = new CoursesRepositoryImpl(new CoursesCsvDatasource());
     const allCourses: Course[] = await coursesDataSource.getAll();
     const filtered: Course[] = [];
-    for (const course of allCourses) {
-      if (
-        this.matchDegree(course, this._degrees) ||
-        this.matchSemester(course, this._semesters) ||
-        this.matchProfessor(course, this._professors) ||
-        this.matchSubjects(course, this._subjects)
-      ) {
-        filtered.push(course);
-      }
-    }
+
+    const degreeFiltered = this.filterByDegree(allCourses, this._degrees[0]);
+    const semesterFiltered = this.filterBySemester(degreeFiltered, this._semesters[0]);
+
+    filtered.push(...semesterFiltered);
+
+
     return filtered;
   }
 
   matchDegree(course: Course, degrees: string[]): boolean {
     for (const degree of degrees) {
-      if (course.subject.degree === degree) {
+      if (course.subject.degrees.includes(degree)) {
         return true;
       }
     }
@@ -91,6 +88,15 @@ export class FilterImpl implements Filter {
     return list.filter((course) => course.professor.fullName() == value);
   }
   filterBySubjects(list: Course[], value: string) {
-    return list.filter((course) => course.subject.name == value);
+    return list.filter((course) => {
+      const degrees = course.subject.degrees;
+      return degrees.includes(value);
+    });
+  }
+  filterBySemester(list: Course[], value: number) {
+    return list.filter((course) => course.subject.semestre == value);
+  }
+  filterByDegree(list: Course[], value: string) {
+    return list.filter((course) => course.subject.degrees.includes(value));
   }
 }

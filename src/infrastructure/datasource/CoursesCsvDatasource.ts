@@ -38,7 +38,7 @@ export class CoursesCsvDatasource implements CoursesDataSource {
             ));
 
             const subject = subjects.find(subject => (
-                subject.name === result.Asignatura
+                subject.name === result.Asignatura && subject.degree === result.PE
             ));
 
             const sessions = this.getSessions(result);
