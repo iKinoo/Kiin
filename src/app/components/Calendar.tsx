@@ -3,16 +3,28 @@
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Pagination from './Pagination';
 
 interface CalendarProps {
     events: { color: string; title: string; start: string; end: string; }[]
+    totalPages: number
+    onChangePage: (page: number) => void
 }
-const Calendar: React.FC<CalendarProps> = ({ events }) => {
-    
 
+
+const Calendar: React.FC<CalendarProps> = ({ events, totalPages, onChangePage }) => {
+    const [page, setPage] = useState(0);
+
+    const onChange = (page: number) => {
+        setPage(page)
+        onChangePage(page)
+    }
     return (
-        <FullCalendar
+        <div >
+            <Pagination onNext={() => {onChange(page + 1)}} onPrevious={() => {onChange(page - 1)}} isNextDisabled={page == totalPages} isPreviousDisabled={page == 0} />
+            <FullCalendar
+            headerToolbar={false}
             dayHeaderFormat={{ weekday: 'long' }}
             locale={"es-MX"}
             slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
@@ -29,6 +41,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
                 events
             }
         />
+        </div>
     );
 }
 
