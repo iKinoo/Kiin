@@ -21,7 +21,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
             allDaySlot={false}
             slotMinTime="07:00:00"
             slotMaxTime={"22:00:00"}
-            height={500}
+
             hiddenDays={[0, 6]}
             plugins={[timeGridPlugin]}
             initialView="timeGridWeek"

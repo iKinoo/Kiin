@@ -1,6 +1,6 @@
 "use client"
 import Category from '@/domain/entities/Category'
-import React, { useEffect } from 'react'
+import React from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 
 interface FilterSelectorProps {

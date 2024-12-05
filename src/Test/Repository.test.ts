@@ -3,9 +3,6 @@ import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDa
 import { ProfessorsRepositoryImpl } from "@/infrastructure/repositories/ProfessorsRepositoryImpl";
 import { SubjectsRepositoryImpl } from "@/infrastructure/repositories/SubjectsRepositoryImpl";
 import fetchMock from 'jest-fetch-mock';
-import course from '../pages/api/courses'; // Ajusta la ruta según tu estructura
-import { createMocks } from 'node-mocks-http';
-import path from 'path';
 jest.mock('node-fetch');
 jest.mock('path');
 describe('Repository Tests', () => {

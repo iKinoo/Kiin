@@ -25,7 +25,7 @@ describe('Filtration Tests', () => {
       const professors = await professor.getAll(); 
     
       for(const professor of professors){
-        let validName = professor.fullName();
+        const validName = professor.fullName();
         const filteredCourses = filter.filterByProfessor(courses, validName);
         for(const course of filteredCourses){
           expect(course.professor.fullName()).toBe(validName);
@@ -38,7 +38,7 @@ describe('Filtration Tests', () => {
       const modalities = ["Presencial", "Acompañamiento", "Ordinario"];
     
       for(const modality of modalities){
-        let validName = modality;
+        const validName = modality;
         const filteredCourses = filter.filterBySubjects(courses, validName);
         for(const course of filteredCourses){
           expect(course.subject.name).toBe(validName);
@@ -51,7 +51,7 @@ describe('Filtration Tests', () => {
       const subjects = await subjectImporter.getAll(); 
     
       for(const subject of subjects){
-        let validName = subject.name;
+        const validName = subject.name;
         const filteredCourses = filter.filterBySubjects(courses, validName);
         for(const course of filteredCourses){
           expect(course.subject.name).toBe(validName);

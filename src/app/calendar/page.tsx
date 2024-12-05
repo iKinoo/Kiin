@@ -3,7 +3,6 @@ import React from "react";
 import FilterSelector from "../components/FilterSelector";
 import SideBar from '../components/SideBar'
 import Calendar from "../components/Calendar";
-import TemporaryForm, { FormData } from "../components/TemporaryForm";
 import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
 import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
@@ -11,7 +10,6 @@ import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
-import { Subject } from "@/domain/entities/Subject";
 import Pagination from "../components/Pagination";
 
 
@@ -25,10 +23,10 @@ const CalendarPage = () => {
     const mapCategories = async () => {
         const data = new CoursesCsvDatasource();
         const courses = await data.getAll();
-        var professorsFullName: string[] = []
-        var degress: string[] = []
-        var subjects: string[] = []
-        var semesters: number[] = []
+        const professorsFullName: string[] = []
+        const degress: string[] = []
+        const subjects: string[] = []
+        const semesters: number[] = []
         courses.forEach(course => {
             professorsFullName.push(course.professor.fullName())
             if (!degress.includes(course.subject.degree)) {
@@ -94,6 +92,7 @@ const CalendarPage = () => {
     const onChangeSchedulePage = (page: number) => {
         const eventsData = getEvents(schedule, page);
         setEvents(eventsData);
+        setPage(page);
     }
 
     const handleClickFilter = (category: Category, value: string) => {
@@ -107,10 +106,10 @@ const CalendarPage = () => {
     }
 
     const getNewFilter = (category: Category, value: string) => {
-        var professors = currentFilters.professors;
-        var degress = currentFilters.degrees
-        var semesters = currentFilters.semesters;
-        var subjects = currentFilters.subjects;
+        let professors = currentFilters.professors;
+        let degress = currentFilters.degrees
+        let semesters = currentFilters.semesters;
+        let subjects = currentFilters.subjects;
 
         switch (category.title) {
             case 'Profesor':
@@ -162,6 +161,22 @@ const CalendarPage = () => {
 
                 <Calendar events={events} />
 
+            </div>
+            <div>
+            <h2 className="text-xl font-bold mb-4">Horario Actual</h2>
+                {schedule.length > 0 ? (
+                    schedule[page].map((course, index) => (
+                        <div key={index} className="mb-2">
+                            <h3 className="text-lg font-semibold">{course.subject.name}</h3>
+                            <p>Grupo: {course.group}</p>
+                            <p>Profesor: {course.professor.fullName()}</p>
+                            <p>Carrera: {course.subject.degree}</p>
+                            <p>Semestre: {course.subject.semestre}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No courses available</p>
+                )}
             </div>
         </div>
     );
