@@ -1,0 +1,6 @@
+Periodo,Tipo,Asignatura,GRUPO,PE,Semestre,Horas_a_la_semana,Modalidad,Modelo,Nombres,Apellidos,Lunes,Aula1,Martes,Aula2,Miercoles,Aula3,Jueves,Aula4,Viernes,Aula5,Estado
+ago-dic 24,Obligatoria,Álgebra Abstracta II,,M(2011),7,4.5,Ordinario,MEyA,Jesús Efrén,Pérez Terrazas,15:00 - 16:30,C2,15:00 - 16:30,C2,,,15:00 - 16:30,C2,,,
+,,Matemáticas,,M(2011),7,4.5,Ordinario,MEyA,María,Lopez,10:00 - 11:30,C3,10:00 - 11:30,C3,,,10:00 - 11:30,C3,,,
+ene-jun 25,Obligatoria,Física,,M(2011),6,3,Ordinario,MEyA,Juan,Cruz,08:00 - 09:30,C1,08:00 - 09:30,C1,,,08:00 - 09:30,C1,,,
+,,Química,,M(2011),5,2.5,Ordinario,MEyA,Ana,Martinez,12:00 - 13:30,C4,12:00 - 13:30,C4,,,12:00 - 13:30,C4,,,
+sep-dic 23,Optativa,Historia,,M(2011),4,3,Ordinario,MEyA,Carlos,Ramirez,14:00 - 15:30,C5,14:00 - 15:30,C5,,,14:00 - 15:30,C5,,,
