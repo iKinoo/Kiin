@@ -6,8 +6,6 @@ import Link from 'next/link';
 const HomeContent: React.FC = () => {
     const links = [
       { label: 'Inicio', route: '' },
-      { label: 'Contacto', route: 'contact' },
-      { label: 'Nosotros', route: 'about' }
     ]
     return (
       <div className="bg-white text-black min-h-screen">

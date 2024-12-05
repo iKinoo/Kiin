@@ -24,8 +24,10 @@ export class FilterImpl implements Filter {
 
     const degreeFiltered = this.filterByDegree(allCourses, this._model.degrees[0]);
     const semesterFiltered = this.filterBySemester(degreeFiltered, this._model.semesters[0]);
+    const professorFiltered = this.filterByProfessor(semesterFiltered, this._model.professors[0]);
+    const subjectFiltered = this.filterBySubjects(professorFiltered, this._model.subjects[0]);
 
-    filtered.push(...semesterFiltered);
+    filtered.push(...subjectFiltered);
     return filtered;
   }
 

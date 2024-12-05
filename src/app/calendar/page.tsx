@@ -57,7 +57,11 @@ const CalendarPage = () => {
         const filter = new FilterImpl(filters);
         const courses = await data.getCoursesByFilter(filter)
         if (courses.length === 0) {
-            setEvents([]);
+            const allCourses = await data.getAll();
+            const events = allCourses.flatMap((course) => {
+                return mapEvents(course);
+            })
+            setEvents(events);
             return;
         }
         const generator = new ScheduleGenerator();
@@ -69,22 +73,7 @@ const CalendarPage = () => {
 
     const getEvents = (schedule: Course[][], index: number) => {
         return schedule[index].flatMap((course) => {
-            const days = {
-                "Lunes": "02",
-                "Martes": "03",
-                "Miercoles": "04",
-                "Jueves": "05",
-                "Viernes": "06",
-            }
-            const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
-
-            return course.sessions.map((session) => ({
-                borderColor: 'black',
-                color: color,
-                title: course.subject.name,
-                start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
-                end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
-            }))
+            return mapEvents(course);
         }
         );
     }
@@ -155,7 +144,7 @@ const CalendarPage = () => {
                         onNext={() => onChangeSchedulePage(page + 1)}
                         onPrevious={() => onChangeSchedulePage(page - 1)}
                         isNextDisabled={page >= schedule.length - 1}
-                        isPreviousDisabled={page >= 0}
+                        isPreviousDisabled={page == 0}
                     />
                 </div>
 
@@ -181,5 +170,24 @@ const CalendarPage = () => {
         </div>
     );
 };
+function mapEvents(course: Course) {
+    const days = {
+        "Lunes": "02",
+        "Martes": "03",
+        "Miercoles": "04",
+        "Jueves": "05",
+        "Viernes": "06",
+    };
+    const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+    return course.sessions.map((session) => ({
+        borderColor: 'black',
+        color: color,
+        title: course.subject.name,
+        start: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.startHour.format('HH:mm:ss'),
+        end: '2024-12-' + days[session.day as keyof typeof days] + 'T' + session.endHour.format('HH:mm:ss'),
+    }));
+}
+
 
 export default CalendarPage;
