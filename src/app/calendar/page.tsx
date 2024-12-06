@@ -28,7 +28,9 @@ const CalendarPage = () => {
         const subjects: string[] = []
         const semesters: number[] = []
         courses.forEach(course => {
-            professorsFullName.push(course.professor.fullName())
+            if (!professorsFullName.includes(course.professor.fullName())) {
+                professorsFullName.push(course.professor.fullName())
+            }            
             if (!degress.includes(course.subject.degree)) {
                 degress.push(course.subject.degree)
             }
@@ -45,7 +47,7 @@ const CalendarPage = () => {
         setCategories([
             new Category('Carrera', degress),
             new Category('Semestre', semesters.sort((a, b) => a - b).map((val) => val.toString())),
-            new Category('Profesor', professorsFullName),
+            new Category('Profesor', professorsFullName.sort()),
             new Category('Materia', subjects),
         ])
 
@@ -139,7 +141,8 @@ const CalendarPage = () => {
                 <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)} />
             </SideBar>
             <div className="w-5/6 flex flex-col p-5 h-full">
-                <div className="flex justify-end p-2">
+                <div className="flex justify-between p-2">
+                    <p className={`${schedule.length == 0 ? 'opacity-0': ''}`}>Posibles horarios:{schedule.length}</p>
                     <Pagination
                         onNext={() => onChangeSchedulePage(page + 1)}
                         onPrevious={() => onChangeSchedulePage(page - 1)}
