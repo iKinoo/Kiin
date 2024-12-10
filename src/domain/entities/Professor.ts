@@ -1,12 +1,12 @@
 export class Professor {
+  private _id: number;
   private _names: string;
   private _lastNames: string;
 
-  constructor(names: string, lastNames: string);
-  constructor();
-  constructor(names?: string, lastNames?: string) {
-    this._names = names || "";
-    this._lastNames = lastNames || "";
+  constructor(id: number, names: string, lastNames: string) {
+    this._id = id;
+    this._names = names;
+    this._lastNames = lastNames;
   }
 
   get names(): string {
@@ -17,7 +17,11 @@ export class Professor {
     return this._lastNames;
   }
 
-  fullName(): string {
+  get id(): number {
+    return this._id;
+  }
+
+  get fullName(): string {
     return `${this._names} ${this._lastNames}`;
   }
 }

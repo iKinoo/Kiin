@@ -1,27 +1,28 @@
+import { Course } from "./Course";
+import { Degree } from "./Degree";
+import { SubjectType } from "./SubjectType";
 
 
 export class Subject {
 
-    private _type: string;
+    private _id: number;
     private _name: string;
+    private _semester: number;
+    private _degrees: Degree[] = [];
+    private _courses: Course[] = [];
+    private _type: SubjectType;
     private _model: string;
-    private _acceptModifications: boolean;
-    private _degree: string;
-    private _semestre: number;
 
-    constructor(name: string, model: string, acceptModifications: boolean, type: string, degree: string, semestre: number);
-    constructor();
 
-    constructor(name?: string, model?: string, acceptModifications?: boolean, type?: string, degree?: string, semestre?: number) {
-        this._type = type ?? '';
-        this._name = name ?? '';
-        this._model = model ?? '';
-        this._acceptModifications = acceptModifications ?? false;
-        this._degree = degree ?? '';
-        this._semestre = semestre ?? 0;
+    constructor(id: number, name: string, model: string, type: SubjectType, semester: number) {
+        this._id = id;
+        this._name = name;
+        this._semester = semester;
+        this._model = model;
+        this._type = type;
     }
 
-    get type(): string {
+    get type(): SubjectType {
         return this._type;
     }
     get name(): string {
@@ -30,17 +31,32 @@ export class Subject {
     get model(): string {
         return this._model;
     }
-    get acceptModifstringications(): boolean {
-        return this._acceptModifications;
-    }
-    get degree(): string {
-        return this._degree;
+    get degrees(): Degree[] {
+        return this._degrees;
     }
     get semestre(): number {
-        return this._semestre;
+        return this._semester;
+    }
+    get id(): number {
+        return this._id;
+    }
+    get courses(): Course[] {
+        return this._courses;
     }
 
-    get degrees(): string[] {
-        return this.degree.split('-').map((degree) => degree.trim());
+    set degrees(degrees: Degree[]) {
+        this._degrees = degrees;
+    }
+
+    set courses(courses: Course[]) {
+        this._courses = courses;
+    }
+
+    public addDegree(degree: Degree): void {
+        this._degrees.push(degree);
+    }
+
+    public addCourse(course: Course): void {
+        this._courses.push(course);
     }
 }

@@ -3,36 +3,32 @@ import { Subject } from "./Subject";
 import { Session } from "./Session";
 
 export class Course {
+  private _id: number;
   private _subject: Subject;
-  private _professor: Professor;
-  private _sessions: Session[];
   private _group: number;
+  private _professor: Professor;
+  private _sessions: Session[] = [];
   private _modality: string;
+  private _weekHours: number;
+  private _acceptModifications: boolean;
 
-  constructor();
-  constructor(
-    _subject?: Subject,
-    _professor?: Professor,
-    _sessions?: Session[],
-    _group?: number,
-    _modality?: string,
-    _color?: string
-  );
 
   constructor(
-    subject?: Subject,
-    professor?: Professor,
-    sessions?: Session[],
-    group?: number,
-    modality?: string,
-
+    id: number,
+    subject: Subject,
+    professor: Professor,
+    group: number,
+    modality: string,
+    weekHours: number,
+    acceptModifications: boolean
   ) {
-    this._subject = subject ?? new Subject();
-    this._professor = professor ?? new Professor();
-    this._sessions = sessions ?? [];
+    this._weekHours = weekHours;
+    this._acceptModifications = acceptModifications;
+    this._id = id;
+    this._subject = subject;
+    this._professor = professor;
     this._group = group ?? 0;
     this._modality = modality ?? "";
-
   }
 
   get modality() {
@@ -53,4 +49,25 @@ export class Course {
   public get group(): number {
     return this._group;
   }
+
+  public get id(): number {
+    return this._id;
+  }
+
+  public get weekHours(): number {
+    return this._weekHours;
+  }
+
+  public get acceptModifications(): boolean {
+    return this._acceptModifications;
+  }
+
+  public set sessions(sessions: Session[]) {
+    this._sessions = sessions;
+  }
+
+  public addSession(session: Session): void {
+    this._sessions.push(session);
+  }
+
 }
