@@ -1,6 +1,5 @@
 import { Course } from "./Course";
 import { Degree } from "./Degree";
-import { SubjectType } from "./SubjectType";
 
 
 export class Subject {
@@ -10,19 +9,23 @@ export class Subject {
     private _semester: number;
     private _degrees: Degree[] = [];
     private _courses: Course[] = [];
-    private _type: SubjectType;
+    private _type: string;
     private _model: string;
-
-
-    constructor(id: number, name: string, model: string, type: SubjectType, semester: number) {
+    private _degreeResume: string;
+    
+    constructor(id: number, name: string, degreeResume : string, model: string, type: string, semester: number) {
+        this._degreeResume = degreeResume;
         this._id = id;
         this._name = name;
         this._semester = semester;
         this._model = model;
         this._type = type;
     }
+    public get degreeResume(): string {
+        return this._degreeResume;
+    }
 
-    get type(): SubjectType {
+    get type(): string {
         return this._type;
     }
     get name(): string {
