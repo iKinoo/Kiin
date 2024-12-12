@@ -14,6 +14,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
     return (
         <div >
             <FullCalendar
+            scrollTime={"13:30:00"}
             headerToolbar={false}
             dayHeaderFormat={{ weekday: 'long' }}
             locale={"es-MX"}

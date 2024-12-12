@@ -175,11 +175,11 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
     const days = {
-        "Lunes": "02",
-        "Martes": "03",
-        "Miercoles": "04",
-        "Jueves": "05",
-        "Viernes": "06",
+        "Lunes": "09",
+        "Martes": "10",
+        "Miercoles": "11",
+        "Jueves": "12",
+        "Viernes": "13",
     };
     const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
