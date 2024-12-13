@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { CoursesModelDao } from "../data/CoursesModelDAO";
-import { CourseCSV } from "@/infrastructure/models/CourseModel";
 import { Subject } from "@/domain/entities/Subject";
 import { Degrees } from "../degrees/all";
 import { globalInitialLoad } from "../data/initialLoad";
 import { SubjectMapper } from "../data/SubjectMapper";
+import { CourseCSV } from "../data/CourseModel";
 
 export class Subjects {
 

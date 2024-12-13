@@ -1,9 +1,9 @@
 import { Course } from "@/domain/entities/Course";
-import { CourseCSV } from "@/infrastructure/models/CourseModel";
 import { Subjects } from "../subjects/all";
 import { Professors } from "../professors/all";
 import moment from "moment";
 import { Session } from "@/domain/entities/Session";
+import { CourseCSV } from "./CourseModel";
 
 export class CourseMapper {
 

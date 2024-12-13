@@ -1,6 +1,6 @@
-import { CourseCSV } from "@/infrastructure/models/CourseModel";
 import csvParser from "csv-parser";
 import fs from 'fs';
+import { CourseCSV } from "./CourseModel";
 
 
 export class CoursesModelDao {
