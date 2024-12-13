@@ -20,7 +20,10 @@ export async function globalInitialLoad() {
         subject.addCourse(course.id);
 
         const professor = course.professor;
-        subject.addProfessor(professor.id);
+
+        if (subject.professors.find(professorId => professorId === professor.id) === undefined) {
+            subject.addProfessor(professor.id);
+        }
     }
 
 

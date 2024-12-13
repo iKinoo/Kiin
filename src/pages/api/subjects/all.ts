@@ -4,6 +4,7 @@ import { CourseCSV } from "@/infrastructure/models/CourseModel";
 import { Subject } from "@/domain/entities/Subject";
 import { Degrees } from "../degrees/all";
 import { globalInitialLoad } from "../data/initialLoad";
+import { SubjectMapper } from "../data/SubjectMapper";
 
 export class Subjects {
 
@@ -25,8 +26,8 @@ export class Subjects {
         for (const result of results) {
             if (this.findSubject(result) === undefined) {
                 count++;
-                const semesters = result.Semestre.split(",").map((semester) => parseInt(semester));
-                this.subjects.push(new Subject(count, result.Asignatura, result.PE, result.Modelo, result.Tipo, semesters));
+
+                this.subjects.push(SubjectMapper.fromModelToEntity(count, result));
 
                 const degreesString = result.PE.split("-");
 
