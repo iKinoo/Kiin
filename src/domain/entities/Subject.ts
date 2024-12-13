@@ -1,5 +1,3 @@
-import { Course } from "./Course";
-import { Degree } from "./Degree";
 
 
 export class Subject {
@@ -7,8 +5,9 @@ export class Subject {
     private _id: number;
     private _name: string;
     private _semester: number;
-    private _degrees: Degree[] = [];
-    private _courses: Course[] = [];
+    private _degreesIds: number[] = [];
+    private _coursesIds: number[] = [];
+    private _professorsIds: number[] = [];
     private _type: string;
     private _model: string;
     private _degreeResume: string;
@@ -34,8 +33,8 @@ export class Subject {
     get model(): string {
         return this._model;
     }
-    get degrees(): Degree[] {
-        return this._degrees;
+    get degrees(): number[] {
+        return this._degreesIds;
     }
     get semestre(): number {
         return this._semester;
@@ -43,23 +42,27 @@ export class Subject {
     get id(): number {
         return this._id;
     }
-    get courses(): Course[] {
-        return this._courses;
+    get courses(): number[] {
+        return this._coursesIds;
     }
 
-    set degrees(degrees: Degree[]) {
-        this._degrees = degrees;
+    set degrees(degrees: number[]) {
+        this._degreesIds = degrees;
     }
 
-    set courses(courses: Course[]) {
-        this._courses = courses;
+    set courses(courses: number[]) {
+        this._coursesIds = courses;
     }
 
-    public addDegree(degree: Degree): void {
-        this._degrees.push(degree);
+    public addDegree(degree: number): void {
+        this._degreesIds.push(degree);
     }
 
-    public addCourse(course: Course): void {
-        this._courses.push(course);
+    public addCourse(course: number): void {
+        this._coursesIds.push(course);
+    }
+
+    public addProfessor(professor: number): void {
+        this._professorsIds.push(professor);
     }
 }

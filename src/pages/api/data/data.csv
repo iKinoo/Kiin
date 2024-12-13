@@ -250,7 +250,7 @@ ago-dic 24,Optativa,Introducción a la Teoría de Nudos,1,M(2011),2,4.5,Ordinari
 ago-dic 24,Optativa,Prácticas Profesionales,,M(2011),,1.5,Ordinario,MEYA,Óscar Iván,Muñoz Carballo,,,,,09:30 - 11:00,,,,,,12-jul
 ago-dic 24,Optativa,Servicio Social,,M(2011),,1.5,Ordinario,MEYA,Óscar Iván,Muñoz Carballo,,,,,18:00 - 19:30,Cubículo,,,,,12-jul
 ago-dic 24,Optativa,Topología Aplicada,1,M(2011),6,5,Ordinario,MEYA,José Carlos,Gómez Larrañaga,,,16:30 - 18:00,C2,,,18:00 - 19:30,C2,16:30 - 18:30,C2,
-ago-dic 24,Optativa,Razonamiento y Prueba en el Aprendizaje Matemático,,E(2013),5,4,Regular,MEFI,+Sosa Moguel Landy Elena,Aparicio Landa Eddie de Jesús,13:30 - 15:30,C9,,,,,17:30 - 19:30,C9,,,
+ago-dic 24,Optativa,Razonamiento y Prueba en el Aprendizaje Matemático,,E(2013),5,4,Regular,MEFI,Sosa Moguel Landy Elena,Aparicio Landa Eddie de Jesús,13:30 - 15:30,C9,,,,,17:30 - 19:30,C9,,,
 ago-dic 24,Optativa,Cadenas de Markov,3,M(2011),5,4.5,Ordinario,MEYA,Henry Gaspar,Pantí Trejo,13:30 - 15:00,C3,,,13:30 - 15:00,C3,13:30 - 15:00,C3,,,
 ago-dic 24,Optativa,Investigación de Operaciones II,,A(2014),5,4.5,Regular,MEFI,Eric Manuel,Sansores_Cárdenas,,,13:30 - 15:00,D4,13:30 - 15:00,D4,,,13:30 - 15:00,D4,
 ago-dic 24,Optativa,Modelos de Riesgo de Crédito,,A(2014),7,4.5,Regular,MEFI,Eduardo Camilo Carlos,Hernández García,,,,,17:30 - 19:30,CC3,15:30 - 17:30,CC3,,,
@@ -279,42 +279,42 @@ ago-dic 24,Obligatoria,Análisis Numérico Avanzado,,MCM,1,4,Regular,MEFI,Carlos
 ago-dic 24,Obligatoria,Introducción a la Estadística Matemática,,MCM,1,4,Regular,MEFI,Jorge Armando,Argáez Sosa,,,,,,,07:30 - 09:30,C5,12:00 - 14:00,C5,
 ago-dic 24,Obligatoria,Geometría y Topología,,MCM,1,4,Regular,MEFI,José Matías,Navarro Soza,,,09:30 - 11:30,C5,,,,,08:00 - 10:00,C5,
 ago-dic 24,Obligatoria,Seminario de Investigación,,MCM,1,4,Regular,MEFI,Eric José,Ávila Vales,15:30 - 16:30,Cubículo,15:30 - 16:30,Cubículo,15:30 - 16:30,Cubículo,15:30 - 16:30,Cubículo,,,11-jul
-ago-dic 24,Optativa,Espacios de Curvatura,1,MCM,3,4,Regular,MEFI,+Barrera Vargas Waldemar del Jesús,Solís Gamboa Didier Adán,11:00 - 13:00,Cubículo,08:00 - 10:00,Cubículo,,,,,,,Modificado
+ago-dic 24,Optativa,Espacios de Curvatura,1,MCM,3,4,Regular,MEFI,Barrera Vargas Waldemar del Jesús,Solís Gamboa Didier Adán,11:00 - 13:00,Cubículo,08:00 - 10:00,Cubículo,,,,,,,Modificado
 ago-dic 24,Optativa,Geometría Lorentziana,2,MCM,3,4,Regular,MEFI,Pablo Agustín,Vázquez Montejo,14:00 - 16:00,C5,,,,,,,14:30 - 16:30,C6,
 ago-dic 24,Optativa,Tópicos Selectos de Geometría Diferencial,3,MCM,3,4,Regular,MEFI,José Matías,Navarro Soza,,,15:00 - 17:00,C10,11:00 - 13:00,C4,,,,,
 ago-dic 24,Optativa,Métodos Estadísticos en Machine Learning,4,MCM,3,4,Regular,MEFI,José Luis,Batún Cutz,,,,,,,09:30 - 11:30,CC5,11:30 - 13:30,CC5,
-ago-dic 24,Optativa,Ecuaciones diferenciales parciales no lineales,5,MCM,3,4,Regular,MEFI,+Muñiz Pérez Omar,Brito Loeza Carlos Francisco,,,11:30 - 13:30,CC9,,,,,08:30 - 10:30,CC9,Modificado
+ago-dic 24,Optativa,Ecuaciones diferenciales parciales no lineales,5,MCM,3,4,Regular,MEFI,Muñiz Pérez Omar,Brito Loeza Carlos Francisco,,,11:30 - 13:30,CC9,,,,,08:30 - 10:30,CC9,Modificado
 ago-dic 24,Optativa,Ecuaciones diferenciales neuronales con retardo,6,MCM,3,4,Regular,MEFI,Ángel Gabriel,Estrella González,,,14:00 - 16:00,C3,13:30 - 15:30,H4,,,,,
 ago-dic 24,Optativa,Ecuaciones diferenciales neuronales no autónomas,7,MCM,3,4,Regular,MEFI,Ángel Gabriel,Estrella González,15:30 - 17:30,C3,11:30 - 13:30,C7,,,,,,,
 ago-dic 24,Optativa,Ecuaciones Diferenciales Fraccionales II,8,MCM,3,4,Regular,MEFI,Gerardo Emilio,García Almeida,,,08:00 - 10:00,Cubículo,,,12:30 - 14:30,Cubículo,,,Modificado
 ago-dic 24,Obligatoria,Seminario de Tesis II (Roberto Carlos Balcázar Araiza),1,MCM,3,4,Regular,MEFI,José Matías,Navarro Soza,,,12:00 - 14:00,,,,,,11:30 - 13:30,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Joe Alejandro Briceño Be),2,MCM,3,4,Regular,MEFI,+Batún Cutz José Luis,Brito Loeza Carlos Francisco,11:30 - 13:30,,14:00 - 16:00,,,,,,,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Ricardo Jesús Pérez Cervantes),3,MCM,3,4,Regular,MEFI,+Estrella González Ángel Gabriel,Brito Loeza Carlos Francisco,09:30 - 11:30,,,,,,,,12:30 - 14:30,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Gustavo Vargas de los Santos),4,MCM,3,4,Regular,MEFI,+Barrera Vargas Waldemar del Jesús,Solís Gamboa Didier Adán,,,,,07:30 - 09:30,Cubículo,,,12:00 - 14:00,Cubículo,Modificado
+ago-dic 24,Obligatoria,Seminario de Tesis II (Joe Alejandro Briceño Be),2,MCM,3,4,Regular,MEFI,Batún Cutz José Luis,Brito Loeza Carlos Francisco,11:30 - 13:30,,14:00 - 16:00,,,,,,,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Ricardo Jesús Pérez Cervantes),3,MCM,3,4,Regular,MEFI,Estrella González Ángel Gabriel,Brito Loeza Carlos Francisco,09:30 - 11:30,,,,,,,,12:30 - 14:30,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Gustavo Vargas de los Santos),4,MCM,3,4,Regular,MEFI,Barrera Vargas Waldemar del Jesús,Solís Gamboa Didier Adán,,,,,07:30 - 09:30,Cubículo,,,12:00 - 14:00,Cubículo,Modificado
 ago-dic 24,Obligatoria,Ciencia de datos,,MCC,1,4,Ordinario,MEFI,Anabel,Martín González,09:00 - 11:00,CC2,07:30 - 09:30,CC2,,,,,,,09-jul
 ago-dic 24,Obligatoria,Matemáticas para Ciencias de la Computación,,MCC,1,4,Ordinario,MEFI,Arturo,Espinosa Romero,11:30 - 13:30,C2,,,,,11:00 - 13:00,C2,,,
 ago-dic 24,Obligatoria,Teoría de la Computación,,MCC,1,4,Ordinario,MEFI,Francisco Alejandro,Madera Ramírez,,,,,11:00 - 13:00,C2,,,13:00 - 15:00,C2,
 ago-dic 24,Obligatoria,Programación Avanzada,,MCC,1,4,Ordinario,MEFI,Luis Fernando,Curi Quintal,,,,,,,09:00 - 11:00,CC7,09:00 - 11:00,C2,Modificado
 ago-dic 24,Obligatoria,Seminario de Investigación I,,MCC,1,4,Ordinario,MEFI,Raúl Antonio,Aguilar Vera,,,11:30 - 13:30,C2,,,,,11:00 - 13:00,C2,
-ago-dic 24,Optativa,Temas Selectos de Redes Neuronales Profundas,1,MCC,3,4,Ordinario,MEyA,+Uc Cetina Víctor,Martín González Anabel,,,11:30 - 13:30,CC4,,,,,11:00 - 13:00,CC4,
+ago-dic 24,Optativa,Temas Selectos de Redes Neuronales Profundas,1,MCC,3,4,Ordinario,MEyA,Uc Cetina Víctor,Martín González Anabel,,,11:30 - 13:30,CC4,,,,,11:00 - 13:00,CC4,
 ago-dic 24,Optativa,Modelos de Programación Paralela,2,MCC,3,4,Ordinario,MEyA,Luis Fernando,Curi Quintal,,,07:30 - 09:30,CC4,,,,,13:30 - 15:30,CC5,
 ago-dic 24,Optativa,Estimación Bayesiana,3,MCC,3,4,Ordinario,MEyA,Arturo,Espinosa Romero,,,,,11:30 - 13:30,CC2,,,12:00 - 14:00,CC2,
-ago-dic 24,Optativa,Dinámicas para el trabajo en equipo en Ingeniería de Software,4,MCC,3,4,Ordinario,MEyA,+Aguilar Vera Raúl Antonio,Aguileta Güemez Antonio Armando,,,08:00 - 10:00,C4,,,09:30 - 11:30,C7,,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Irving Báez Córdova),1,MCC,3,4,Ordinario,MEyA,+García Perera Leibny Paola,Martín González Anabel,,,,,14:00 - 16:00,,,,13:30 - 15:30,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Miguel Angel Canul Chim),2,MCC,3,4,Ordinario,MEyA,+Martín González Anabel,Soberanis Mukul Roger,12:00 - 14:00,,,,11:00 - 13:00,,,,,,
+ago-dic 24,Optativa,Dinámicas para el trabajo en equipo en Ingeniería de Software,4,MCC,3,4,Ordinario,MEyA,Aguilar Vera Raúl Antonio,Aguileta Güemez Antonio Armando,,,08:00 - 10:00,C4,,,09:30 - 11:30,C7,,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Irving Báez Córdova),1,MCC,3,4,Ordinario,MEyA,García Perera Leibny Paola,Martín González Anabel,,,,,14:00 - 16:00,,,,13:30 - 15:30,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Miguel Angel Canul Chim),2,MCC,3,4,Ordinario,MEyA,Martín González Anabel,Soberanis Mukul Roger,12:00 - 14:00,,,,11:00 - 13:00,,,,,,
 ago-dic 24,Obligatoria,Seminario de Tesis II (Suemi Andrea Castillo González),3,MCC,3,4,Ordinario,MEyA,Víctor Emanuel,Uc Cetina,11:30 - 13:30,,09:30 - 11:30,,,,,,,,
 ago-dic 24,Obligatoria,Seminario de Tesis II (Daniel Israel Ceballos Uc),4,MCC,3,4,Ordinario,MEyA,Arturo,Espinosa Romero,,,,,13:30 - 15:30,,13:00 - 15:00,,,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Naissa Maique Licea),5,MCC,3,4,Ordinario,MEyA,+Aguilar Vera Raúl Antonio,Aguileta Güemez Antonio Armando,11:30 - 13:30,,,,,,,,08:00 - 10:00,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Naissa Maique Licea),5,MCC,3,4,Ordinario,MEyA,Aguilar Vera Raúl Antonio,Aguileta Güemez Antonio Armando,11:30 - 13:30,,,,,,,,08:00 - 10:00,,
 ago-dic 24,Obligatoria,Seminario de Tesis II (Rubén Martínez González),6,MCC,3,4,Ordinario,MEyA,Arturo,Espinosa Romero,14:00 - 16:00,,,,,,09:00 - 11:00,,,,
-ago-dic 24,Obligatoria,Seminario de Tesis II (Naomi Alexandra Martínez Ku),7,MCC,3,4,Ordinario,MEyA,+Legarda Sáenz Ricardo,Brito Loeza Carlos Francisco,07:30 - 09:30,,,,,,11:00 - 13:00,,,,
+ago-dic 24,Obligatoria,Seminario de Tesis II (Naomi Alexandra Martínez Ku),7,MCC,3,4,Ordinario,MEyA,Legarda Sáenz Ricardo,Brito Loeza Carlos Francisco,07:30 - 09:30,,,,,,11:00 - 13:00,,,,
 ago-dic 24,Obligatoria,Seminario de Tesis II (Oscar Raúl Navarrete Parra),8,MCC,3,4,Ordinario,MEyA,Víctor Emanuel,Uc Cetina,,,,,,,07:30 - 09:30,,13:30 - 15:30,,
 ago-dic 24,Obligatoria,Difusión de la Investigación (Roxana Góngora Hernández),,DCM,8,448,Regular,MEFI,Carlos Francisco,Brito Loeza,,,10:30 - 11:30,,,,,,,,
-ago-dic 24,Obligatoria,Difusión de la Investigación (Samuel Enrique Chable Naal),,DCM,8,448,Regular,MEFI,+Navarro Soza José Matías,Solís Gamboa Didier Adán,,,,,,,15:30 - 16:30,,,,
+ago-dic 24,Obligatoria,Difusión de la Investigación (Samuel Enrique Chable Naal),,DCM,8,448,Regular,MEFI,Navarro Soza José Matías,Solís Gamboa Didier Adán,,,,,,,15:30 - 16:30,,,,
 ago-dic 24,Obligatoria,Documentación de la Investigación (Ricardo Javier Peón Escalante),,DCM,7,448,Regular,MEFI,Arturo,Espinosa Romero,18:00 - 19:00,,,,,,,,,,
 ago-dic 24,Obligatoria,Seminario de Investigación V (Reyes Manuel Peña Noh),,DCM,5,448,Regular,MEFI,Eric José,Ávila Vales,,,,,13:30 - 14:30,,,,,,
-ago-dic 24,Obligatoria,Seminario de Investigación IV (Xavier Sierra Canto),,DCM,4,448,Regular,MEFI,+Legarda Sáenz Ricardo,Brito Loeza Carlos Francisco,,,19:00 - 20:00,,,,,,,,
+ago-dic 24,Obligatoria,Seminario de Investigación IV (Xavier Sierra Canto),,DCM,4,448,Regular,MEFI,Legarda Sáenz Ricardo,Brito Loeza Carlos Francisco,,,19:00 - 20:00,,,,,,,,
 ago-dic 24,Obligatoria,Seminario de Investigación IV (Eduardo Camilo de los Reyes Hernández Mézquita),,DCM,4,448,Regular,MEFI,Javier Arturo,Díaz Vargas,12:00 - 13:00,,,,,,,,,,
-ago-dic 24,Obligatoria,Seminario de Investigación III (Carlos Felipe Ávila Cruz),,DCM,3,448,Regular,MEFI,+Navarro Soza José Matías,Solís Gamboa Didier Adán,18:30 - 19:30,,,,,,,,,,
+ago-dic 24,Obligatoria,Seminario de Investigación III (Carlos Felipe Ávila Cruz),,DCM,3,448,Regular,MEFI,Navarro Soza José Matías,Solís Gamboa Didier Adán,18:30 - 19:30,,,,,,,,,,
 ago-dic 24,Obligatoria,Álgebra Universitaria,,M(2024),1,4.5,Regular,MEFI,Maria Guadalupe,Ordaz Arjona,09:30 - 11:00,D1,09:00 - 10:30,D1,,,,,09:00 - 10:30,D1,
 ago-dic 24,Obligatoria,Lógica y Conjuntos,,M(2024),1,3,Regular,MEFI,Miguel Ángel,Can Ek,11:00 - 12:30,D1,,,,,,,10:30 - 12:00,D1,
 ago-dic 24,Obligatoria,Introducción al Cálculo,,M(2024),1,4.5,Regular,MEFI,Oscar Iván,Muñoz Carballo,12:30 - 14:00,D1,,,07:30 - 09:00,D1,09:00 - 10:30,D1,,,
