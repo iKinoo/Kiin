@@ -22,14 +22,14 @@ export class FilterImpl implements Filter {
     const allCourses: Course[] = await coursesDataSource.getAll();
     const filtered: Course[] = [];
 
-    const degreeFiltered = this.filterByDegree(allCourses, this._model.degrees[0]);
+    const degreeFiltered = this.filterByDegree(allCourses, parseInt(this._model.degrees[0]));
     const semesterFiltered = this.filterBySemester(degreeFiltered, this._model.semesters[0]);
-    
+
     filtered.push(...semesterFiltered);
     return filtered;
   }
 
-  matchDegree(course: Course, degrees: string[]): boolean {
+  matchDegree(course: Course, degrees: number[]): boolean {
     for (const degree of degrees) {
       if (course.subject.degrees.includes(degree)) {
         return true;
@@ -39,15 +39,13 @@ export class FilterImpl implements Filter {
   }
   matchSemester(course: Course, semesters: number[]): boolean {
     for (const semester of semesters) {
-      if (course.subject.semestre == semester) {
-        return true;
-      }
+      return course.subject.semestre.find((s) => s == semester) != undefined;
     }
     return false;
   }
   matchProfessor(course: Course, professors: string[]): boolean {
     for (const professor of professors) {
-      if (course.professor.fullName() == professor) {
+      if (course.professor.fullName == professor) {
         return true;
       }
     }
@@ -74,18 +72,20 @@ export class FilterImpl implements Filter {
     return list.filter((course) => course.subject[atributte] == value);
   }
   filterByProfessor(list: Course[], value: string) {
-    return list.filter((course) => course.professor.fullName() == value);
+    return list.filter((course) => course.professor.fullName == value);
   }
-  filterBySubjects(list: Course[], value: string) {
+  filterBySubjects(list: Course[], value: number) {
     return list.filter((course) => {
       const degrees = course.subject.degrees;
       return degrees.includes(value);
     });
   }
   filterBySemester(list: Course[], value: number) {
-    return list.filter((course) => course.subject.semestre == value);
+    return list.filter((course) =>
+      course.subject.semestre.find((s) => s == value) != undefined
+    );
   }
-  filterByDegree(list: Course[], value: string) {
+  filterByDegree(list: Course[], value: number) {
     return list.filter((course) => course.subject.degrees.includes(value));
   }
 }

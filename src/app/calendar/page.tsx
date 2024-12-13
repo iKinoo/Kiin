@@ -28,25 +28,31 @@ const CalendarPage = () => {
         const subjects: string[] = []
         const semesters: number[] = []
         courses.forEach(course => {
-            if (!professorsFullName.includes(course.professor.fullName())) {
-                professorsFullName.push(course.professor.fullName())
-            }            
-            if (!degress.includes(course.subject.degree)) {
-                degress.push(course.subject.degree)
+            if (!professorsFullName.includes(course.professor.fullName)) {
+                professorsFullName.push(course.professor.fullName)
             }
+
+            if (!degress.includes(course.subject.degreeResume)) {
+                degress.push(course.subject.degreeResume)
+            }
+
 
             if (!subjects.includes(course.subject.name)) {
                 subjects.push(course.subject.name)
             }
 
-            if (!semesters.includes(course.subject.semestre) && course.subject.semestre > 0) {
-                semesters.push(course.subject.semestre)
-            }
+            course.subject.semestre.forEach(semester => {
+                if (!semesters.includes(semester)) {
+                    semesters.push(semester)
+                }
+            })
+
+
 
         })
         setCategories([
             new Category('Carrera', degress),
-            new Category('Semestre', semesters.sort((a, b) => a - b).map((val) => val.toString())),
+            new Category('Semestre', semesters.sort((a, b) => a - b).map((val) => val?.toString())),
             new Category('Profesor', professorsFullName.sort()),
             new Category('Materia', subjects),
         ])
@@ -142,7 +148,7 @@ const CalendarPage = () => {
             </SideBar>
             <div className="w-5/6 flex flex-col p-5 h-full">
                 <div className="flex justify-between p-2">
-                    <p className={`${schedule.length == 0 ? 'opacity-0': ''}`}>Posibles horarios:{schedule.length}</p>
+                    <p className={`${schedule.length == 0 ? 'opacity-0' : ''}`}>Posibles horarios:{schedule.length}</p>
                     <Pagination
                         onNext={() => onChangeSchedulePage(page + 1)}
                         onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -155,14 +161,14 @@ const CalendarPage = () => {
 
             </div>
             <div>
-            <h2 className="text-xl font-bold mb-4">Horario Actual</h2>
+                <h2 className="text-xl font-bold mb-4">Horario Actual</h2>
                 {schedule.length > 0 ? (
                     schedule[page].map((course, index) => (
                         <div key={index} className="mb-2">
                             <h3 className="text-lg font-semibold">{course.subject.name}</h3>
                             <p>Grupo: {course.group}</p>
-                            <p>Profesor: {course.professor.fullName()}</p>
-                            <p>Carrera: {course.subject.degree}</p>
+                            <p>Profesor: {course.professor.fullName}</p>
+                            <p>Carrera: {course.subject.degrees}</p>
                             <p>Semestre: {course.subject.semestre}</p>
                         </div>
                     ))
