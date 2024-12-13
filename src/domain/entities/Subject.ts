@@ -4,7 +4,7 @@ export class Subject {
 
     private _id: number;
     private _name: string;
-    private _semester: number;
+    private _semesters: number[] = [];
     private _degreesIds: number[] = [];
     private _coursesIds: number[] = [];
     private _professorsIds: number[] = [];
@@ -12,11 +12,11 @@ export class Subject {
     private _model: string;
     private _degreeResume: string;
     
-    constructor(id: number, name: string, degreeResume : string, model: string, type: string, semester: number) {
+    constructor(id: number, name: string, degreeResume : string, model: string, type: string, semesters: number[]) {
         this._degreeResume = degreeResume;
         this._id = id;
         this._name = name;
-        this._semester = semester;
+        this._semesters = semesters;
         this._model = model;
         this._type = type;
     }
@@ -36,8 +36,8 @@ export class Subject {
     get degrees(): number[] {
         return this._degreesIds;
     }
-    get semestre(): number {
-        return this._semester;
+    get semestre(): number[] {
+        return this._semesters;
     }
     get id(): number {
         return this._id;

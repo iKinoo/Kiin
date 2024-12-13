@@ -25,7 +25,8 @@ export class Subjects {
         for (const result of results) {
             if (this.findSubject(result) === undefined) {
                 count++;
-                this.subjects.push(new Subject(count, result.Asignatura, result.PE, result.Modelo, result.Tipo, parseInt(result.Semestre)));
+                const semesters = result.Semestre.split(",").map((semester) => parseInt(semester));
+                this.subjects.push(new Subject(count, result.Asignatura, result.PE, result.Modelo, result.Tipo, semesters));
 
                 const degreesString = result.PE.split("-");
 
