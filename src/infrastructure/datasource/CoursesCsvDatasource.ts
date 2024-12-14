@@ -9,7 +9,7 @@ export class CoursesCsvDatasource implements CoursesDataSource {
     private courses: Course[] = [];
 
 
-    async getAll(): Promise<Course[]> {
+    async getAllCourses(): Promise<Course[]> {
 
         if (this.courses.length > 0) {
             return this.courses;
@@ -23,7 +23,7 @@ export class CoursesCsvDatasource implements CoursesDataSource {
     }
 
     async getCoursesByFilter(filter: Filter): Promise<Course[]> {
-        return filter.filter(await this.getAll());
+        return filter.filter(await this.getAllCourses());
     }
 
 
