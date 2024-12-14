@@ -16,7 +16,7 @@ jest.mock('node-fetch');
       const modalities = ["Jorge Ricardo Gómez Montalvo"];
       beforeEach( async () =>{
           fetchMock.resetMocks();
-          courses = await new CoursesCsvDatasource().getAll();
+          courses = await new CoursesCsvDatasource().getAllCourses();
           filter = new FilterImpl(new FilterModel([""],[],[""],[""]));
           courses = filter.filterByProfessor(courses, modalities[0]);
           generator = new ScheduleGenerator();
