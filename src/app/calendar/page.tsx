@@ -11,6 +11,9 @@ import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
+import NavBar from "../components/NavBar";
+import { ScheduleItem } from "../components/Schedule";
+
 
 
 const CalendarPage = () => {
@@ -138,43 +141,70 @@ const CalendarPage = () => {
     useEffect(() => {
         mapCategories();
     }, []);
+    
 
+    const links = [
+        { label: 'Inicio', route: '' },
+        { label: 'Contacto', route: '' },
+        { label: 'Motivacion', route: '' }
+      ]
+
+
+    const schedules = [
+        {title: 'Horario A'},
+        {title: 'Horario B'},
+        {title: 'Horario C'},
+        {title: 'Horario D'},
+        {title: 'Horario E'},
+        {title: 'Horario F'}
+
+    ]  
     return (
         <div
-            className="bg-white text-black h-full flex flex-row"
+            className="bg-white text-black h-full"
         >
-            <SideBar>
-                <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)} />
-            </SideBar>
-            <div className="w-5/6 flex flex-col p-5 h-full">
-                <div className="flex justify-between p-2">
-                    <p className={`${schedule.length == 0 ? 'opacity-0' : ''}`}>Posibles horarios:{schedule.length}</p>
-                    <Pagination
-                        onNext={() => onChangeSchedulePage(page + 1)}
-                        onPrevious={() => onChangeSchedulePage(page - 1)}
-                        isNextDisabled={page >= schedule.length - 1}
-                        isPreviousDisabled={page == 0}
-                    />
+            <NavBar links={links} />
+            <div className="flex flex-row">
+                <SideBar>
+                    <FilterSelector categories={categories} onClick={handleClickFilter} onSubmit={() => filterCourses(currentFilters)} />
+                </SideBar>
+                <div className="w-4/6 flex flex-col p-5 h-full">
+                    <div className="flex justify-between p-2">
+                        <p className={`${schedule.length == 0 ? 'opacity-0' : ''}`}>Posibles horarios:{schedule.length}</p>
+                        <Pagination
+                            onNext={() => onChangeSchedulePage(page + 1)}
+                            onPrevious={() => onChangeSchedulePage(page - 1)}
+                            isNextDisabled={page >= schedule.length - 1}
+                            isPreviousDisabled={page == 0}
+                        />
+                    </div>
+
+                    <Calendar events={events} />
+
                 </div>
-
-                <Calendar events={events} />
-
-            </div>
-            <div>
-                <h2 className="text-xl font-bold mb-4">Horario Actual</h2>
-                {schedule.length > 0 ? (
-                    schedule[page].map((course, index) => (
-                        <div key={index} className="mb-2">
-                            <h3 className="text-lg font-semibold">{course.subject.name}</h3>
-                            <p>Grupo: {course.group}</p>
-                            <p>Profesor: {course.professor.fullName}</p>
-                            <p>Carrera: {course.subject.degrees}</p>
-                            <p>Semestre: {course.subject.semestre}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No courses available</p>
-                )}
+                <div className="shadow-2xl rounded-xl border-gray-700 border-2 w-1/6 my-6 mr-4 flex flex-col justify-start items-center py-4">
+                    <h2 className="text-xl font-bold">Horario Actual</h2>
+                    
+                    <ul className="mt-10 w-full flex flex-col justify-between items-center flex-wrap gap-3 px-4">
+                        {schedules.map((schedule, index) => (
+                            <ScheduleItem key={index} title={schedule.title} />
+                        ))}
+                    </ul>
+                    
+                    {schedule.length > 0 ? (
+                        schedule[page].map((course, index) => (
+                            <div key={index} className="mb-2">
+                                <h3 className="text-lg font-semibold">{course.subject.name}</h3>
+                                <p>Grupo: {course.group}</p>
+                                <p>Profesor: {course.professor.fullName}</p>
+                                <p>Carrera: {course.subject.degrees}</p>
+                                <p>Semestre: {course.subject.semestre}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="my-6">Sin cursos disponibles</p>
+                    )}
+                </div>
             </div>
         </div>
     );

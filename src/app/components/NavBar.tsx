@@ -37,7 +37,7 @@ const AppLogo = () => {
 const NavBar: React.FC<NavBarProps> = ({ links }) => {
     return (
 
-        <nav className='bg-white border-gray-200 dark:bg-gray-900'>
+        <nav className='bg-white border-gra-700 dark:bg-gray-900'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
                 <AppLogo />
                 <div className="hidden w-full md:block md:w-auto" id="navbar-default">
