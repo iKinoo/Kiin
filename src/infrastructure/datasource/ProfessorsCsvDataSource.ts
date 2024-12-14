@@ -1,31 +1,16 @@
 import { ProfessorsDataSource } from "@/domain/datasources/ProfessorsDataSource";
 import { Professor } from "@/domain/entities/Professor";
-import { CoursesModelDao } from "./data/CoursesModelDAO";
-import { CourseCSV } from "../models/CourseModel";
+import { Mapper } from "../mappers/Mapper";
 
 export class ProfessorsCsvDataSource implements ProfessorsDataSource {
   private professors: Professor[] = [];
 
   async getAll(): Promise<Professor[]> {
-    const results = await CoursesModelDao.getCourses();
+    const response = await fetch('/api/professors/all');
 
-    for (const result of results) {
-      if (this.findProfessor(result)) {
-        this.professors.push(new Professor(result.Nombres, result.Apellidos));
-      }
-    }
-
+    this.professors = Mapper.toProfessors(await response.json());
+    console.log(this.professors);
     return this.professors;
-  }
 
-  // Todo: make this more legible
-  private findProfessor(result: CourseCSV): boolean {
-    return (
-      this.professors.find(
-        (professor) =>
-          professor.names === result.Nombres &&
-          professor.lastNames === result.Apellidos
-      ) === undefined
-    );
   }
 }

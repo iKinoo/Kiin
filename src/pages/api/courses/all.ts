@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { CoursesModelDao } from "../data/CoursesModelDAO";
 import { Course } from "@/domain/entities/Course";
-import { Subjects } from "../subjects/all";
-import { Professors } from "../professors/all";
 import { globalInitialLoad } from "../data/initialLoad";
+import { CourseMapper } from "../data/CourseMapper";
 
 
 export class Courses {
@@ -22,18 +21,14 @@ export class Courses {
         let count = 0;
 
         for (const result of results) {
-            const subject = Subjects.findSubject(result);
-            const professor = Professors.findProfessor(result);
+            count++;
+            this.courses.push(CourseMapper.fromModelToEntity(count, result));
 
-            if (subject && professor) {
-                count++;
-                this.courses.push(new Course(count, subject, professor, parseInt(result.GRUPO), result.Modalidad, parseFloat(result.Horas_a_la_semana), false));
-            }
         }
     }
 
     public static async getAll() {
-        
+
         if (this._courses.length === 0) {
             await globalInitialLoad();
         }

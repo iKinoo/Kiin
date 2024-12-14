@@ -65,4 +65,8 @@ export class Subject {
     public addProfessor(professor: number): void {
         this._professorsIds.push(professor);
     }
+
+    public get professors(): number[] {
+        return this._professorsIds;
+    }
 }

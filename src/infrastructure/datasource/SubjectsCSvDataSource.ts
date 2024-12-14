@@ -1,6 +1,6 @@
-import { CoursesModelDao } from "./data/CoursesModelDAO";
 import { SubjectsDatasource } from "@/domain/datasources/SubjectsDataSource";
 import { Subject } from "@/domain/entities/Subject";
+import { Mapper } from "../mappers/Mapper";
 
 export class SubjectsCsvDataSource implements SubjectsDatasource {
     private subjects: Subject[] = [];
@@ -12,14 +12,9 @@ export class SubjectsCsvDataSource implements SubjectsDatasource {
             return this.subjects;
         }
 
-        const results = await CoursesModelDao.getCourses();
-        for (const result of results) {
+        const response = await fetch('/api/subjects/all');
+        this.subjects = Mapper.toSubjects(await response.json());
 
-            if (this.subjects.find(subject => ((subject.name === result.Asignatura) && (subject.degree === result.PE))) === undefined) {
-                this.subjects.push(new Subject(result.Asignatura, result.Modelo, true, result.Tipo, result.PE, parseInt(result.Semestre)));
-            }
-
-        }
         return this.subjects;
     }
 

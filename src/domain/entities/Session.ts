@@ -1,21 +1,20 @@
 import { Moment } from "moment";
-import { Day } from "./Day";
 
 export class Session {
 
-    private _day: Day;
+    private _day: string;
     private _startHour: Moment;
     private _endHour: Moment;
     private _room: string;
 
-    constructor(day: Day, startHour: Moment, endHour: Moment, room: string) {
+    constructor(day: string, startHour: Moment, endHour: Moment, room: string) {
         this._day = day;
         this._startHour = startHour;
         this._endHour = endHour;
         this._room = room;
     }
 
-    get day(): Day {
+    get day(): string {
         return this._day;
     }
     get startHour(): Moment {
