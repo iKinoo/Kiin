@@ -1,3 +1,9 @@
+import CourseFilter from "@/domain/entities/CourseFilter";
+import DegreeFilter from "@/domain/entities/DegreeFilter";
+import ProfessorFilter from "@/domain/entities/ProfessorFilter";
+import SemesterFilter from "@/domain/entities/SemesterFilter";
+import SubjectFilter from "@/domain/entities/SubjectFilter";
+
 class FilterModel {
     private _degrees: string[];
     private _semesters: number[];
@@ -30,6 +36,15 @@ class FilterModel {
 
     get subjects(): string[] {
         return this._subjects;
+    }
+
+    getFilters(): CourseFilter[] {
+        const filters: CourseFilter[] = [];
+        filters.push(new DegreeFilter(this._degrees));
+        filters.push(new SemesterFilter(this._semesters));
+        filters.push(new ProfessorFilter(this._professors));
+        filters.push(new SubjectFilter(this._subjects));
+        return filters;
     }
 
 }

@@ -12,7 +12,6 @@ import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
 
-
 const CalendarPage = () => {
     const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
     const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel([], [], [], []));
@@ -60,6 +59,7 @@ const CalendarPage = () => {
     }
 
     const filterCourses = async (filters: FilterModel) => {
+        setPage(0)
         const data = new CoursesCsvDatasource();
 
         const filter = new FilterImpl(filters);
@@ -80,6 +80,9 @@ const CalendarPage = () => {
     }
 
     const getEvents = (schedule: Course[][], index: number) => {
+        if (schedule.length === 0) {
+            return [];
+        }
         return schedule[index].flatMap((course) => {
             return mapEvents(course);
         }
@@ -99,7 +102,6 @@ const CalendarPage = () => {
 
         const newFilter = getNewFilter(category, value);
         setCurrentFilters(newFilter);
-        console.log(newFilter)
     }
 
     const getNewFilter = (category: Category, value: string) => {

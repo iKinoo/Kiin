@@ -50,9 +50,4 @@ export class ScheduleGenerator {
     
         return schedules;
     }
-    
-
-
-
-
 }
