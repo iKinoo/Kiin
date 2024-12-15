@@ -11,6 +11,10 @@ import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
+import ProfessorFilter from "@/domain/entities/ProfessorFilter";
+import SemesterFilter from "@/domain/entities/SemesterFilter";
+import DegreeFilter from "@/domain/entities/DegreeFilter";
+import SubjectFilter from "@/domain/entities/SubjectFilter";
 
 
 const CalendarPage = () => {
@@ -60,6 +64,7 @@ const CalendarPage = () => {
     }
 
     const filterCourses = async (filters: FilterModel) => {
+        setPage(0)
         const data = new CoursesCsvDatasource();
 
         const filter = new FilterImpl(filters);
@@ -73,13 +78,20 @@ const CalendarPage = () => {
             return;
         }
         const generator = new ScheduleGenerator();
-        const schedule = generator.generateSchedules(courses);
+        const professorFilter = new ProfessorFilter(filters.professors);
+        const semesterFilter = new SemesterFilter(filters.semesters);
+        const degreeFilter = new DegreeFilter(filters.degrees)
+        const subjectsFilter = new SubjectFilter(filters.subjects)
+        const schedule = generator.generateSchedules(courses, [degreeFilter, semesterFilter, professorFilter, subjectsFilter]);
         setSchedule(schedule);
         const eventsData = getEvents(schedule, 0);
         setEvents(eventsData);
     }
 
     const getEvents = (schedule: Course[][], index: number) => {
+        if (schedule.length === 0) {
+            return [];
+        }
         return schedule[index].flatMap((course) => {
             return mapEvents(course);
         }
