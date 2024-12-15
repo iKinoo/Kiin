@@ -9,6 +9,9 @@ export default class ProfessorFilter implements CourseFilter {
     }
 
     satify(course: Course): boolean {
+        if (this._professors.length === 0) {
+            return true;
+        }
         return this._professors.includes(course.professor.fullName);
     }
 
