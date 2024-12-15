@@ -1,5 +1,4 @@
 import { Course } from "./Course";
-import CourseFilter from "./CourseFiltert";
 import { Session } from "./Session";
 
 
@@ -20,48 +19,35 @@ export class ScheduleGenerator {
         return noOverlap;
     }
     courseCompatible(course1: Course, course2: Course) {
-        const isSameSubject = course1.subject === course2.subject
-        if (!isSameSubject) {
-            return false;
-        }
         for (const session1 of course1.sessions) {
             for (const session2 of course2.sessions) {
-                if (!this.sessionCompatible(session1, session2) ) {
+                if (!this.sessionCompatible(session1, session2)) {
                     return false;
                 }
             }
         }
         return true;
     }
-    
-    generateSchedules(courses: Course[], filters: CourseFilter[]) {
+
+    generateSchedules(courses: Course[]) {
         const schedules: Course[][] = [];
-        let bestSchedule: Course[] = [];
-
-        const backtrack = (currentSchedule: Course[], index: number) => {
-            if (index === courses.length) {
-                if (currentSchedule.length > bestSchedule.length) {
-                    bestSchedule = [...currentSchedule];
-                }
-                schedules.push([...currentSchedule]);
-                return;
+    
+        for (const course of courses) {
+            const compatibleSchedules = schedules.filter((schedule) =>
+                schedule.every(scheduledCourse => 
+                    this.courseCompatible(course, scheduledCourse) && 
+                    scheduledCourse.subject !== course.subject
+                )
+            );
+    
+            for (const compatibleSchedule of compatibleSchedules) {
+                schedules.push([...compatibleSchedule, course]);
             }
-            
-            backtrack(currentSchedule, index + 1);
-
-            const currentCourse = courses[index];
-            if (
-                currentSchedule.every((course) => this.courseCompatible(course, currentCourse)) &&
-                filters.every((filter) => filter.satify(currentCourse))
-            ) {
-                backtrack([...currentSchedule, currentCourse], index + 1);
-            }
+    
+            // Cada curso puede ser un horario por sí mismo
+            schedules.push([course]);
         }
-
-        backtrack([], 0);
-        schedules.splice(0, 1);
+    
         return schedules;
-        
     }
-
 }

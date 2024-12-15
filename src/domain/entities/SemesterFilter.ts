@@ -1,5 +1,5 @@
 import { Course } from "./Course";
-import CourseFilter from "./CourseFiltert";
+import CourseFilter from "./CourseFilter";
 
 export default class SemesterFilter implements CourseFilter {
     private _semesters: number[];

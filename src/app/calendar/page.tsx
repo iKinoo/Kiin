@@ -11,11 +11,6 @@ import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
-import ProfessorFilter from "@/domain/entities/ProfessorFilter";
-import SemesterFilter from "@/domain/entities/SemesterFilter";
-import DegreeFilter from "@/domain/entities/DegreeFilter";
-import SubjectFilter from "@/domain/entities/SubjectFilter";
-
 
 const CalendarPage = () => {
     const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
@@ -78,11 +73,7 @@ const CalendarPage = () => {
             return;
         }
         const generator = new ScheduleGenerator();
-        const professorFilter = new ProfessorFilter(filters.professors);
-        const semesterFilter = new SemesterFilter(filters.semesters);
-        const degreeFilter = new DegreeFilter(filters.degrees)
-        const subjectsFilter = new SubjectFilter(filters.subjects)
-        const schedule = generator.generateSchedules(courses, [degreeFilter, semesterFilter, professorFilter, subjectsFilter]);
+        const schedule = generator.generateSchedules(courses);
         setSchedule(schedule);
         const eventsData = getEvents(schedule, 0);
         setEvents(eventsData);
@@ -111,7 +102,6 @@ const CalendarPage = () => {
 
         const newFilter = getNewFilter(category, value);
         setCurrentFilters(newFilter);
-        console.log(newFilter)
     }
 
     const getNewFilter = (category: Category, value: string) => {
