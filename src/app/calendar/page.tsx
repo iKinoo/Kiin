@@ -12,13 +12,13 @@ import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
 
-
 const CalendarPage = () => {
     const [events, setEvents] = useState<{ color: string; title: string; start: string; end: string; }[]>([]);
     const [currentFilters, setCurrentFilters] = useState<FilterModel>(new FilterModel([], [], [], []));
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [schedule, setSchedule] = React.useState<Course[][]>([]);
     const [page, setPage] = useState(0);
+    const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
     const mapCategories = async () => {
         const data = new CoursesCsvDatasource();
@@ -60,18 +60,17 @@ const CalendarPage = () => {
     }
 
     const filterCourses = async (filters: FilterModel) => {
+        setPage(0)
         const data = new CoursesCsvDatasource();
-
         const filter = new FilterImpl(filters);
         const courses = await data.getCoursesByFilter(filter)
         if (courses.length === 0) {
-            const allCourses = await data.getAll();
-            const events = allCourses.flatMap((course) => {
-                return mapEvents(course);
-            })
-            setEvents(events);
+            setSchedule([]);
+            setEvents([]);
+            setIsFilterCoursesEmpty(true);
             return;
         }
+
         const generator = new ScheduleGenerator();
         const schedule = generator.generateSchedules(courses);
         setSchedule(schedule);
@@ -80,6 +79,9 @@ const CalendarPage = () => {
     }
 
     const getEvents = (schedule: Course[][], index: number) => {
+        if (schedule.length === 0) {
+            return [];
+        }
         return schedule[index].flatMap((course) => {
             return mapEvents(course);
         }
@@ -99,8 +101,14 @@ const CalendarPage = () => {
 
         const newFilter = getNewFilter(category, value);
         setCurrentFilters(newFilter);
-        console.log(newFilter)
     }
+
+    useEffect(() => {
+        if (isFilterCoursesEmpty) {
+            alert('No hay cursos disponibles con los filtros seleccionados')
+            setIsFilterCoursesEmpty(false)
+        }
+    }, [isFilterCoursesEmpty])
 
     const getNewFilter = (category: Category, value: string) => {
         let professors = currentFilters.professors;
@@ -181,11 +189,11 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
     const days = {
-        "Lunes": "09",
-        "Martes": "10",
-        "Miercoles": "11",
-        "Jueves": "12",
-        "Viernes": "13",
+        "Lunes": "16",
+        "Martes": "17",
+        "Miercoles": "18",
+        "Jueves": "19",
+        "Viernes": "20",
     };
     const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 

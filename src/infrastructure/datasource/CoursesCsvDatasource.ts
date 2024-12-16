@@ -18,7 +18,6 @@ export class CoursesCsvDatasource implements CoursesDataSource {
         const response = await fetch('/api/courses/all');
 
         this.courses = Mapper.toCourses(await response.json());
-        console.log(this.courses);
         return this.courses;
     }
 
