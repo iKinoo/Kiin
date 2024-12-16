@@ -3,27 +3,40 @@ import { Course } from "@/domain/entities/Course";
 import { Filter } from "@/domain/entities/Filter";
 import { Mapper } from "../mappers/Mapper";
 
+// Este archivo se encuentra del lado del cliente
 
 export class CoursesCsvDatasource implements CoursesDataSource {
+  private courses: Course[] = [];
 
-    private courses: Course[] = [];
-
-
-    async getAll(): Promise<Course[]> {
-
-        if (this.courses.length > 0) {
-            return this.courses;
-        }
-
-        const response = await fetch('/api/courses/all');
-
-        this.courses = Mapper.toCourses(await response.json());
-        return this.courses;
+  async getAll(): Promise<Course[]> {
+    if (this.courses.length > 0) {
+      return this.courses;
     }
 
-    async getCoursesByFilter(filter: Filter): Promise<Course[]> {
-        return filter.filter(await this.getAll());
+    const storedData = localStorage.getItem("course-info");
+
+    if (storedData) {
+      console.log("Recuperado de local storage");
+      const convertedCourses = Mapper.toCourses(JSON.parse(storedData));
+      const courses = convertedCourses as Course[];
+
+      this.courses = courses;
+    } else {
+      console.log("Recuperado de la API");
+      const response = await fetch("/api/courses/all");
+
+      const convertedCourses = Mapper.toCourses(await response.json());
+      const courses = convertedCourses as Course[];
+
+      this.courses = courses;
+
+      localStorage.setItem("course-info", JSON.stringify(this.courses));
     }
 
+    return this.courses;
+  }
 
+  async getCoursesByFilter(filter: Filter): Promise<Course[]> {
+    return filter.filter(await this.getAll());
+  }
 }

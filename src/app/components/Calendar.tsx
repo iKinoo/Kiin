@@ -12,24 +12,22 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ events }) => {
 
     return (
-        <div >
+        <div>
             <FullCalendar
             scrollTime={"13:30:00"}
             headerToolbar={false}
-            dayHeaderFormat={{ weekday: 'long' }}
+            dayHeaderFormat={{ weekday: "long" }}
             locale={"es-MX"}
             slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
             allDaySlot={false}
             slotMinTime="07:00:00"
             slotMaxTime={"22:00:00"}
-
             hiddenDays={[0, 6]}
             plugins={[timeGridPlugin]}
             initialView="timeGridWeek"
-            events={
-                events
-            }
-        />
+            events={events}
+            dayHeaderContent={(args) => args.date.toLocaleDateString('es-MX', { weekday: 'long' }).charAt(0).toUpperCase() + args.date.toLocaleDateString('es-MX', { weekday: 'long' }).slice(1)}
+            />
         </div>
     );
 }
