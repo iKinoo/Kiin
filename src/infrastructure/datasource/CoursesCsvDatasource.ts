@@ -16,13 +16,13 @@ export class CoursesCsvDatasource implements CoursesDataSource {
     const storedData = localStorage.getItem("course-info");
 
     if (storedData) {
-      console.log("Recuperado de local storage");
+      console.log("Cursos recuperados de local storage");
       const convertedCourses = Mapper.toCourses(JSON.parse(storedData));
       const courses = convertedCourses as Course[];
 
       this.courses = courses;
     } else {
-      console.log("Recuperado de la API");
+      console.log("Cursos recuperados de la API");
       const response = await fetch("/api/courses/all");
 
       const convertedCourses = Mapper.toCourses(await response.json());
