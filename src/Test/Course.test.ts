@@ -11,7 +11,7 @@ describe('Courses Tests', () => {
     beforeEach(async () => {
       fetchMock.resetMocks();
       courseImporter = new CoursesCsvDatasource();
-      courses = await courseImporter.getAllCourses();
+      courses = await courseImporter.getAll();
     });
 
     it('Number of Courses should be generated correctly', async () => {

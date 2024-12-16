@@ -17,7 +17,7 @@ describe('Filtration Tests', () => {
       fetchMock.resetMocks();
       filter = new FilterImpl(new FilterModel([""],[],[""],[""]));
       courseImporter = new CoursesCsvDatasource();
-      courses = await courseImporter.getAllCourses();
+      courses = await courseImporter.getAll();
     });
 
     it('Filter by professor', async () => {

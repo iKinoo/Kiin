@@ -10,7 +10,7 @@ describe('Session Tests', () => {
     beforeEach(async () => {
       fetchMock.resetMocks();
       courseImporter = new CoursesCsvDatasource();
-      courses = await courseImporter.getAllCourses();
+      courses = await courseImporter.getAll();
     });
     it('Session should have a start time', async () => { 
         for(const course of courses ){

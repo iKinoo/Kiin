@@ -11,7 +11,6 @@ import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/app/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
-import { Mapper } from "../../infrastructure/mappers/Mapper";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -24,12 +23,13 @@ const CalendarPage = () => {
   const [schedule, setSchedule] = React.useState<Course[][]>([]);
   const [page, setPage] = useState(0);
 
-  const mapCategories = async (courses: Course[]) => {
+  const mapCategories = async () => {
+    const data = new CoursesCsvDatasource();
+    const courses = await data.getAll();
     const professorsFullName: string[] = [];
     const degress: string[] = [];
     const subjects: string[] = [];
     const semesters: number[] = [];
-
     courses.forEach((course) => {
       if (!professorsFullName.includes(course.professor.fullName)) {
         professorsFullName.push(course.professor.fullName);
@@ -66,7 +66,7 @@ const CalendarPage = () => {
     const filter = new FilterImpl(filters);
     const courses = await data.getCoursesByFilter(filter);
     if (courses.length === 0) {
-      const allCourses = await data.getAllCourses();
+      const allCourses = await data.getAll();
       const events = allCourses.flatMap((course) => {
         return mapEvents(course);
       });
@@ -136,31 +136,15 @@ const CalendarPage = () => {
     return new FilterModel(degress, semesters, professors, subjects);
   };
 
-
-  const initializeCourses = async () => {
-    const storedData = localStorage.getItem("course-info");
-
-    if (storedData) {
-      const convertedCourses = Mapper.toCourses(JSON.parse(storedData));
-      const courses = convertedCourses as Course[];
-      mapCategories(courses);
-    } else {
-      const coursesCsvDatasource = new CoursesCsvDatasource();
-      const courses = (await coursesCsvDatasource.getAllCourses()) as Course[];
-
-      localStorage.setItem("course-info", JSON.stringify(courses));
-      mapCategories(courses);
-    }
-  };
-
   const handleShare = () => {
-    const shareText = "Mira la carga academica que me encontré: " + window.location.href;
+    const shareText =
+      "Mira la carga academica que me encontré: " + window.location.href;
     const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
     window.open(url, "_blank");
   };
 
   useEffect(() => {
-    initializeCourses();
+    mapCategories();
   }, []);
 
   return (
