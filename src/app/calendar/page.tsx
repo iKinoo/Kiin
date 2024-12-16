@@ -22,6 +22,7 @@ const CalendarPage = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Course[][]>([]);
   const [page, setPage] = useState(0);
+    const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
   const mapCategories = async () => {
     const data = new CoursesCsvDatasource();
@@ -60,27 +61,29 @@ const CalendarPage = () => {
     ]);
   };
 
-  const filterCourses = async (filters: FilterModel) => {
-    const data = new CoursesCsvDatasource();
+    const filterCourses = async (filters: FilterModel) => {
+        setPage(0)
+        const data = new CoursesCsvDatasource();
+        const filter = new FilterImpl(filters);
+        const courses = await data.getCoursesByFilter(filter)
+        if (courses.length === 0) {
+            setSchedule([]);
+            setEvents([]);
+            setIsFilterCoursesEmpty(true);
+            return;
+        }
 
-    const filter = new FilterImpl(filters);
-    const courses = await data.getCoursesByFilter(filter);
-    if (courses.length === 0) {
-      const allCourses = await data.getAll();
-      const events = allCourses.flatMap((course) => {
-        return mapEvents(course);
-      });
-      setEvents(events);
-      return;
+        const generator = new ScheduleGenerator();
+        const schedule = generator.generateSchedules(courses);
+        setSchedule(schedule);
+        const eventsData = getEvents(schedule, 0);
+        setEvents(eventsData);
     }
-    const generator = new ScheduleGenerator();
-    const schedule = generator.generateSchedules(courses);
-    setSchedule(schedule);
-    const eventsData = getEvents(schedule, 0);
-    setEvents(eventsData);
-  };
 
   const getEvents = (schedule: Course[][], index: number) => {
+        if (schedule.length === 0) {
+            return [];
+        }
     return schedule[index].flatMap((course) => {
       return mapEvents(course);
     });
@@ -99,10 +102,16 @@ const CalendarPage = () => {
       return;
     }
 
-    const newFilter = getNewFilter(category, value);
-    setCurrentFilters(newFilter);
-    console.log(newFilter);
-  };
+        const newFilter = getNewFilter(category, value);
+        setCurrentFilters(newFilter);
+    }
+
+    useEffect(() => {
+        if (isFilterCoursesEmpty) {
+            alert('No hay cursos disponibles con los filtros seleccionados')
+            setIsFilterCoursesEmpty(false)
+        }
+    }, [isFilterCoursesEmpty])
 
   const getNewFilter = (category: Category, value: string) => {
     let professors = currentFilters.professors;
@@ -197,14 +206,14 @@ const CalendarPage = () => {
   );
 };
 function mapEvents(course: Course) {
-  const days = {
-    Lunes: "09",
-    Martes: "10",
-    Miercoles: "11",
-    Jueves: "12",
-    Viernes: "13",
-  };
-  const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    const days = {
+        "Lunes": "16",
+        "Martes": "17",
+        "Miercoles": "18",
+        "Jueves": "19",
+        "Viernes": "20",
+    };
+    const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
   return course.sessions.map((session) => ({
     borderColor: "black",

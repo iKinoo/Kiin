@@ -36,7 +36,7 @@ export class ScheduleGenerator {
             const compatibleSchedules = schedules.filter((schedule) =>
                 schedule.every(scheduledCourse => 
                     this.courseCompatible(course, scheduledCourse) && 
-                    scheduledCourse.subject !== course.subject
+                    scheduledCourse.subject.id !== course.subject.id
                 )
             );
     
@@ -50,9 +50,4 @@ export class ScheduleGenerator {
     
         return schedules;
     }
-    
-
-
-
-
 }
