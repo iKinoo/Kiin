@@ -69,4 +69,8 @@ export class Subject {
     public get professors(): number[] {
         return this._professorsIds;
     }
+
+    public set professors(professors: number[]) {
+        this._professorsIds = professors;
+    }
 }
