@@ -1,17 +1,14 @@
 'use client'
 import React from 'react'
-import NavBar from './components/NavBar';
 import Link from 'next/link';
 import ParticlesComponent from './components/Particles';
 const HomeContent: React.FC = () => {
-  const links = [
-    { label: 'Inicio', route: '' },
-  ]
   return (
     <div className='bg-white text-black h-screen flex flex-col overflow-hidden'>
-      <ParticlesComponent/>
+      <div className='z-0 absolute inset-0'>
+        <ParticlesComponent/>
+      </div>
     <div className="z-10 relative">
-      <NavBar links={links}/>
       <div className="container mx-auto flex flex-1 flex-col-reverse lg:flex-row items-center justify-center min-h-screen gap-6 px-4">
         <div className="max-w-2xl text-center lg:text-left flex flex-col gap-10 items-center lg:items-start justify-center">
           <h1 className="text-5xl sm:text-5xl lg:text-7xl leading-tight">

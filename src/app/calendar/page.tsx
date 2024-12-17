@@ -174,7 +174,7 @@ const CalendarPage = () => {
           onSubmit={() => filterCourses(currentFilters)}
         />
       </SideBar>
-      <div className="w-5/6 flex flex-col p-5 h-full">
+      <div className="w-4/6 flex flex-col p-5 h-full">
         <div className="flex justify-between p-2">
           <p className={`${schedule.length == 0 ? "opacity-0" : ""}`}>
             Posibles horarios:{schedule.length}
@@ -195,11 +195,11 @@ const CalendarPage = () => {
           Compartir por WhatsApp
         </button>
       </div>
-      <div>
-        <h2 className="text-xl font-bold mb-4">Horario Actual</h2>
+      <div className="w-1/6 m-5 ml-0 px-4">
+        <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (
-            <div key={index} className="mb-2">
+            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300">
               <h3 className="text-lg font-semibold">{course.subject.name}</h3>
               <p>Grupo: {course.group}</p>
               <p>Profesor: {course.professor.fullName}</p>
@@ -208,7 +208,7 @@ const CalendarPage = () => {
             </div>
           ))
         ) : (
-          <p>No courses available</p>
+          <p className="text-center">Sin cursos disponibles</p>
         )}
       </div>
     </div>
