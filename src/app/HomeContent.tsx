@@ -29,7 +29,7 @@ const HomeContent: React.FC = () => {
         <div className="mx-16 flex justify-center lg:justify-start mt-6 lg:mx-0 xl:mx-0 2xl:mx-9">
           <img
             className="max-w-full h-auto sm:h-80 sm:w-auto lg:h-5/6 lg:w-auto object-cover"
-            src="img/banner.gif"
+            src="img/banner.png"
             alt="Img bienvenida kiin"
           />
         </div>
