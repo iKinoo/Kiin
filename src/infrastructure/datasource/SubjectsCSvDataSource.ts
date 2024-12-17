@@ -9,13 +9,30 @@ export class SubjectsCsvDataSource implements SubjectsDatasource {
     async getAll(): Promise<Subject[]> {
 
         if (this.subjects.length > 0) {
+              return this.subjects;
+            }
+        
+            const storedData = localStorage.getItem("subject-info");
+        
+            if (storedData) {
+              console.log("Asignaturas recuperados de local storage");
+              const convertedSubjects = Mapper.toSubjects(JSON.parse(storedData));
+              const subjects = convertedSubjects as Subject[];
+        
+              this.subjects = subjects;
+            } else {
+              console.log("Asignaturas recuperados de la API");
+              const response = await fetch("/api/subjects/all");
+        
+              const convertedSubjects = Mapper.toSubjects(await response.json());
+              const subjects = convertedSubjects as Subject[];
+        
+              this.subjects = subjects;
+        
+              localStorage.setItem("subject-info", JSON.stringify(this.subjects));
+            }
+        
             return this.subjects;
-        }
-
-        const response = await fetch('/api/subjects/all');
-        this.subjects = Mapper.toSubjects(await response.json());
-
-        return this.subjects;
     }
 
 

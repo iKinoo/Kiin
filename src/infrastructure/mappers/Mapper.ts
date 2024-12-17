@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Course } from "@/domain/entities/Course";
+import { Degree } from "@/domain/entities/Degree";
 import { Professor } from "@/domain/entities/Professor";
 import { Session } from "@/domain/entities/Session";
 import { Subject } from "@/domain/entities/Subject";
@@ -65,5 +66,21 @@ export class Mapper {
 
     static toCourses(jsonArray: any[]): Course[] {
         return jsonArray.map(json => Mapper.toCourse(json));
+    }
+
+    static toDegree(json: any): Degree {
+        const degree = new Degree(
+            json._id,
+            json._name,
+        );
+
+        degree.subjects = Mapper.toSubjects(json._subjects);
+
+        return degree
+        
+    }
+
+    static toDegrees(jsonArray: any[]): Degree[] {
+        return jsonArray.map(json => Mapper.toDegree(json));
     }
 }
