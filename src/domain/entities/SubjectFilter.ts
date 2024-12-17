@@ -13,6 +13,6 @@ export default class SubjectFilter implements CourseFilter {
         if (this._subjects.length === 0) {
             return true;
         }
-        return this._subjects.find(subject => subject.id === course.subject.id) !== undefined;
+        return this._subjects.some(subject => subject.id === course.subject.id);
     }
 }

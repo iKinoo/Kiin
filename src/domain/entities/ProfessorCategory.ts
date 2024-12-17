@@ -2,6 +2,7 @@ import Category from "./Category";
 import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
 import { Professor } from "./Professor";
+import ProfessorFilter from "./ProfessorFilter";
 
 export default class ProfessorCategory implements Category {
     title: string;
@@ -22,10 +23,10 @@ export default class ProfessorCategory implements Category {
     }
 
     get selectedValues(): Professor[] {
-        throw new Error("Method not implemented.");
+        return this._selectedValues;
     }
     toCourseFilter(): CourseFilter {
-        throw new Error("Method not implemented.");
+        return new ProfessorFilter(this._selectedValues);
     }
     onClick(id: number): void {
         const selectedProfessorIndex = this._selectedValues.findIndex(professor => professor.id === id);

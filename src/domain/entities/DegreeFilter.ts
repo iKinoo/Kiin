@@ -1,10 +1,11 @@
 import { Course } from "./Course";
 import CourseFilter from "./CourseFilter";
+import { Degree } from "./Degree";
 
 export default class DegreeFilter implements CourseFilter {
-    private _degrees: string[];
+    private _degrees: Degree[];
 
-    constructor(degrees: string[]) {
+    constructor(degrees: Degree[]) {
         this._degrees = degrees;
     }
 
@@ -12,6 +13,6 @@ export default class DegreeFilter implements CourseFilter {
         if (this._degrees.length === 0) {
             return true;
         }
-        return this._degrees.includes(course.subject.degreeResume);
+        return this._degrees.some(degree => course.subject.degrees.includes(degree.id));
     }
 }

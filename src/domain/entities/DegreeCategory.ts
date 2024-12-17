@@ -38,8 +38,7 @@ export default class DegreeCategory implements Category {
     }
 
     toCourseFilter(): CourseFilter {
-        throw new Error("Method not implemented.");
-        // return new DegreeFilter(this.title, this._selectedValues.map(degree => degree.id));
+        return new DegreeFilter(this._selectedValues);
     }
 
 }
