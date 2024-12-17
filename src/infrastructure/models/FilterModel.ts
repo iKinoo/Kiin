@@ -47,6 +47,10 @@ class FilterModel {
         return filters;
     }
 
+    isEmpty(): boolean {
+        return this._degrees.length === 0 && this._semesters.length === 0 && this._professors.length === 0 && this._subjects.length === 0;
+    }
+
 }
 
 export default FilterModel;

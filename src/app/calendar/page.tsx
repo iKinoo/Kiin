@@ -8,7 +8,7 @@ import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvData
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { useEffect, useState } from "react";
 import FilterModel from "@/infrastructure/models/FilterModel";
-import Category from "@/app/Category";
+import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
 
