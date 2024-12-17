@@ -1,10 +1,11 @@
 import { Course } from "./Course";
 import CourseFilter from "./CourseFilter";
+import { Subject } from "./Subject";
 
 export default class SubjectFilter implements CourseFilter {
-    private _subjects: string[];
+    private _subjects: Subject[];
 
-    constructor(subjects: string[]) {
+    constructor(subjects: Subject[]) {
         this._subjects = subjects;
     }
 
@@ -12,6 +13,6 @@ export default class SubjectFilter implements CourseFilter {
         if (this._subjects.length === 0) {
             return true;
         }
-        return this._subjects.includes(course.subject.name);
+        return this._subjects.find(subject => subject.id === course.subject.id) !== undefined;
     }
 }

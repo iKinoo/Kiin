@@ -18,7 +18,7 @@ export default class DegreeCategory implements Category {
             this._selectedValues = this.values.map(degree => degree.value);
             return;
         }
-        this._selectedValues = this.values.filter(degree => filters.every(filter => filter.satisfy(this)));
+        //this._selectedValues = this.values.filter(degree => filters.every(filter => filter.satisfy(this)));
     }
 
     onClick(id: number): void {

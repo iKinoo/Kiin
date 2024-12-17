@@ -14,6 +14,13 @@ import Pagination from "../components/Pagination";
 import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
 import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
+import { Degree } from "@/domain/entities/Degree";
+import { Subject } from "@/domain/entities/Subject";
+import { Professor } from "@/domain/entities/Professor";
+import DegreeCategory from "@/domain/entities/DegreeCategory";
+import ProfessorCategory from "@/domain/entities/ProfessorCategory";
+import SubjectCategory from "@/domain/entities/SubjectCategory";
+import SemesterCategory from "@/domain/entities/SemesterCategory";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -28,46 +35,16 @@ const CalendarPage = () => {
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
   const mapCategories = async () => {
-    const data = new CoursesCsvDatasource();
-    const courses = await data.getAll();
 
-    console.log(await (new DegreesCsvDataSource()).getAll())
-    console.log(await (new SubjectsCsvDataSource()).getAll())
-    console.log(await (new ProfessorsCsvDataSource()).getAll())
-    
-
-    const professorsFullName: string[] = [];
-    const degress: string[] = [];
-    const subjects: string[] = [];
-    const semesters: number[] = [];
-    courses.forEach((course) => {
-      if (!professorsFullName.includes(course.professor.fullName)) {
-        professorsFullName.push(course.professor.fullName);
-      }
-
-      if (!degress.includes(course.subject.degreeResume)) {
-        degress.push(course.subject.degreeResume);
-      }
-
-      if (!subjects.includes(course.subject.name)) {
-        subjects.push(course.subject.name);
-      }
-
-      course.subject.semestre.forEach((semester) => {
-        if (!semesters.includes(semester)) {
-          semesters.push(semester);
-        }
-      });
-    });
-    setCategories([
-      new Category("Carrera", degress),
-      new Category(
-        "Semestre",
-        semesters.sort((a, b) => a - b).map((val) => val?.toString())
-      ),
-      new Category("Profesor", professorsFullName.sort()),
-      new Category("Materia", subjects),
-    ]);
+    const professors: Professor[] = await (new ProfessorsCsvDataSource()).getAll();
+    const professorsCategory: Category = new ProfessorCategory("Profesor", professors);
+    const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
+    const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
+    const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
+    const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
+    const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
+    const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
+    setCategories([degreesCategory, semestersCategory, professorsCategory, subjectsCategory]);
   };
 
   const filterCourses = async (filters: FilterModel) => {
