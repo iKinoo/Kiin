@@ -135,3 +135,8 @@ input[type="color"]:focus {
   outline: none;
   box-shadow: 0 0 0 2px #007bff; /* Borde azul para indicar enfoque */
 }
+
+
+#tsparticles{
+  z-index: 1;
+}
