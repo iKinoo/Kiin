@@ -1,4 +1,4 @@
-import CategoryFilter from "@/domain/entities/CategoryFilter";
+// import CategoryFilter from "@/domain/entities/CategoryFilter";
 import CourseFilter from "@/domain/entities/CourseFilter";
 
 interface Category {

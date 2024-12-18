@@ -1,5 +1,5 @@
 import Category from "./Category";
-import CategoryFilter from "./CategoryFilter";
+// import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
 import SemesterFilter from "./SemesterFilter";
 
@@ -14,7 +14,9 @@ export default class SemesterCategory implements Category {
     }
 
     filterWithCategories(categories: Category[]): void {
+        console.log(categories);
         //this._selectedValues = filters.map(filter => filter.satisfy(this)).flat();
+        throw new Error("Method not implemented.");
     }
 
     get selectedValues(): number[] {
