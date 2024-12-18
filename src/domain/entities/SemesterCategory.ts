@@ -16,7 +16,7 @@ export default class SemesterCategory implements Category {
     filterWithCategories(categories: Category[]): void {
         console.log(categories);
         //this._selectedValues = filters.map(filter => filter.satisfy(this)).flat();
-        throw new Error("Method not implemented.");
+        
     }
 
     get selectedValues(): number[] {

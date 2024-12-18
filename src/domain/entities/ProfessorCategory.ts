@@ -16,7 +16,7 @@ export default class ProfessorCategory implements Category {
 
     filterWithCategories(categories: Category[]): void {
         console.log(categories);
-        throw new Error("Method not implemented.");
+        
         
     }
 
