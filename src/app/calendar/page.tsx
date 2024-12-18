@@ -125,9 +125,11 @@ const CalendarPage = () => {
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
         <div className="flex justify-between p-2">
-          <p className={`${schedule.length == 0 ? "opacity-0" : ""}`}>
-            Posibles horarios: {schedule.length}
-          </p>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""} border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
+            <p>
+              Posibles horarios: {schedule.length}
+            </p>
+          </div>
           <Pagination
             onNext={() => onChangeSchedulePage(page + 1)}
             onPrevious={() => onChangeSchedulePage(page - 1)}
