@@ -65,7 +65,7 @@ const CalendarPage = () => {
     }
 
     const generator = new ScheduleGenerator();
-    const testValue = selectedValue[0];
+    const testValue = Array.isArray(selectedValue) ? selectedValue[0] : selectedValue;
     const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length >= testValue);
     setSchedule(schedule);
     const eventsData = getEvents(schedule, 0);
@@ -126,7 +126,7 @@ const CalendarPage = () => {
       <div className="w-4/6 flex flex-col p-5 h-full">
         <div className="flex justify-between p-2">
           <p className={`${schedule.length == 0 ? "opacity-0" : ""}`}>
-            Posibles horarios:{schedule.length}
+            Posibles horarios: {schedule.length}
           </p>
           <Pagination
             onNext={() => onChangeSchedulePage(page + 1)}
