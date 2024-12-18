@@ -5,6 +5,7 @@ import moment from "moment";
 import { Session } from "@/domain/entities/Session";
 import { CourseCSV } from "./CourseModel";
 
+
 export class CourseMapper {
 
     public static fromModelToEntity(id: number, model: CourseCSV): Course {
@@ -55,9 +56,14 @@ export class CourseMapper {
     }
     private static getHours(time: string): moment.Moment[] {
         const hours = time.split('-');
+    
         if (hours.length === 2) {
-            return [moment(hours[0], 'HH:mm'), moment(hours[1], 'HH:mm')];
+            return [
+                moment.utc(hours[0], 'HH:mm'),
+                moment.utc(hours[1], 'HH:mm')
+            ];
         }
-        return [moment(), moment()];
+        return [moment.utc(), moment.utc()];
     }
+    
 }
