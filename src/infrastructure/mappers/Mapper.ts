@@ -9,10 +9,8 @@ import moment from "moment";
 
 export class Mapper {
 
-
-
     static toSubject(json: any): Subject {
-        return new Subject(
+        const subject = new Subject(
             json._id,
             json._name,
             json._degreeResume,
@@ -20,6 +18,11 @@ export class Mapper {
             json._type,
             json._semesters
         );
+        subject.courses = json._coursesIds
+        subject.degrees = json._degreesIds
+        subject.professors = json._professorsIds
+
+        return subject
     }
 
     static toSubjects(jsonArray: any[]): Subject[] {

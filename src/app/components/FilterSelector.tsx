@@ -21,8 +21,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
                 <li className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white group'>
-                    <span className="ms-3">Aplica filtros para organizar</span>
-
+                <span className="ms-3">Filtrar por</span>
                 </li>
                 {
                     categories.map((category, index) => (

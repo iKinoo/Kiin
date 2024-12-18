@@ -41,7 +41,7 @@ const ValueCell:React.FC<{label: string; onClick: () => void;}> = ({ label, onCl
 const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
     const [isVisible, setIsVisible] = useState(false);
     return (
-        <li>
+        <li className="">
             <button
                 aria-controls="dropdown-example"
                 onClick={() => { setIsVisible(!isVisible); }}
