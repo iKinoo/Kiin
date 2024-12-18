@@ -2,6 +2,7 @@ import Category from "./Category";
 import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
 import DegreeCategory from "./DegreeCategory";
+import SemesterCategory from "./SemesterCategory";
 import { Subject } from "./Subject";
 import SubjectFilter from "./SubjectFilter";
 
@@ -18,9 +19,22 @@ export default class SubjectCategory implements Category {
     }
 
     filterWithCategories(categories: Category[]): void {
-        const degreeCategory = categories.find(cat => cat.title === 'Degree') as (DegreeCategory | undefined);
-        if (!degreeCategory) return;
-        this.values = this._original_values.filter(subject => degreeCategory.selectedValues.some(degree => subject.value.degrees.includes(degree.id)));
+        const degreeCategory = categories.find(cat => cat.title === 'Carrera') as (DegreeCategory | undefined);
+        const semesterCategory = categories.find(cat => cat.title === 'Semestre') as (SemesterCategory | undefined);
+
+        const isSeleceted = degreeCategory && semesterCategory && (degreeCategory.selectedValues.length > 0 || semesterCategory.selectedValues.length > 0)
+        if (!isSeleceted) {
+            this.values = this._original_values;
+            return;
+        };
+        const selectedDegrees = degreeCategory.selectedValues;
+        const selectedSemesters = semesterCategory.selectedValues;
+        console.log(semesterCategory)
+        this.values = this._original_values.filter(subject =>
+            (selectedDegrees.length > 0 ? selectedDegrees.some(degree => subject.value.degrees.includes(degree.id)) : true)
+            &&
+            (selectedSemesters.length > 0 ? selectedSemesters.some(semester => subject.value.semestre.includes(semester)) : true)
+        );
     }
 
     get selectedValues(): Subject[] {

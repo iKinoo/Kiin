@@ -7,7 +7,6 @@ import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
 import { useEffect, useState } from "react";
-import FilterModel from "@/infrastructure/models/FilterModel";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
@@ -26,11 +25,7 @@ const CalendarPage = () => {
   const [events, setEvents] = useState<
     { color: string; title: string; start: string; end: string }[]
   >([]);
-  const [currentFilters, setCurrentFilters] = useState<FilterModel>(
-    new FilterModel([], [], [], [])
-  );
-  const [categories, setCategories] = React.useState<Category[]>([]);
-  const [currentCategories, setCurrentCategories] = useState<Category[]>([]);
+  const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Course[][]>([]);
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
@@ -45,10 +40,10 @@ const CalendarPage = () => {
     const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
     const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
     const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    setCategories([degreesCategory, semestersCategory, professorsCategory, subjectsCategory]);
+    setCurrentCategories([degreesCategory, semestersCategory, professorsCategory, subjectsCategory]);
   };
 
-  const filterCourses = async (filters: FilterModel) => {
+  const filterCourses = async (categories: Category[]) => {
     setPage(0)
     const data = new CoursesCsvDatasource();
     const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
@@ -84,7 +79,7 @@ const CalendarPage = () => {
   };
 
   const handleClickFilter = (category: Category[]) => {
-    setCategories(category);
+    setCurrentCategories(category);
   }
 
   useEffect(() => {
@@ -93,10 +88,6 @@ const CalendarPage = () => {
       setIsFilterCoursesEmpty(false)
     }
   }, [isFilterCoursesEmpty])
-
-  useEffect(() => {
-    console.log('categories changed: ', categories)
-  },[categories])
 
   // const handleShare = () => {
   //   const shareText =
@@ -113,9 +104,9 @@ const CalendarPage = () => {
     <div className="bg-white min-h-screen text-black flex flex-row">
       <SideBar>
         <FilterSelector
-          categories={categories}
+          categories={currentCategories}
           onClick={handleClickFilter}
-          onSubmit={() => filterCourses(currentFilters)}
+          onSubmit={() => filterCourses(currentCategories)}
         />
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
@@ -147,7 +138,7 @@ const CalendarPage = () => {
               <h3 className="text-lg font-semibold">{course.subject.name}</h3>
               <p>Grupo: {course.group}</p>
               <p>Profesor: {course.professor.fullName}</p>
-              <p>Carrera: {course.subject.degrees}</p>
+              <p>Carrera: {course.subject.degreeResume}</p>
               <p>Semestre: {course.subject.semestre}</p>
             </div>
           ))

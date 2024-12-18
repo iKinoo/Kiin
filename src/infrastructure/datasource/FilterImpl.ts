@@ -2,7 +2,6 @@ import { Course } from "@/domain/entities/Course";
 import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
 import { Filter } from "@/domain/entities/Filter";
 import { CoursesRepositoryImpl } from "../repositories/CoursesRepositoryImpl";
-import FilterModel from "../models/FilterModel";
 import CourseFilter from "@/domain/entities/CourseFilter";
 
 export class FilterImpl implements Filter {
@@ -20,11 +19,8 @@ export class FilterImpl implements Filter {
   ) {
     const coursesDataSource = new CoursesRepositoryImpl(new CoursesCsvDatasource());
     const allCourses: Course[] = await coursesDataSource.getAll();
-    this._filters.forEach(filter => {console.log(filter)});
     const filtered: Course[] = allCourses.filter(course => 
-      this._filters.every(filter => 
-      filter.satify(course)
-      )
+      this._filters.every(filter => filter.satify(course))
     );
     return filtered;
   }
