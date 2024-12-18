@@ -27,6 +27,12 @@ const CalendarPage = () => {
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
+  const [selectedValue, setSelectedValue] = useState<number | number[]>(0);
+
+  const handleSliderChange = (value: number | number[]) => {
+    setSelectedValue(value);
+    console.log('Valor seleccionado:', value);
+  };
   const mapCategories = async () => {
     const data = new CoursesCsvDatasource();
     const courses = await data.getAll();
@@ -172,6 +178,7 @@ const CalendarPage = () => {
           categories={categories}
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentFilters)}
+          onChanceSliderValue={handleSliderChange}
         />
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
