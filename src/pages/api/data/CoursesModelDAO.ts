@@ -11,7 +11,7 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const url = `${process.env.VERCEL_URL}/data.csv`;
+    const url = 'https://kiin-rho.vercel.app/data.csv';
     // const response = await fetch(`https://${url}`); // Asegúrate de usar https
     //const filePath = 'public/data.csv'; // Ruta del archivo
     this._results = await readCSV(url);
