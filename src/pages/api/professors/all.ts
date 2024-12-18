@@ -1,8 +1,9 @@
 import { Professor } from "@/domain/entities/Professor";
 import { NextApiRequest, NextApiResponse } from "next";
 import { CoursesModelDao } from "../data/CoursesModelDAO";
-import { CourseCSV } from "@/infrastructure/models/CourseModel";
+import { CourseCSV } from "../data/CourseModel" ;
 import { globalInitialLoad } from "../data/initialLoad";
+
 
 
 export class Professors {
@@ -23,7 +24,7 @@ export class Professors {
         for (const result of results) {
             if (this.findProfessor(result) === undefined) {
                 count++;
-                this._professors.push(new Professor(count, result.Nombres, result.Apellidos));
+                this._professors.push(new Professor(count, result.NOMBRES, result.APELLIDOS));
             }
         }
     }
@@ -40,8 +41,8 @@ export class Professors {
     public static findProfessor(result: CourseCSV): Professor | undefined {
         return this._professors.find(
             (professor) =>
-                professor.names === result.Nombres &&
-                professor.lastNames === result.Apellidos
+                professor.names === result.NOMBRES &&
+                professor.lastNames === result.APELLIDOS
         )
     }
 
