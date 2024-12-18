@@ -1,6 +1,6 @@
 "use client";
 import {Slider} from "@nextui-org/react";
-import { useState } from "react";
+// import { useState } from "react";
 
 interface SliderFilterProps {
   label: string; // El texto del label
@@ -13,16 +13,17 @@ interface SliderFilterProps {
 }
 
 export function SliderFilter({maxValue, label,objectNameCounting,onValueChange,}: SliderFilterProps){
-  const [selectedValue, setSelectedValue] = useState<number | number[]>(0); // Cambia el tipo inicial
+  // const [selectedValue, setSelectedValue] = useState<number | number[]>(0); // Cambia el tipo inicial
 
   const handleSliderChange = (value: number | number[]) => {
-    setSelectedValue(value);
+    // setSelectedValue(value);
+    onValueChange(value);
     console.log('Valor seleccionado:', value);
   };
     return(
       <>
         <Slider
-      className="max-w-md"
+      className="max-w-md text-white"
       getValue={(value) => `${value} of ${maxValue} ${objectNameCounting}`}
       label={label}
       maxValue={maxValue}

@@ -31,11 +31,13 @@ const CalendarPage = () => {
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState<number | number[]>(0);
+  const [maxValue, setMaxValue] = useState<number>(0);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedValue(value);
-    console.log('Valor seleccionado:', value);
+    console.log('Valor seleccionado', value);
   };
+  
   const mapCategories = async () => {
 
     const professors: Professor[] = await (new ProfessorsCsvDataSource()).getAll();
@@ -63,7 +65,8 @@ const CalendarPage = () => {
     }
 
     const generator = new ScheduleGenerator();
-    const schedule = generator.generateSchedules(courses);
+    const testValue = selectedValue[0];
+    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length >= testValue);
     setSchedule(schedule);
     const eventsData = getEvents(schedule, 0);
     setEvents(eventsData);
@@ -86,6 +89,9 @@ const CalendarPage = () => {
 
   const handleClickFilter = (category: Category[]) => {
     setCurrentCategories(category);
+    const testL = category[3].selectedValues.length;
+    setMaxValue(testL);
+    console.log(maxValue)
   }
 
   useEffect(() => {
@@ -114,6 +120,7 @@ const CalendarPage = () => {
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentCategories)}
           onChanceSliderValue={handleSliderChange}
+          maxSliderValue={maxValue}
         />
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
@@ -137,12 +144,12 @@ const CalendarPage = () => {
           Compartir por WhatsApp
         </button> */}
       </div>
-      <div className="w-1/6 m-5 ml-0 px-4">
+      <div className="w-1/5 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (
-            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300">
-              <h3 className="text-lg font-semibold">{course.subject.name}</h3>
+            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
+              <h3 className=" font-semibold">{course.subject.name}</h3>
               <p>Grupo: {course.group}</p>
               <p>Profesor: {course.professor.fullName}</p>
               <p>Carrera: {course.subject.degreeResume}</p>

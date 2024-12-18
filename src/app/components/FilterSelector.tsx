@@ -9,11 +9,12 @@ interface FilterSelectorProps {
     onClick: (newCategories: Category[]) => void
     onSubmit: () => void
     onChanceSliderValue:(value: number | number[]) => void;
+    maxSliderValue: number;
 
 }
 
 
-const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit ,onChanceSliderValue}) => {
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit ,onChanceSliderValue, maxSliderValue}) => {
     const refreshCategories = (categoryIndex: number, valueId: number) => {
         const newCategories = [...categories];
         const category = newCategories[categoryIndex]
@@ -37,7 +38,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
                     
                 }
                 <li>
-                <SliderFilter maxValue={75} label='materias' objectNameCounting='materias' onValueChange={onChanceSliderValue} />
+                <SliderFilter maxValue={maxSliderValue} label='Mínimo de Materias' objectNameCounting='materias' onValueChange={onChanceSliderValue} />
                 </li>
                 
                 <li>
