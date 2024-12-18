@@ -11,7 +11,7 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const filePath = 'src/pages/api/data/data.csv'; // Ruta del archivo
+    const filePath = 'public/data.csv'; // Ruta del archivo
     this._results = await readCSV(filePath);
     return this._results;
   }
