@@ -7,22 +7,25 @@ import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
 import { useEffect, useState } from "react";
-import FilterModel from "@/infrastructure/models/FilterModel";
-import Category from "@/app/Category";
+import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
 import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
 import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
+import { Degree } from "@/domain/entities/Degree";
+import { Subject } from "@/domain/entities/Subject";
+import { Professor } from "@/domain/entities/Professor";
+import DegreeCategory from "@/domain/entities/DegreeCategory";
+import ProfessorCategory from "@/domain/entities/ProfessorCategory";
+import SubjectCategory from "@/domain/entities/SubjectCategory";
+import SemesterCategory from "@/domain/entities/SemesterCategory";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
     { color: string; title: string; start: string; end: string }[]
   >([]);
-  const [currentFilters, setCurrentFilters] = useState<FilterModel>(
-    new FilterModel([], [], [], [])
-  );
-  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Course[][]>([]);
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
@@ -34,53 +37,24 @@ const CalendarPage = () => {
     console.log('Valor seleccionado:', value);
   };
   const mapCategories = async () => {
-    const data = new CoursesCsvDatasource();
-    const courses = await data.getAll();
 
-    console.log(await (new DegreesCsvDataSource()).getAll())
-    console.log(await (new SubjectsCsvDataSource()).getAll())
-    console.log(await (new ProfessorsCsvDataSource()).getAll())
-    
-
-    const professorsFullName: string[] = [];
-    const degress: string[] = [];
-    const subjects: string[] = [];
-    const semesters: number[] = [];
-    courses.forEach((course) => {
-      if (!professorsFullName.includes(course.professor.fullName)) {
-        professorsFullName.push(course.professor.fullName);
-      }
-
-      if (!degress.includes(course.subject.degreeResume)) {
-        degress.push(course.subject.degreeResume);
-      }
-
-      if (!subjects.includes(course.subject.name)) {
-        subjects.push(course.subject.name);
-      }
-
-      course.subject.semestre.forEach((semester) => {
-        if (!semesters.includes(semester)) {
-          semesters.push(semester);
-        }
-      });
-    });
-    setCategories([
-      new Category("Carrera", degress),
-      new Category(
-        "Semestre",
-        semesters.sort((a, b) => a - b).map((val) => val?.toString())
-      ),
-      new Category("Profesor", professorsFullName.sort()),
-      new Category("Materia", subjects),
-    ]);
+    const professors: Professor[] = await (new ProfessorsCsvDataSource()).getAll();
+    const professorsCategory: Category = new ProfessorCategory("Profesor", professors);
+    const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
+    const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
+    const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
+    const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
+    const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
+    const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
+    setCurrentCategories([degreesCategory, semestersCategory, professorsCategory, subjectsCategory]);
   };
 
-  const filterCourses = async (filters: FilterModel) => {
+  const filterCourses = async (categories: Category[]) => {
     setPage(0)
     const data = new CoursesCsvDatasource();
-    const filter = new FilterImpl(filters);
+    const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
     const courses = await data.getCoursesByFilter(filter)
+
     if (courses.length === 0) {
       setSchedule([]);
       setEvents([]);
@@ -110,15 +84,8 @@ const CalendarPage = () => {
     setPage(page);
   };
 
-  const handleClickFilter = (category: Category, value: string) => {
-    const index = categories.findIndex((c) => c.title === category.title);
-
-    if (index === -1) {
-      return;
-    }
-
-    const newFilter = getNewFilter(category, value);
-    setCurrentFilters(newFilter);
+  const handleClickFilter = (category: Category[]) => {
+    setCurrentCategories(category);
   }
 
   useEffect(() => {
@@ -127,38 +94,6 @@ const CalendarPage = () => {
       setIsFilterCoursesEmpty(false)
     }
   }, [isFilterCoursesEmpty])
-
-  const getNewFilter = (category: Category, value: string) => {
-    let professors = currentFilters.professors;
-    let degress = currentFilters.degrees;
-    let semesters = currentFilters.semesters;
-    let subjects = currentFilters.subjects;
-
-    switch (category.title) {
-      case "Profesor":
-        professors = professors.includes(value)
-          ? professors.filter((professor) => professor !== value)
-          : [...professors, value];
-        break;
-      case "Carrera":
-        degress = degress.includes(value)
-          ? degress.filter((degree) => degree !== value)
-          : [...degress, value];
-        break;
-      case "Semestre":
-        semesters = semesters.includes(parseInt(value))
-          ? semesters.filter((semester) => semester !== parseInt(value))
-          : [...semesters, parseInt(value)];
-        break;
-      case "Materia":
-        subjects = subjects.includes(value)
-          ? subjects.filter((subject) => subject !== value)
-          : [...subjects, value];
-        break;
-    }
-
-    return new FilterModel(degress, semesters, professors, subjects);
-  };
 
   // const handleShare = () => {
   //   const shareText =
@@ -175,9 +110,9 @@ const CalendarPage = () => {
     <div className="bg-white min-h-screen text-black flex flex-row">
       <SideBar>
         <FilterSelector
-          categories={categories}
+          categories={currentCategories}
           onClick={handleClickFilter}
-          onSubmit={() => filterCourses(currentFilters)}
+          onSubmit={() => filterCourses(currentCategories)}
           onChanceSliderValue={handleSliderChange}
         />
       </SideBar>
@@ -210,7 +145,7 @@ const CalendarPage = () => {
               <h3 className="text-lg font-semibold">{course.subject.name}</h3>
               <p>Grupo: {course.group}</p>
               <p>Profesor: {course.professor.fullName}</p>
-              <p>Carrera: {course.subject.degrees}</p>
+              <p>Carrera: {course.subject.degreeResume}</p>
               <p>Semestre: {course.subject.semestre}</p>
             </div>
           ))

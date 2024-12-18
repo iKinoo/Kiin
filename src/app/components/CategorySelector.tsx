@@ -1,8 +1,8 @@
-import Category from '@/app/Category';
+import Category from '@/domain/entities/Category';
 import React, { useState } from 'react'
 interface CategoryProps {
     category: Category;
-    onClick: (category: Category, value: string) => void;
+    onClick: (valueId: number) => void;
 }
 
 const DropdownIcon = () => {
@@ -25,7 +25,7 @@ const DropdownIcon = () => {
     )
 }
 
-const ValueCell:React.FC<{value: string; onClick: () => void;}> = ({ value, onClick }) => {
+const ValueCell:React.FC<{label: string; onClick: () => void;}> = ({ label, onClick }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     return (
@@ -33,7 +33,7 @@ const ValueCell:React.FC<{value: string; onClick: () => void;}> = ({ value, onCl
             onClick={() => { onClick(); setIsSelected(!isSelected);}}
             className={`flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ${isSelected ? 'bg-gray dark:bg-gray-700' : ''}`}
         >
-            {value}
+            {label}
         </button>
     )
 }
@@ -57,7 +57,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                     className={`${isVisible ? 'block' : 'hidden'} py-2 space-y-2`}
                 >
                     {category.values.map((value, index) => (
-                        <ValueCell key={index} value={value} onClick={() => onClick(category, value)} />
+                        <ValueCell key={index} label={value.label} onClick={() => onClick(value.id)} />
                     ))}
                 </ul>
         </li>
