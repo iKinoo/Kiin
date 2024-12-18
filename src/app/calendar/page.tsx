@@ -66,7 +66,7 @@ const CalendarPage = () => {
 
     const generator = new ScheduleGenerator();
     const testValue = Array.isArray(selectedValue) ? selectedValue[0] : selectedValue;
-    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length >= testValue);
+    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length === testValue);
     setSchedule(schedule);
     const eventsData = getEvents(schedule, 0);
     setEvents(eventsData);
