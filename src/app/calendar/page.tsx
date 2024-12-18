@@ -30,6 +30,7 @@ const CalendarPage = () => {
     new FilterModel([], [], [], [])
   );
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [currentCategories, setCurrentCategories] = useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Course[][]>([]);
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
@@ -50,8 +51,9 @@ const CalendarPage = () => {
   const filterCourses = async (filters: FilterModel) => {
     setPage(0)
     const data = new CoursesCsvDatasource();
-    const filter = new FilterImpl(filters);
+    const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
     const courses = await data.getCoursesByFilter(filter)
+
     if (courses.length === 0) {
       setSchedule([]);
       setEvents([]);
@@ -81,15 +83,8 @@ const CalendarPage = () => {
     setPage(page);
   };
 
-  const handleClickFilter = (category: Category, value: string) => {
-    const index = categories.findIndex((c) => c.title === category.title);
-
-    if (index === -1) {
-      return;
-    }
-
-    const newFilter = getNewFilter(category, value);
-    setCurrentFilters(newFilter);
+  const handleClickFilter = (category: Category[]) => {
+    setCategories(category);
   }
 
   useEffect(() => {
@@ -99,37 +94,9 @@ const CalendarPage = () => {
     }
   }, [isFilterCoursesEmpty])
 
-  const getNewFilter = (category: Category, value: string) => {
-    let professors = currentFilters.professors;
-    let degress = currentFilters.degrees;
-    let semesters = currentFilters.semesters;
-    let subjects = currentFilters.subjects;
-
-    switch (category.title) {
-      case "Profesor":
-        professors = professors.includes(value)
-          ? professors.filter((professor) => professor !== value)
-          : [...professors, value];
-        break;
-      case "Carrera":
-        degress = degress.includes(value)
-          ? degress.filter((degree) => degree !== value)
-          : [...degress, value];
-        break;
-      case "Semestre":
-        semesters = semesters.includes(parseInt(value))
-          ? semesters.filter((semester) => semester !== parseInt(value))
-          : [...semesters, parseInt(value)];
-        break;
-      case "Materia":
-        subjects = subjects.includes(value)
-          ? subjects.filter((subject) => subject !== value)
-          : [...subjects, value];
-        break;
-    }
-
-    return new FilterModel(degress, semesters, professors, subjects);
-  };
+  useEffect(() => {
+    console.log('categories changed: ', categories)
+  },[categories])
 
   const handleShare = () => {
     const shareText =

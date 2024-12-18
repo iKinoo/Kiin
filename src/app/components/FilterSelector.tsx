@@ -5,21 +5,28 @@ import CategorySelector from '@/app/components/CategorySelector';
 
 interface FilterSelectorProps {
     categories: Category[]
-    onClick: (category: Category, value: string) => void
-    onSubmit:() => void
+    onClick: (newCategories: Category[]) => void
+    onSubmit: () => void
 }
-const FilterSelector: React.FC<FilterSelectorProps> = ({categories, onClick, onSubmit}) => {
-
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit }) => {
+    const refreshCategories = (categoryIndex: number, valueId: number) => {
+        const newCategories = [...categories];
+        const category = newCategories[categoryIndex]
+        category.onClick(valueId);
+        newCategories[categoryIndex] = category;
+        categories.forEach((cat) => cat.filterWithCategories(newCategories));
+        onClick(newCategories);
+    }
     return (
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
                 <li className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white group'>
-                <span className="ms-3">Aplica filtros para organizar</span>
+                    <span className="ms-3">Aplica filtros para organizar</span>
 
                 </li>
                 {
                     categories.map((category, index) => (
-                        <CategorySelector key={index} category={category} onClick={onClick} />
+                        <CategorySelector key={index} category={category} onClick={(valueId) => refreshCategories(index, valueId)} />
                     ))
                 }
                 <li>

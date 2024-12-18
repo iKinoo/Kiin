@@ -13,7 +13,7 @@ export default class SemesterCategory implements Category {
         this.values = values.map(semester => ({label: semester.toString(), id: semester, value: semester}));
     }
 
-    filterWith(filters: CategoryFilter[]): void {
+    filterWithCategories(categories: Category[]): void {
         //this._selectedValues = filters.map(filter => filter.satisfy(this)).flat();
     }
 

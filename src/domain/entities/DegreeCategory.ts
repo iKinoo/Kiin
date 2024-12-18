@@ -13,12 +13,9 @@ export default class DegreeCategory implements Category {
         this.title = title;
         this.values = values.map(degree => ({label: degree.name, id: degree.id, value: degree}));
     }
-    filterWith(filters: CategoryFilter[]): void {
-        if (filters.length === 0) {
-            this._selectedValues = this.values.map(degree => degree.value);
-            return;
-        }
-        //this._selectedValues = this.values.filter(degree => filters.every(filter => filter.satisfy(this)));
+    
+    filterWithCategories(categories: Category[]): void {
+        // NOT IMPLEMENTED
     }
 
     onClick(id: number): void {

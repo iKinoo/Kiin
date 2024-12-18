@@ -1,25 +1,26 @@
 import Category from "./Category";
 import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
+import DegreeCategory from "./DegreeCategory";
 import { Subject } from "./Subject";
 import SubjectFilter from "./SubjectFilter";
 
 export default class SubjectCategory implements Category {
     title: string;
     values: { label: string; id: number; value: Subject; }[];
+    private _original_values: { label: string; id: number; value: Subject; }[];
     private _selectedValues: Subject[] = [];
 
     constructor(title: string, values: Subject[]) {
         this.title = title;
         this.values = values.map(subject => ({ label: subject.name, id: subject.id, value: subject }));
+        this._original_values = this.values;
     }
 
-    filterWith(filters: CategoryFilter[]): void {
-        if (filters.length === 0) {
-            this._selectedValues = this.values.map(subject => subject.value);
-            return;
-        }
-        //this._selectedValues = this.values.filter(subject => filters.every(filter => filter.satisfy(this)));
+    filterWithCategories(categories: Category[]): void {
+        const degreeCategory = categories.find(cat => cat.title === 'Degree') as (DegreeCategory | undefined);
+        if (!degreeCategory) return;
+        this.values = this._original_values.filter(subject => degreeCategory.selectedValues.some(degree => subject.value.degrees.includes(degree.id)));
     }
 
     get selectedValues(): Subject[] {

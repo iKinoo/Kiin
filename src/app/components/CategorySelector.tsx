@@ -2,7 +2,7 @@ import Category from '@/domain/entities/Category';
 import React, { useState } from 'react'
 interface CategoryProps {
     category: Category;
-    onClick: (category: Category, value: string) => void;
+    onClick: (valueId: number) => void;
 }
 
 const DropdownIcon = () => {
@@ -57,7 +57,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                     className={`${isVisible ? 'block' : 'hidden'} py-2 space-y-2`}
                 >
                     {category.values.map((value, index) => (
-                        <ValueCell key={index} label={value.label} onClick={() => onClick(category, value.label)} />
+                        <ValueCell key={index} label={value.label} onClick={() => onClick(value.id)} />
                     ))}
                 </ul>
         </li>

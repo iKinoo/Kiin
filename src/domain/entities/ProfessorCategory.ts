@@ -14,12 +14,7 @@ export default class ProfessorCategory implements Category {
         this.values = values.map(professor => ({ label: professor.fullName, id: professor.id, value: professor }));
     }
 
-    filterWith(filters: CategoryFilter[]): void {
-        if (filters.length === 0) {
-            this._selectedValues = this.values.map(professor => professor.value);
-            return;
-        }
-        //this._selectedValues = this.values.filter(professor => filters.every(filter => filter.satisfy(this)));
+    filterWithCategories(categories: Category[]): void {
     }
 
     get selectedValues(): Professor[] {
