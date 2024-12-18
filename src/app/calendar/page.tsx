@@ -154,19 +154,19 @@ const CalendarPage = () => {
     return new FilterModel(degress, semesters, professors, subjects);
   };
 
-  const handleShare = () => {
-    const shareText =
-      "Mira la carga academica que me encontré: " + window.location.href;
-    const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-    window.open(url, "_blank");
-  };
+  // const handleShare = () => {
+  //   const shareText =
+  //     "Mira la carga academica que me encontré: " + window.location.href;
+  //   const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+  //   window.open(url, "_blank");
+  // };
 
   useEffect(() => {
     mapCategories();
   }, []);
 
   return (
-    <div className="bg-white text-black h-full flex flex-row">
+    <div className="bg-white min-h-screen text-black flex flex-row">
       <SideBar>
         <FilterSelector
           categories={categories}
@@ -188,12 +188,12 @@ const CalendarPage = () => {
         </div>
 
         <Calendar events={events} />
-        <button
+        {/* <button
           onClick={handleShare}
           className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
         >
           Compartir por WhatsApp
-        </button>
+        </button> */}
       </div>
       <div className="w-1/6 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>

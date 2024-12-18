@@ -22,7 +22,7 @@ const links = [
   { label: "Inicio", route: "/" },
   { label: "Motivacion", route: "/contact" },
   { label: "Equipo", route: "/contact" },
-  { label: "Anuncios", route: "/contact" },
+  { label: "Blog", route: "/contact" },
 ]
 
 
