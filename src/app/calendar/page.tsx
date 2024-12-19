@@ -145,7 +145,7 @@ const CalendarPage = () => {
         >
           Compartir por WhatsApp
         </button> */}
-        Última actualización: 18 de diciembre de 2024
+        Última actualización: 19 de diciembre de 2024
       </div>
       <div className="w-1/5 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
