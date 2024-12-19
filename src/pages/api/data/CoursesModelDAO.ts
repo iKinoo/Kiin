@@ -1,6 +1,7 @@
 import csvParser from "csv-parser";
 import { CourseCSV } from "./CourseModel";
 import { Readable } from "stream";
+import fs from "fs";
 
 
 export class CoursesModelDao {
@@ -11,10 +12,17 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const url = 'https://kiin-rho.vercel.app/data.csv';
-    // const response = await fetch(`https://${url}`); // Asegúrate de usar https
-    //const filePath = 'public/data.csv'; // Ruta del archivo
-    this._results = await readCSV(url);
+    const localDev = false;
+
+    if (localDev) {
+      const url = 'public/data.csv'
+      this._results = await readLocalCSV(url);
+    }
+    else {
+      const url = 'https://kiin-rho.vercel.app/data.csv';
+      this._results = await readCSV(url);
+    }
+
     return this._results;
   }
 }
@@ -34,7 +42,7 @@ const readCSV = async (url: string): Promise<CourseCSV[]> => {
 
 
       // Usar un stream legible para procesar el texto del CSV
-      
+
       const readableStream = Readable.from(csvText);
 
       readableStream
@@ -45,5 +53,18 @@ const readCSV = async (url: string): Promise<CourseCSV[]> => {
     } catch (error) {
       reject(error); // Manejar cualquier error de fetch o de otro tipo
     }
+  });
+};
+
+
+const readLocalCSV = (filePath: string): Promise<CourseCSV[]> => {
+  return new Promise((resolve, reject) => {
+    const results: CourseCSV[] = [];
+
+    fs.createReadStream(filePath) // Leer el archivo CSV
+      .pipe(csvParser()) // Pasarlo a través del parser
+      .on('data', (data) => results.push(data)) // Procesar cada fila
+      .on('end', () => resolve(results)) // Resolver al finalizar
+      .on('error', (error) => reject(error)); // Manejar errores
   });
 };
