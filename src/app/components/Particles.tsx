@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim"; // Carga el paquete ligero
-import { Container, ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
+// Container,
+import {  ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
 
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
@@ -12,9 +13,9 @@ const ParticlesBackground = () => {
     }).then(() => setInit(true));
   }, []);
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log("Particles container loaded:", container);
-  };
+  // const particlesLoaded = async (container?: Container): Promise<void> => {
+  //   console.log("Particles container loaded:", container);
+  // };
 
   const options: ISourceOptions = useMemo(
     () => ({

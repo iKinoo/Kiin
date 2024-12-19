@@ -1,5 +1,5 @@
 import Category from "./Category";
-import CategoryFilter from "./CategoryFilter";
+// import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
 import { Professor } from "./Professor";
 import ProfessorFilter from "./ProfessorFilter";
@@ -15,6 +15,9 @@ export default class ProfessorCategory implements Category {
     }
 
     filterWithCategories(categories: Category[]): void {
+        console.log(categories);
+        
+        
     }
 
     get selectedValues(): Professor[] {

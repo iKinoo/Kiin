@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const currentVersion = "1.0_13.12.2024"
+const currentVersion = "1.0_18.12.2024"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 

@@ -24,7 +24,15 @@ const AppLogo = () => {
     return (
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <div className="flex items-center justify-center h-8 w-8 logo">
-                <img src="/img/logo/color_white.png" alt="" />
+                    {/*Logo para tema claro*/}
+                    <img src="/img/logo/color_black.png" alt=""
+                    className="dark:hidden" 
+                    />
+                    {/*Logo para tema oscuro*/}
+                    <img src="/img/logo/color_white.png" alt=""
+                    className="hidden dark:block" 
+                    />    
+                
             </div>
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Kiin</span>
         </Link>

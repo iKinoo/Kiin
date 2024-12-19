@@ -37,7 +37,7 @@ const CalendarPage = () => {
     setSelectedValue(value);
     console.log('Valor seleccionado', value);
   };
-  
+
   const mapCategories = async () => {
 
     const professors: Professor[] = await (new ProfessorsCsvDataSource()).getAll();
@@ -66,7 +66,7 @@ const CalendarPage = () => {
 
     const generator = new ScheduleGenerator();
     const testValue = Array.isArray(selectedValue) ? selectedValue[0] : selectedValue;
-    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length >= testValue);
+    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length === testValue);
     setSchedule(schedule);
     const eventsData = getEvents(schedule, 0);
     setEvents(eventsData);
@@ -175,21 +175,26 @@ function mapEvents(course: Course) {
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
-  return course.sessions.map((session) => ({
-    borderColor: "black",
-    color: color,
-    title: course.subject.name,
-    start:
-      "2024-12-" +
-      days[session.day as keyof typeof days] +
-      "T" +
-      session.startHour.format("HH:mm:ss"),
-    end:
-      "2024-12-" +
-      days[session.day as keyof typeof days] +
-      "T" +
-      session.endHour.format("HH:mm:ss"),
-  }));
-}
+  return course.sessions.map((sessionI) => {
 
+    const day = days[sessionI.day as keyof typeof days];
+    const dateI = `2024-12-${day}`;
+
+    //Offset de la zona horaria de México (-06:00)
+    const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
+    const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}-06:00`;
+
+    const start = new Date(startDateTimeString);
+    console.log(start)
+    const end = new Date(endDateTimeString);
+
+    return {
+      borderColor: 'black',
+      color: color,
+      title: course.subject.name,
+      start: start.toISOString(),
+      end: end.toISOString(),
+    };
+  });
+}
 export default CalendarPage;

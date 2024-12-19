@@ -1,5 +1,5 @@
 import Category from "@/domain/entities/Category";
-import CategoryFilter from "@/domain/entities/CategoryFilter";
+// import CategoryFilter from "@/domain/entities/CategoryFilter";
 import CourseFilter from "@/domain/entities/CourseFilter";
 import { Degree } from "@/domain/entities/Degree";
 import DegreeFilter from "@/domain/entities/DegreeFilter";
@@ -16,6 +16,7 @@ export default class DegreeCategory implements Category {
     
     filterWithCategories(categories: Category[]): void {
         // NOT IMPLEMENTED
+        console.log(categories);
     }
 
     onClick(id: number): void {

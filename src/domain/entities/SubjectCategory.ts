@@ -1,5 +1,5 @@
 import Category from "./Category";
-import CategoryFilter from "./CategoryFilter";
+// import CategoryFilter from "./CategoryFilter";
 import CourseFilter from "./CourseFilter";
 import DegreeCategory from "./DegreeCategory";
 import SemesterCategory from "./SemesterCategory";

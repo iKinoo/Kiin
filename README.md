@@ -1,5 +1,3 @@
-> [!NOTE] En esta rama se encuentra el estado actual del proyecto luego del semestre de la materia "Construcción de Software"
-
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
