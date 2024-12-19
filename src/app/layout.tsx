@@ -20,9 +20,10 @@ export const metadata: Metadata = {
 
 const links = [
   { label: "Inicio", route: "/" },
+  { label: "FAQ", route: "/faq" },
   { label: "Motivación", route: "/motivation" },
   { label: "Equipo", route: "/contact" },
-  { label: "Blog", route: "/contact" },
+  { label: "Blog", route: "/blog" },
 ]
 
 
