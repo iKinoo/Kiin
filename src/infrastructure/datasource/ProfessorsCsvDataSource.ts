@@ -10,7 +10,13 @@ export class ProfessorsCsvDataSource implements ProfessorsDataSource {
       return this.professors;
     }
 
-    const storedData = localStorage.getItem("professor-info");
+    // Eliminar la informacion desactualizada
+    localStorage.removeItem("professor-info");
+
+    const res = await fetch("/api/version");
+    const versionDeLaAPI = await res.json();
+
+    const storedData = localStorage.getItem("professor-info-" + versionDeLaAPI);
 
     if (storedData) {
       console.log("Profesores recuperados de local storage");
@@ -27,10 +33,12 @@ export class ProfessorsCsvDataSource implements ProfessorsDataSource {
 
       this.professors = professors;
 
-      localStorage.setItem("professor-info", JSON.stringify(this.professors));
+      localStorage.setItem(
+        "professor-info-" + versionDeLaAPI,
+        JSON.stringify(this.professors),
+      );
     }
 
     return this.professors;
-
   }
 }

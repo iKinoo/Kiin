@@ -1,4 +1,3 @@
-
 import { DegreesDataSource } from "@/domain/datasources/DegreesDataSource";
 import { Mapper } from "../mappers/Mapper";
 import { Degree } from "@/domain/entities/Degree";
@@ -11,7 +10,13 @@ export class DegreesCsvDataSource implements DegreesDataSource {
       return this.degrees;
     }
 
-    const storedData = localStorage.getItem("degree-info");
+    // Eliminar la informacion desactualizada
+    localStorage.removeItem("degree-info");
+
+    const res = await fetch("/api/version");
+    const versionDeLaAPI = await res.json();
+
+    const storedData = localStorage.getItem("degree-info-" + versionDeLaAPI);
 
     if (storedData) {
       console.log("Grados recuperados de local storage");
@@ -28,7 +33,10 @@ export class DegreesCsvDataSource implements DegreesDataSource {
 
       this.degrees = degrees;
 
-      localStorage.setItem("degree-info", JSON.stringify(this.degrees));
+      localStorage.setItem(
+        "degree-info-" + versionDeLaAPI,
+        JSON.stringify(this.degrees),
+      );
     }
 
     return this.degrees;
