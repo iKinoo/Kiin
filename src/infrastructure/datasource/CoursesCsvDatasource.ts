@@ -13,7 +13,13 @@ export class CoursesCsvDatasource implements CoursesDataSource {
       return this.courses;
     }
 
-    const storedData = localStorage.getItem("course-info");
+    // Eliminar la informacion desactualizada
+    localStorage.removeItem("course-info");
+
+    const res = await fetch("/api/version");
+    const versionDeLaAPI = await res.json();
+
+    const storedData = localStorage.getItem("course-info-" + versionDeLaAPI);
 
     if (storedData) {
       console.log("Cursos recuperados de local storage");
@@ -30,7 +36,10 @@ export class CoursesCsvDatasource implements CoursesDataSource {
 
       this.courses = courses;
 
-      localStorage.setItem("course-info", JSON.stringify(this.courses));
+      localStorage.setItem(
+        "course-info-" + versionDeLaAPI,
+        JSON.stringify(this.courses),
+      );
     }
 
     return this.courses;
