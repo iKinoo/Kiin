@@ -21,7 +21,7 @@ const ContactPage = () => {
             <ul className=''>
                 <li><span className='text-red-700'>B</span>reindel <span className='italic text-gray-500'>Nombre raro</span></li>
                 <li><span className='text-red-700'>J</span>uan <span className='italic text-gray-500'>Otro campechano</span></li>
-                <li><span className='text-red-700'>J</span>osé Luis <span className='italic text-gray-500'>Ya supérala</span></li>
+                <li><span className='text-red-700'>J</span>osé Luis <span className='italic text-gray-500'></span></li>
             </ul>
         </div>
     )
