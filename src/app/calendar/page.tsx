@@ -20,6 +20,7 @@ import DegreeCategory from "@/domain/entities/DegreeCategory";
 import ProfessorCategory from "@/domain/entities/ProfessorCategory";
 import SubjectCategory from "@/domain/entities/SubjectCategory";
 import SemesterCategory from "@/domain/entities/SemesterCategory";
+import LiveIndicator from "../components/UpdateIndicator";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -124,12 +125,18 @@ const CalendarPage = () => {
         />
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
-        <div className="flex justify-between p-2">
+        <div className="flex justify-between p-2 items-center">
           <div className={`${schedule.length == 0 ? "opacity-0" : ""} border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
               Posibles horarios: {schedule.length}
             </p>
           </div>
+          <div className="flex">
+            <LiveIndicator isLive={true} />
+            <div className="mx-1"/>
+            Última actualización: 19 de diciembre de 2024
+          </div>
+
           <Pagination
             onNext={() => onChangeSchedulePage(page + 1)}
             onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -145,7 +152,6 @@ const CalendarPage = () => {
         >
           Compartir por WhatsApp
         </button> */}
-        Última actualización: 19 de diciembre de 2024
       </div>
       <div className="w-1/5 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
