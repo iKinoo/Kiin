@@ -114,7 +114,7 @@ const CalendarPage = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen text-black flex flex-row">
+    <div className="min-h-screen  flex flex-row">
       <SideBar>
         <FilterSelector
           categories={currentCategories}
@@ -146,12 +146,7 @@ const CalendarPage = () => {
         </div>
 
         <Calendar events={events} />
-        {/* <button
-          onClick={handleShare}
-          className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-        >
-          Compartir por WhatsApp
-        </button> */}
+       
       </div>
       <div className="w-1/5 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
@@ -196,7 +191,6 @@ function mapEvents(course: Course) {
     const end = new Date(endDateTimeString);
 
     return {
-      borderColor: 'black',
       color: color,
       title: course.subject.name,
       start: start.toISOString(),

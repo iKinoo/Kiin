@@ -14,14 +14,15 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
     return (
         <div className='h-full'>
             <FullCalendar
+            
             height={"auto"}
             headerToolbar={false}
-            dayHeaderFormat={{ weekday: "long" }}
+            dayHeaderFormat={{ weekday: "long"}}
             locale={"es-MX"}
             slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
             allDaySlot={false}
             slotMinTime="07:00:00"
-            hiddenDays={[0, 6]}
+            hiddenDays={[0, 7]}
             plugins={[timeGridPlugin]}
             initialView="timeGridWeek"
             events={events}

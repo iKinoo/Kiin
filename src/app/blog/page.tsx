@@ -2,7 +2,7 @@ import React from "react";
 
 const BlogPage = () => {
   return (
-    <div className="bg-gradient-to-br from-gray-100 to-gray-300 text-gray-800 min-h-screen flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <h1 className="text-5xl font-bold mb-4 text-center">Últimas Novedades</h1>
       <p className="text-xl leading-relaxed max-w-2xl text-center">
         Actualmente nos encontramos trabajando para traerte nuevas mejoras que
