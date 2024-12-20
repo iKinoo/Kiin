@@ -41,6 +41,7 @@ export class CourseMapper {
             ["Miercoles", "Aula3"],
             ["Jueves", "Aula4"],
             ["Viernes", "Aula5"],
+            ["Sabado", "Aula6"],
         ]);
 
         for (const day of days) {

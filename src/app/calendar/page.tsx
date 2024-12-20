@@ -67,9 +67,9 @@ const CalendarPage = () => {
 
     const generator = new ScheduleGenerator();
     const testValue = Array.isArray(selectedValue) ? selectedValue[0] : selectedValue;
-    const schedule = generator.generateSchedules(courses).filter((schedule) => schedule.length === testValue);
-    setSchedule(schedule);
-    const eventsData = getEvents(schedule, 0);
+    const schedules = generator.generateSchedules(courses).filter((schedule) => schedule.length === testValue);
+    setSchedule(schedules);
+    const eventsData = getEvents(schedules, 0);
     setEvents(eventsData);
   }
 
@@ -174,6 +174,7 @@ function mapEvents(course: Course) {
     "Miercoles": "18",
     "Jueves": "19",
     "Viernes": "20",
+    "Sabado": "21",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
@@ -187,7 +188,6 @@ function mapEvents(course: Course) {
     const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}-06:00`;
 
     const start = new Date(startDateTimeString);
-    console.log(start)
     const end = new Date(endDateTimeString);
 
     return {
