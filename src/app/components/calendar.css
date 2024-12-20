@@ -1,0 +1,33 @@
+.fc-scrollgrid {
+    border-color: transparent !important;
+    ;
+}
+.fc-scrollgrid td:last-of-type {
+    border-right-color: transparent !important;
+    border-left-color: transparent !important;
+    
+}
+.fc-scrollgrid-section.fc-scrollgrid-section-body td[role='presentation'] {
+    border-bottom-color: transparent !important;
+    
+}
+[role='row']:last-of-type td {
+    border-bottom-color: transparent !important;
+    
+}
+th[role='presentation'] {
+    border-right-color: transparent !important;
+    background-color: transparent!important;
+}
+
+.fc-timegrid-now-indicator-container{
+    display: none;
+}
+
+.fc-timegrid-slot-label{
+    border: none !important;
+}
+
+.fc-timegrid-axis{
+    border: none !important;
+}
