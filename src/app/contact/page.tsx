@@ -6,25 +6,38 @@ const ContactPage = () => {
             <h1 className=' text-3xl font-bold pb-10'>Equipo</h1>
             Este proyecto es posible gracias a
 
-            <p className='pt-10 self-start ms-56 text-gray-500'>Equipo actual</p>
+            <p className='pt-10 self-start ms-56 text-gray-500'>Actual</p>
 
-            <ul className=''>
-                <li><span className='text-red-700'>R</span>odrigo <span className='italic text-gray-500'>Narcisista</span></li>
-                <li><span className='text-red-700'>G</span>abriel <span className='italic text-gray-500'>Campechano</span></li>
-                <li>Pablo <span className='italic text-gray-500'>Pablinho</span></li>
-                <li><span className='text-red-700'>G</span>erardo <span className='italic text-gray-500'>El las tortas</span></li>
-                <li>Dylian <span className='italic text-gray-500'>Harper</span></li>
-                <li>Russel <span className='italic text-gray-500'> El Gober</span></li>
+            <ul className='flex flex-col items-center'>
+                <Member name='Rodrigo' description='Kino' />
+                <Member name='Gabriel' description='Cebolla' />
+                <Member name='Pablo' description='Pablinho' />
+                <Member name='Gerardo' description='Contador sobrecalificado' />
+                <Member name='Dilian' description='Harper' />
+                <Member name='Russel' description='El Gober' />
+
             </ul>
-            <p className='pt-10 self-start ms-56 text-gray-500'>Primer equipo</p>
+            <p className='pt-10 self-start ms-56 text-gray-500'>Los primeros</p>
 
-            <ul className=''>
-                <li><span className='text-red-700'>B</span>reindel <span className='italic text-gray-500'>Nombre raro</span></li>
-                <li><span className='text-red-700'>J</span>uan <span className='italic text-gray-500'>Otro campechano</span></li>
-                <li><span className='text-red-700'>J</span>osé Luis <span className='italic text-gray-500'></span></li>
+            <ul className='flex flex-col items-center'>
+                <Member name='Breindel' description='Guapo' />
+                <Member name='Juan' description='Táctico' />
+                <Member name='José Luis' description='Fuckboy' />
             </ul>
         </div>
     )
 }
 
 export default ContactPage
+
+interface MemberProps {
+    name: string,
+    description: string
+}
+
+const Member = (props: MemberProps) => {
+
+    return (
+        <li>{props.name} <span className='italic text-gray-500'>{props.description}</span></li>
+    )
+}
