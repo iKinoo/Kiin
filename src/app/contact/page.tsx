@@ -2,7 +2,7 @@ import React from 'react'
 
 const ContactPage = () => {
     return (
-        <div className="bg-slate-50 text-black h-screen flex flex-col items-center justify-center">
+        <div className=" h-screen flex flex-col items-center justify-center">
             <h1 className=' text-3xl font-bold pb-10'>Equipo</h1>
             Este proyecto es posible gracias a
 

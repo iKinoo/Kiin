@@ -4,7 +4,7 @@ import Link from 'next/link';
 import ParticlesComponent from './components/Particles';
 const HomeContent: React.FC = () => {
   return (
-    <div className='bg-white text-black h-screen flex flex-col overflow-hidden'>
+    <div className=' h-screen flex flex-col overflow-hidden'>
       <div className='z-0 absolute inset-0'>
         <ParticlesComponent/>
       </div>

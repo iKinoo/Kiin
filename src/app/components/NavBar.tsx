@@ -43,7 +43,7 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
 
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 sticky z-10" >
+        <nav className=" dark:bg-gray-900 sticky z-10" >
             <div className="container flex flex-wrap items-center justify-between mx-auto py-4 px-4 lg:py-0">
                 <AppLogo />
                 <button

@@ -2,7 +2,7 @@ import React from "react";
 
 const MotivacionPage = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-50 via-white to-blue-50 text-gray-800 min-h-screen flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <h1 className="text-4xl font-bold mb-6 text-center">
         Nuestra Motivación
       </h1>
