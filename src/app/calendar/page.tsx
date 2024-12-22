@@ -158,6 +158,7 @@ const CalendarPage = () => {
               <p>Profesor: {course.professor.fullName}</p>
               <p>Carrera: {course.subject.degreeResume}</p>
               <p>Semestre: {course.subject.semestre}</p>
+              <p>Modalidad: {course.modality}</p>
             </div>
           ))
         ) : (
