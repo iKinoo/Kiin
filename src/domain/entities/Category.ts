@@ -9,6 +9,7 @@ interface Category {
     get selectedValues(): unknown[];
     toCourseFilter(): CourseFilter
     onClick(id: number): void;
+    isSelected(id: number): boolean;
 }
 
 export default Category;
