@@ -168,12 +168,12 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
   const days = {
-    "Lunes": "16",
-    "Martes": "17",
-    "Miercoles": "18",
-    "Jueves": "19",
-    "Viernes": "20",
-    "Sabado": "21",
+    "Lunes": "23",
+    "Martes": "24",
+    "Miercoles": "25",
+    "Jueves": "26",
+    "Viernes": "27",
+    "Sabado": "28",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
