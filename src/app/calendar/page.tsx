@@ -31,12 +31,11 @@ const CalendarPage = () => {
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
-  const [selectedValue, setSelectedValue] = useState<number | number[]>(0);
-  const [maxValue, setMaxValue] = useState<number>(0);
+  const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
+  const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
 
   const handleSliderChange = (value: number | number[]) => {
-    setSelectedValue(value);
-    console.log('Valor seleccionado', value);
+    setSelectedSubjectsCount(value);
   };
 
   const mapCategories = async () => {
@@ -49,7 +48,7 @@ const CalendarPage = () => {
     const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
     const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
     const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    setCurrentCategories([degreesCategory, semestersCategory, professorsCategory, subjectsCategory]);
+    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory]);
   };
 
   const filterCourses = async (categories: Category[]) => {
@@ -66,7 +65,7 @@ const CalendarPage = () => {
     }
 
     const generator = new ScheduleGenerator();
-    const testValue = Array.isArray(selectedValue) ? selectedValue[0] : selectedValue;
+    const testValue = Array.isArray(maxSubjectsCount) ? maxSubjectsCount[0] : maxSubjectsCount;
     const schedules = generator.generateSchedules(courses).filter((schedule) => schedule.length === testValue);
     setSchedule(schedules);
     const eventsData = getEvents(schedules, 0);
@@ -90,9 +89,8 @@ const CalendarPage = () => {
 
   const handleClickFilter = (category: Category[]) => {
     setCurrentCategories(category);
-    const testL = category[3].selectedValues.length;
-    setMaxValue(testL);
-    console.log(maxValue)
+    const testL = category.find(c => c.title === 'Materia')?.selectedValues.length ?? 0;
+    setMaxSubjectsCount(testL);
   }
 
   useEffect(() => {
@@ -121,7 +119,7 @@ const CalendarPage = () => {
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentCategories)}
           onChanceSliderValue={handleSliderChange}
-          maxSliderValue={maxValue}
+          maxSliderValue={maxSubjectsCount}
         />
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-full">
