@@ -14,9 +14,8 @@ export default class DegreeCategory implements Category {
         this.values = values.map(degree => ({label: degree.name, id: degree.id, value: degree}));
     }
     
-    filterWithCategories(categories: Category[]): void {
+    filterWithCategories() {
         // NOT IMPLEMENTED
-        console.log(categories);
     }
 
     onClick(id: number): void {
@@ -39,4 +38,7 @@ export default class DegreeCategory implements Category {
         return new DegreeFilter(this._selectedValues);
     }
 
+    isSelected(id: number): boolean {
+        return this._selectedValues.some(degree => degree.id === id);
+    }
 }

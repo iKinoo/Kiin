@@ -13,9 +13,7 @@ export default class SemesterCategory implements Category {
         this.values = values.map(semester => ({label: semester.toString(), id: semester, value: semester}));
     }
 
-    filterWithCategories(categories: Category[]): void {
-        console.log(categories);
-        //this._selectedValues = filters.map(filter => filter.satisfy(this)).flat();
+    filterWithCategories(): void {
         
     }
 
@@ -33,5 +31,9 @@ export default class SemesterCategory implements Category {
         } else {
             this._selectedValues.push(id);
         }
+    }
+
+    isSelected(id: number): boolean {
+        return this._selectedValues.includes(id);
     }
 }

@@ -43,18 +43,6 @@ const ValueCell: React.FC<{
 
 const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedValues, setSelectedValues] = useState<number[]>([]);
-
-    const handleValueClick = (valueId: number) => {
-        const isSelected = selectedValues.includes(valueId);
-
-        const newSelectedValues = isSelected
-            ? selectedValues.filter((id) => id !== valueId) // Deselect
-            : [...selectedValues, valueId]; // Select
-
-        setSelectedValues(newSelectedValues);
-        onClick(valueId);
-    };
 
     return (
         <li className="">
@@ -74,8 +62,8 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                     <ValueCell
                         key={value.id}
                         label={value.label}
-                        isSelected={selectedValues.includes(value.id)}
-                        onClick={() => handleValueClick(value.id)}
+                        isSelected={category.isSelected(value.id)}
+                        onClick={() => onClick(value.id)}
                     />
                 ))}
             </ul>
