@@ -38,7 +38,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
                     
                 }
                 <li>
-                <SliderFilter maxValue={maxSliderValue} label='Número de materias por horario' objectNameCounting='materias' onValueChange={onChanceSliderValue} />
+                <SliderFilter maxValue={maxSliderValue} label='Materias por horario' objectNameCounting='materias' onValueChange={onChanceSliderValue} />
                 </li>
                 
                 <li>

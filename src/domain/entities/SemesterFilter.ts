@@ -12,7 +12,7 @@ export default class SemesterFilter implements CourseFilter {
         if (this._semesters.length === 0) {
             return true;
         }
-        return this._semesters.every(
+        return this._semesters.some(
             (semester) => (course.subject.semestre.includes(semester))
         );
     }

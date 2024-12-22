@@ -62,7 +62,7 @@ const FaqPage = () => {
   };
 
   return (
-    <div className="bg-slate-50 text-black min-h-screen p-6">
+    <div className="min-h-screen p-6">
       <h1 className="text-center text-4xl font-bold mb-6 mt-10">
         Preguntas Frecuentes (FAQ)
       </h1>
