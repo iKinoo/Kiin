@@ -4,7 +4,10 @@ import { Degree } from "./Degree";
 import DegreeCategory from "./DegreeCategory";
 import SemesterCategory from "./SemesterCategory";
 
-
+/**
+ * This class is responsible for managing the dynamic categories of the filters using degree and semester categories
+ * @param T The type of the values of the category
+ */
 export default abstract class DynamicCategory<T> implements Category {
     title: string;
     values: { label: string; id: number; value: T; }[];
@@ -33,7 +36,7 @@ export default abstract class DynamicCategory<T> implements Category {
         this.deleteSelectedValuesWithoutRelation()
     }
 
-    private deleteSelectedValuesWithoutRelation() {
+    deleteSelectedValuesWithoutRelation() {
         const selectedValuesToKeep = this.values.filter(value => this._selectedValues.has(value.id));
         this._selectedValues.clear();
         selectedValuesToKeep.forEach(value => this._selectedValues.set(value.id, value.value));
