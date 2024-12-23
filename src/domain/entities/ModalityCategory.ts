@@ -23,9 +23,7 @@ export class ModalityCategory implements Category {
         return new ModalityFilter(this.selectedValues);
     }
     onClick(id: number): void {
-        const selectedValue = this._selectedValues.get(id);
-        const isSelected = selectedValue !== undefined;
-        if (isSelected) {
+        if (this._selectedValues.has(id)) {
             this._selectedValues.delete(id);
             return;
         }

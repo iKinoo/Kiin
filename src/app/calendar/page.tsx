@@ -24,6 +24,8 @@ import LiveIndicator from "../components/UpdateIndicator";
 import { Modalities } from "@/domain/entities/Modalities";
 import { getEnumValues } from "@/utils/EnumArray";
 import { ModalityCategory } from "@/domain/entities/ModalityCategory";
+import { Group } from "@/domain/entities/Group";
+import GroupCategory from "@/domain/entities/GroupCategory";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -160,7 +162,7 @@ const CalendarPage = () => {
               <p>Grupo: {course.group}</p>
               <p>Profesor: {course.professor.fullName}</p>
               <p>Carrera: {course.subject.degreeResume}</p>
-              <p>Semestre: {course.subject.semestre}</p>
+              <p>Semestre: {course.subject.semestre.join(', ')}</p>
               <p>Modalidad: {course.modality}</p>
             </div>
           ))
