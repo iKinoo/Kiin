@@ -14,6 +14,39 @@
   }
 }
 
+/* Estilos para el scrollbar en modo claro */
+@media (prefers-color-scheme: light) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Gris claro */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #ffffff; /* Fondo más claro */
+  }
+}
+
+/* Estilos para el scrollbar en modo oscuro */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #3c3c3c; /* Gris oscuro */
+    border-radius: 10px;
+
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #111111; /* Fondo oscuro */
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

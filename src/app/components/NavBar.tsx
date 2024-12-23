@@ -2,6 +2,8 @@
 import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react'
+import Image from 'next/image'
+
 interface NavBarProps {
     links: { label: string, route: string }[]
 }
@@ -25,11 +27,11 @@ const AppLogo = () => {
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <div className="flex items-center justify-center h-8 w-8 logo">
                 {/*Logo para tema claro*/}
-                <img src="/img/logo/color_black.png" alt=""
+                <Image src="/img/logo/color_black.png" width={1000}  height={0} alt=""
                     className="dark:hidden"
                 />
                 {/*Logo para tema oscuro*/}
-                <img src="/img/logo/color_white.png" alt=""
+                <Image src="/img/logo/color_white.png" width={1000}  height={0} alt=""
                     className="hidden dark:block"
                 />
 

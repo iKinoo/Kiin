@@ -38,10 +38,11 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
                 
 
                 
-                height={"auto"}
+                height={"100%"}
                 headerToolbar={false}
                 dayHeaderFormat={{ weekday: "long" }}
                 locale={"es-MX"}
+                dragScroll={false}
                 // slotLabelContent={(args) => args.date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}
                 allDaySlot={false}
                 slotMinTime="07:00:00"

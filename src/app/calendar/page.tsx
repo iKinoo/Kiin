@@ -21,6 +21,7 @@ import ProfessorCategory from "@/domain/entities/ProfessorCategory";
 import SubjectCategory from "@/domain/entities/SubjectCategory";
 import SemesterCategory from "@/domain/entities/SemesterCategory";
 import LiveIndicator from "../components/UpdateIndicator";
+import CourseCard from "../components/CourseCard";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -122,7 +123,7 @@ const CalendarPage = () => {
           maxSliderValue={maxSubjectsCount}
         />
       </SideBar>
-      <div className="w-4/6 flex flex-col p-5 h-full">
+      <div className="w-4/6 flex flex-col p-5 h-screen">
         <div className="flex justify-between p-2 items-center">
           <div className={`${schedule.length == 0 ? "opacity-0" : ""} border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
@@ -131,7 +132,7 @@ const CalendarPage = () => {
           </div>
           <div className="flex">
             <LiveIndicator isLive={true} />
-            <div className="mx-1"/>
+            <div className="mx-1" />
             Última actualización: 19 de diciembre de 2024
           </div>
 
@@ -142,26 +143,34 @@ const CalendarPage = () => {
             isPreviousDisabled={page == 0}
           />
         </div>
+        <div className="flex flex-wrap gap-1">
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+          <div className="bg-red-500 h-32 w-32 m-1"></div>
+        </div>
 
         <Calendar events={events} />
-       
+
       </div>
-      <div className="w-1/5 m-5 ml-0 px-4">
+      <div className="w-1/5 m-5 ml-0 px-4 h-full">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
-        {schedule.length > 0 ? (
-          schedule[page].map((course, index) => (
-            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
-              <h3 className=" font-semibold">{course.subject.name}</h3>
-              <p>Grupo: {course.group}</p>
-              <p>Profesor: {course.professor.fullName}</p>
-              <p>Carrera: {course.subject.degreeResume}</p>
-              <p>Semestre: {course.subject.semestre}</p>
-              <p>Modalidad: {course.modality}</p>
-            </div>
-          ))
-        ) : (
-          <p className="text-center">Sin cursos disponibles</p>
-        )}
+        <div className="h-screen overflow-y-auto">
+          {schedule.length > 0 ? (
+            schedule[page].map((course, index) => (
+              <CourseCard course={course} index={index} key={index} />
+            ))
+          ) : (
+            <p className="text-center">Sin cursos disponibles</p>
+          )}
+        </div>
+
       </div>
     </div>
   );
