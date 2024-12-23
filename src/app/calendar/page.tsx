@@ -55,7 +55,9 @@ const CalendarPage = () => {
     const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
     const modalities: Modalities[] = getEnumValues(Modalities);
     const modalitiesCategory: Category = new ModalityCategory("Modalidad", modalities);
-    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory, modalitiesCategory]);
+    const groups: Group[] = getEnumValues(Group);
+    const groupsCategory: Category = new GroupCategory("Grupo", groups);
+    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory, modalitiesCategory, groupsCategory]);
   };
 
   const filterCourses = async (categories: Category[]) => {
