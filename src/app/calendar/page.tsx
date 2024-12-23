@@ -22,6 +22,7 @@ import SubjectCategory from "@/domain/entities/SubjectCategory";
 import SemesterCategory from "@/domain/entities/SemesterCategory";
 import LiveIndicator from "../components/UpdateIndicator";
 import CourseCard from "../components/CourseCard";
+import SimpleSlider from "../components/ScheduleSlider";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -143,19 +144,8 @@ const CalendarPage = () => {
             isPreviousDisabled={page == 0}
           />
         </div>
-        <div className="flex flex-wrap gap-1">
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-          <div className="bg-red-500 h-32 w-32 m-1"></div>
-        </div>
-
+        <SimpleSlider schedules={schedule} currentSlide={page} />
+        <div className="my-4"></div>
         <Calendar events={events} />
 
       </div>
