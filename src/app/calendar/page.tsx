@@ -23,6 +23,11 @@ import SemesterCategory from "@/domain/entities/SemesterCategory";
 import LiveIndicator from "../components/UpdateIndicator";
 import CourseCard from "../components/CourseCard";
 import SimpleSlider from "../components/ScheduleSlider";
+import { Modalities } from "@/domain/entities/Modalities";
+import { getEnumValues } from "@/utils/EnumArray";
+import { ModalityCategory } from "@/domain/entities/ModalityCategory";
+import { Group } from "@/domain/entities/Group";
+import GroupCategory from "@/domain/entities/GroupCategory";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -50,7 +55,11 @@ const CalendarPage = () => {
     const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
     const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
     const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory]);
+    const modalities: Modalities[] = getEnumValues(Modalities);
+    const modalitiesCategory: Category = new ModalityCategory("Modalidad", modalities);
+    const groups: Group[] = getEnumValues(Group);
+    const groupsCategory: Category = new GroupCategory("Grupo", groups);
+    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory, modalitiesCategory, groupsCategory]);
   };
 
   const filterCourses = async (categories: Category[]) => {
@@ -68,7 +77,7 @@ const CalendarPage = () => {
 
     const generator = new ScheduleGenerator();
     const numberOfSubjects = Array.isArray(selectedSubjectsCount) ? selectedSubjectsCount[0] : selectedSubjectsCount;
-    const schedules = generator.generateSchedules(courses).filter((schedule) => schedule.length === numberOfSubjects);
+    const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.length === numberOfSubjects : true);
     setSchedule(schedules);
     const eventsData = getEvents(schedules, 0);
     setEvents(eventsData);
