@@ -20,7 +20,7 @@ const AdBanner: React.FC<AdBannerProps> = ({ dataAdSlot, dataAdFormat, dataFullW
     }, [])
     return (
         <ins
-            className='adsbygoogle'
+            className='adsbygoogle dark:bg-[#111111]'    
             style={{ display: 'block' }}
             data-ad-client={`ca-pub-${pId}`}
             data-ad-slot={dataAdSlot}
