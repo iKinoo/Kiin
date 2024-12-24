@@ -170,7 +170,7 @@ const CalendarPage = () => {
               </div>
 
               {(index + 1) % 2 === 0 &&
-                <div style={{ height: '200px' }} className="bg-white mb-4 p-4">
+                <div style={{ height: '200px' }} className="bg-transparent mb-4 p-4">
                   <AdBanner
                     dataAdSlot="4900058210"
                     dataAdLayoutKey="-gw-3+1f-3d+2z"
