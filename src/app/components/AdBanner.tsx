@@ -11,6 +11,7 @@ const AdBanner: React.FC<AdBannerProps> = ({ dataAdSlot, dataAdFormat, dataFullW
     const pId: string = '2263575229671406'
     useEffect(() => {
         try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
 
         } catch (error) {
