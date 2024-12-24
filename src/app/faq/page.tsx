@@ -78,7 +78,7 @@ const FaqPage = () => {
             </button>
 
             {openIndex === index && (
-              <p className="mt-5 text-gray-800 text-lg">{faq.respuesta}</p>
+              <p className="mt-5 text-gray-800 text-base dark:text-gray-200">{faq.respuesta}</p>
             )}
           </div>
         ))}

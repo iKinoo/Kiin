@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "./components/NavBar";
+import AdSense from "./components/AdSense";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
   return (
     <>
     <html lang="en">
-      
+      <head>
+        <AdSense pId="2263575229671406" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
