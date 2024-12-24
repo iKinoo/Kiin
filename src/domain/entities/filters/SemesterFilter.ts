@@ -1,4 +1,4 @@
-import { Course } from "./Course";
+import { Course } from "../Course";
 import CourseFilter from "./CourseFilter";
 
 export default class SemesterFilter implements CourseFilter {

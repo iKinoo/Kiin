@@ -1,11 +1,11 @@
-import Category from "@/domain/entities/Category";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import Category from "@/domain/entities/categories/Category";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 import { Degree } from "@/domain/entities/Degree";
-import DynamicCategory from "@/domain/entities/DynamicCategory";
+import DynamicCategory from "@/domain/entities/categories/DynamicCategory";
 import { Professor } from "@/domain/entities/Professor";
-import ProfessorFilter from "@/domain/entities/ProfessorFilter";
-import SubjectCategory from "@/domain/entities/SubjectCategory";
-import DegreeCategory from "@/domain/entities/DegreeCategory";
+import ProfessorFilter from "@/domain/entities/filters/ProfessorFilter";
+import SubjectCategory from "@/domain/entities/categories/SubjectCategory";
+import DegreeCategory from "@/domain/entities/categories/DegreeCategory";
 import { Subject } from "@/domain/entities/Subject";
 
 export default class ProfessorCategory extends DynamicCategory<Professor> {

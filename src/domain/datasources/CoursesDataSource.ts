@@ -1,5 +1,5 @@
 import { Course } from "../entities/Course";
-import { Filter } from "../entities/Filter";
+import { Filter } from "../entities/filters/Filter";
 
 export interface CoursesDataSource {
   getAll(): Promise<Course[]>;

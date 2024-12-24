@@ -1,5 +1,5 @@
 import { Course } from "@/domain/entities/Course";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 import { Modalities } from "@/domain/entities/Modalities";
 
 export default class ModalityFilter implements CourseFilter {

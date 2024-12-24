@@ -1,6 +1,6 @@
-import { Course } from "./Course";
+import { Course } from "../Course";
 import CourseFilter from "./CourseFilter";
-import { Degree } from "./Degree";
+import { Degree } from "../Degree";
 
 export default class DegreeFilter implements CourseFilter {
     private _degrees: Degree[];

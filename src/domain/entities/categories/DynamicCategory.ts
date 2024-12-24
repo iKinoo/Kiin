@@ -1,6 +1,6 @@
 import Category from "./Category";
-import CourseFilter from "./CourseFilter";
-import { Degree } from "./Degree";
+import CourseFilter from "../filters/CourseFilter";
+import { Degree } from "../Degree";
 import DegreeCategory from "./DegreeCategory";
 import SemesterCategory from "./SemesterCategory";
 

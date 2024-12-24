@@ -1,15 +1,15 @@
-import CourseFilter from "@/domain/entities/CourseFilter";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 import { Degree } from "@/domain/entities/Degree";
-import DynamicCategory from "@/domain/entities/DynamicCategory";
+import DynamicCategory from "@/domain/entities/categories/DynamicCategory";
 import { Subject } from "@/domain/entities/Subject";
-import SubjectFilter from "@/domain/entities/SubjectFilter";
+import SubjectFilter from "@/domain/entities/filters/SubjectFilter";
 
 export default class SubjectCategory extends DynamicCategory<Subject> {
-   
+
     constructor(title: string, values: Subject[]) {
         super(title, values.map(subject => ({ label: subject.name, id: subject.id, value: subject })));
     }
-    
+
     filterWithDegreesAndSemesters(selectedDegrees: Degree[], selectedSemesters: number[]): { label: string; id: number; value: Subject; }[] {
         return this._original_values.filter(subject =>
             (selectedDegrees.length > 0 ? selectedDegrees.some(degree => subject.value.degrees.includes(degree.id)) : true)
@@ -22,5 +22,5 @@ export default class SubjectCategory extends DynamicCategory<Subject> {
     toCourseFilter(): CourseFilter {
         return new SubjectFilter(Array.from(this._selectedValues.values()));
     }
-    
+
 }

@@ -1,8 +1,8 @@
 import { Course } from "@/domain/entities/Course";
 import { CoursesCsvDatasource } from "./CoursesCsvDatasource";
-import { Filter } from "@/domain/entities/Filter";
+import { Filter } from "@/domain/entities/filters/Filter";
 import { CoursesRepositoryImpl } from "../repositories/CoursesRepositoryImpl";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 
 export class FilterImpl implements Filter {
 

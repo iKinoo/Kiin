@@ -1,5 +1,5 @@
 // import CategoryFilter from "@/domain/entities/CategoryFilter";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 
 interface Category {
     title: string; // title of the category

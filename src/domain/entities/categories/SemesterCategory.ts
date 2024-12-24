@@ -1,7 +1,7 @@
 import Category from "./Category";
 // import CategoryFilter from "./CategoryFilter";
-import CourseFilter from "./CourseFilter";
-import SemesterFilter from "./SemesterFilter";
+import CourseFilter from "../filters/CourseFilter";
+import SemesterFilter from "../filters/SemesterFilter";
 
 export default class SemesterCategory implements Category {
     title: string;

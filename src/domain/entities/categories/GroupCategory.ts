@@ -1,7 +1,7 @@
 import Category from "./Category";
-import CourseFilter from "./CourseFilter";
-import { Group } from "./Group";
-import GroupFilter from "./GroupFilter";
+import CourseFilter from "../filters/CourseFilter";
+import { Group } from "../Group";
+import GroupFilter from "../filters/GroupFilter";
 
 export default class GroupCategory implements Category {
     title: string;

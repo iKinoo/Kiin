@@ -1,7 +1,7 @@
-import Category from "@/domain/entities/Category";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import Category from "@/domain/entities/categories/Category";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 import { Modalities } from "@/domain/entities/Modalities";
-import ModalityFilter from "@/domain/entities/ModalityFilter";
+import ModalityFilter from "@/domain/entities/filters/ModalityFilter";
 
 export class ModalityCategory implements Category {
     title: string;

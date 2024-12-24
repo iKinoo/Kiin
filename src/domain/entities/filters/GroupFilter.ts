@@ -1,6 +1,6 @@
 import CourseFilter from "./CourseFilter";
-import { Course } from "./Course";
-import { Group } from "./Group";
+import { Course } from "../Course";
+import { Group } from "../Group";
 
 export default class GroupFilter implements CourseFilter {
     private _groups: Group[] = [];

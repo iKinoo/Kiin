@@ -1,6 +1,6 @@
-import { Course } from "./Course";
+import { Course } from "../Course";
 import CourseFilter from "./CourseFilter";
-import { Professor } from "./Professor";
+import { Professor } from "../Professor";
 
 export default class ProfessorFilter implements CourseFilter {
     private _professors: Professor[];

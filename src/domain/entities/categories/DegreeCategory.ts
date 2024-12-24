@@ -1,8 +1,8 @@
-import Category from "@/domain/entities/Category";
+import Category from "@/domain/entities/categories/Category";
 // import CategoryFilter from "@/domain/entities/CategoryFilter";
-import CourseFilter from "@/domain/entities/CourseFilter";
+import CourseFilter from "@/domain/entities/filters/CourseFilter";
 import { Degree } from "@/domain/entities/Degree";
-import DegreeFilter from "@/domain/entities/DegreeFilter";
+import DegreeFilter from "@/domain/entities/filters/DegreeFilter";
 
 export default class DegreeCategory implements Category {
     title: string;

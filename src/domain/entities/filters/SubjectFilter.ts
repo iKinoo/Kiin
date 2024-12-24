@@ -1,6 +1,6 @@
-import { Course } from "./Course";
+import { Course } from "../Course";
 import CourseFilter from "./CourseFilter";
-import { Subject } from "./Subject";
+import { Subject } from "../Subject";
 
 export default class SubjectFilter implements CourseFilter {
     private _subjects: Subject[];
