@@ -4,12 +4,29 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import './calendar.css'
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 interface CalendarProps {
     events: { color: string; title: string; start: string; end: string; }[]
 }
 
 const Calendar: React.FC<CalendarProps> = ({ events }) => {
+    const [dayFormat, setDayFormat] = useState<"short" | "long">("short");
+
+    useEffect(() =>{
+        const handleResize = () => {
+            if(window.innerWidth > 640){
+                setDayFormat("long")
+            }else{
+                setDayFormat("short")
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+
+    }, []);
 
     return (
         <div className='h-full'>
@@ -33,9 +50,8 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
                     ['!border-0']// Usar clases de Tailwind
                 }
                 slotLabelFormat={
-                    { hour: '2-digit', minute: '2-digit', hour12: false }
+                    { hour: '2-digit', minute: '2-digit', hour12: false}
                 }
-                
 
                 
                 height={"auto"}
@@ -49,7 +65,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
                 events={events}
-                dayHeaderContent={(args) => args.date.toLocaleDateString('es-MX', { weekday: 'long' }).charAt(0).toUpperCase() + args.date.toLocaleDateString('es-MX', { weekday: 'long' }).slice(1)}
+                dayHeaderContent={(args) => args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).charAt(0).toUpperCase() + args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).slice(1)}
             />
         </div>
     );
