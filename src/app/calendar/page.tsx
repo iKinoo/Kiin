@@ -26,6 +26,7 @@ import { getEnumValues } from "@/utils/EnumArray";
 import { ModalityCategory } from "@/domain/entities/ModalityCategory";
 import { Group } from "@/domain/entities/Group";
 import GroupCategory from "@/domain/entities/GroupCategory";
+import AdBanner from "../components/AdBanner";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -131,7 +132,7 @@ const CalendarPage = () => {
           maxSliderValue={maxSubjectsCount}
         />
       </SideBar>
-      <div className="w-4/6 flex flex-col p-5 h-full">
+      <div className="w-3/6 flex flex-col p-5 h-full">
         <div className="flex justify-between p-2 items-center">
           <div className={`${schedule.length == 0 ? "opacity-0" : ""} border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
@@ -140,7 +141,7 @@ const CalendarPage = () => {
           </div>
           <div className="flex">
             <LiveIndicator isLive={true} />
-            <div className="mx-1"/>
+            <div className="mx-1" />
             Última actualización: 19 de diciembre de 2024
           </div>
 
@@ -151,25 +152,47 @@ const CalendarPage = () => {
             isPreviousDisabled={page == 0}
           />
         </div>
-
         <Calendar events={events} />
-       
+
       </div>
-      <div className="w-1/5 m-5 ml-0 px-4">
+      <div className="w-2/6 m-5 ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (
-            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
-              <h3 className=" font-semibold">{course.subject.name}</h3>
-              <p>Grupo: {course.group}</p>
-              <p>Profesor: {course.professor.fullName}</p>
-              <p>Carrera: {course.subject.degreeResume}</p>
-              <p>Semestre: {course.subject.semestre.join(', ')}</p>
-              <p>Modalidad: {course.modality}</p>
+            <div key={index} >
+              <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
+                <h3 className=" font-semibold">{course.subject.name}</h3>
+                <p>Grupo: {course.group}</p>
+                <p>Profesor: {course.professor.fullName}</p>
+                <p>Carrera: {course.subject.degreeResume}</p>
+                <p>Semestre: {course.subject.semestre.join(', ')}</p>
+                <p>Modalidad: {course.modality}</p>
+              </div>
+
+              {(index + 1) % 2 === 0 &&
+                <div style={{ height: '200px' }} className="bg-white mb-4 p-4">
+                  <AdBanner
+                    dataAdSlot="4900058210"
+                    dataAdLayoutKey="-gw-3+1f-3d+2z"
+                    dataAdFormat="fluid"
+                    dataFullWidthResponsive={true}
+                  />
+                </div>
+              }
             </div>
+
           ))
         ) : (
-          <p className="text-center">Sin cursos disponibles</p>
+          <div className="gap-5">
+            <p className="text-center">Sin cursos disponibles</p>
+            <div className="bg-white">
+              <AdBanner
+                dataAdSlot="7039104578"
+                dataAdFormat="auto"
+                dataFullWidthResponsive={true}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>
