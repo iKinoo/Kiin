@@ -7,7 +7,7 @@ import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
 import { useEffect, useState } from "react";
-import Category from "@/domain/entities/Category";
+import Category from "@/domain/entities/categories/Category";
 import { Course } from "@/domain/entities/Course";
 import Pagination from "../components/Pagination";
 import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
@@ -16,18 +16,18 @@ import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsC
 import { Degree } from "@/domain/entities/Degree";
 import { Subject } from "@/domain/entities/Subject";
 import { Professor } from "@/domain/entities/Professor";
-import DegreeCategory from "@/domain/entities/DegreeCategory";
-import ProfessorCategory from "@/domain/entities/ProfessorCategory";
-import SubjectCategory from "@/domain/entities/SubjectCategory";
-import SemesterCategory from "@/domain/entities/SemesterCategory";
+import DegreeCategory from "@/domain/entities/categories/DegreeCategory";
+import ProfessorCategory from "@/domain/entities/categories/ProfessorCategory";
+import SubjectCategory from "@/domain/entities/categories/SubjectCategory";
+import SemesterCategory from "@/domain/entities/categories/SemesterCategory";
 import LiveIndicator from "../components/UpdateIndicator";
 import CourseCard from "../components/CourseCard";
 import SimpleSlider from "../components/ScheduleSlider";
 import { Modalities } from "@/domain/entities/Modalities";
 import { getEnumValues } from "@/utils/EnumArray";
-import { ModalityCategory } from "@/domain/entities/ModalityCategory";
+import { ModalityCategory } from "@/domain/entities/categories/ModalityCategory";
 import { Group } from "@/domain/entities/Group";
-import GroupCategory from "@/domain/entities/GroupCategory";
+import GroupCategory from "@/domain/entities/categories/GroupCategory";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<

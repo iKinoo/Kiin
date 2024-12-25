@@ -1,5 +1,5 @@
 "use client"
-import Category from '@/domain/entities/Category'
+import Category from '@/domain/entities/categories/Category'
 import React from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 import SliderFilter from './SliderBar';
