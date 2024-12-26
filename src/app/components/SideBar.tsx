@@ -5,7 +5,7 @@ const SideBar = ({ children }: Readonly<{
 
 
   return (
-    <div className='w-1/6'>
+    <div className='w-1/6 bg-gray-50 dark:bg-gray-800'>
       <aside
         id="sidebar-multi-level-sidebar"
         className="left-0 z-40 w-full h-full transition-transform -translate-x-full sm:translate-x-0"

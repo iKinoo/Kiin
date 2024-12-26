@@ -28,6 +28,7 @@ import { getEnumValues } from "@/utils/EnumArray";
 import { ModalityCategory } from "@/domain/entities/categories/ModalityCategory";
 import { Group } from "@/domain/entities/Group";
 import GroupCategory from "@/domain/entities/categories/GroupCategory";
+import PivotSelector from "../components/PivotSelector";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -40,6 +41,7 @@ const CalendarPage = () => {
 
   const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
   const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
+  const [currentCourses, setCurrentCourses] = useState<Course[]>([]);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -78,6 +80,7 @@ const CalendarPage = () => {
     const generator = new ScheduleGenerator();
     const numberOfSubjects = Array.isArray(selectedSubjectsCount) ? selectedSubjectsCount[0] : selectedSubjectsCount;
     const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.length === numberOfSubjects : true);
+    setCurrentCourses(courses);
     setSchedule(schedules);
     const eventsData = getEvents(schedules, 0);
     setEvents(eventsData);
@@ -122,8 +125,19 @@ const CalendarPage = () => {
     mapCategories();
   }, []);
 
+  const [currentPivots, setPivots] = React.useState<[number, number][]>([]);
+
+  const onPivotSelectorClick = (professorId: number, subjectId: number, isSelected: boolean) => {
+    if (isSelected) {
+      setPivots([...currentPivots, [professorId, subjectId]]);
+    } else {
+      setPivots(currentPivots.filter(([pID, sId]) => pID !== professorId && sId !== subjectId));
+    }
+  }
+
   return (
     <div className="min-h-screen  flex flex-row">
+      current pivots: {currentPivots.join(', ')}
       <SideBar>
         <FilterSelector
           categories={currentCategories}
@@ -132,6 +146,13 @@ const CalendarPage = () => {
           onChanceSliderValue={handleSliderChange}
           maxSliderValue={maxSubjectsCount}
         />
+        <PivotSelector
+          subjects={currentCategories.find((c) => c.title === 'Materia')?.selectedValues.map((v) => v as Subject) ?? []}
+          professors={currentCategories.find((c) => c.title === 'Profesor')?.values.map((v) => v.value as Professor) ?? []}
+          onSubmit={() => filterCourses(currentCategories)}
+          courses={currentCourses}
+          schedules={schedule} onClick={onPivotSelectorClick} />
+
       </SideBar>
       <div className="w-4/6 flex flex-col p-5 h-screen">
         <div className="flex justify-between p-2 items-center">

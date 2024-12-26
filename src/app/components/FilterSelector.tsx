@@ -25,7 +25,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
     }   
 
     return (
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="px-3 py-4 overflow-y-auto">
             <ul className="space-y-2 font-medium">
                 <li className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white group'>
                 <span className="ms-3">Filtrar por</span>
