@@ -120,41 +120,52 @@ const CalendarPage = () => {
     mapCategories();
   }, []);
 
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleSideBar = () => {
+    setIsOpen(!isOpen);
+  }
+
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <SideBar>
+    <div className="min-h-screen mt-16 flex flex-col sm:flex-row sm:mt-14">
+      <SideBar toggleSideBar={toggleSideBar} isOpen={isOpen}>
         <FilterSelector
           categories={currentCategories}
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentCategories)}
           onChanceSliderValue={handleSliderChange}
           maxSliderValue={maxSubjectsCount}
+          toggleSideBar={toggleSideBar}
         />
       </SideBar>
-      <div className="p-5 pl-2 sm:w-4/6 sm:p-5 h-full">
-              <div className="grid grid-cols-6 grid-rows-2 justify-center items-center mb-2 p-2 sm:grid-rows-1">
-                <div className="col-span-6 row-span-1 flex mx-4 sm:col-start-3 sm:col-end-4 sm:row-span-2">
-                  <LiveIndicator isLive={true} />
-                  <div className="ml-3 sm:mx-1"/>
-                  Última actualización: 19 de diciembre de 2024
-                </div>
-                <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start-1 col-end-2 row-span-2 sm:col-end-2 sm:row-span-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
-                  <p>
-                    Posibles horarios: {schedule.length}
-                  </p>
-                </div>
-                <div className="col-start-3 col-end-6  row-span-2 flex justify-center items-center sm:col-start-5 sm:row-span-1">
-                <Pagination
-                  onNext={() => onChangeSchedulePage(page + 1)}
-                  onPrevious={() => onChangeSchedulePage(page - 1)}
-                  isNextDisabled={page >= schedule.length - 1}
-                  isPreviousDisabled={page == 0}
-                />
-                </div>
+      <div className="p-5 pl-2 h-full sm:w-4/6 sm:p-5">
+        <div className="grid grid-cols-6 grid-rows-2 justify-center items-center mb-2 p-2 sm:grid-rows-1">
+          <button onClick={toggleSideBar} className="fixed top-20  z-30 rounded-lg bg-blue-700 px-5 py-2 sm:hidden " type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+          </button>
+          <div className="col-start-1 col-end-7 row-span-1 mt-10 flex mx-4 sm:col-start-3 sm:col-end-4 sm:row-span-2">
+            <LiveIndicator isLive={true} />
+            <div className="ml-3 sm:mx-1" />
+            Última actualización: 19 de diciembre de 2024
+          </div>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start- col-span-4 row-start-2 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
+            <p>
+              Posibles horarios: {schedule.length}
+            </p>
+          </div>
+          <div className="col-start-5 col-span-2 row-start-2 justify-self-end flex justify-center items-center sm:col-start-5 sm:row-span-1">
+            <Pagination
+              onNext={() => onChangeSchedulePage(page + 1)}
+              onPrevious={() => onChangeSchedulePage(page - 1)}
+              isNextDisabled={page >= schedule.length - 1}
+              isPreviousDisabled={page == 0}
+            />
+          </div>
         </div>
 
         <Calendar events={events} />
-       
+
       </div>
       <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
