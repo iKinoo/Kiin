@@ -120,14 +120,29 @@ const CalendarPage = () => {
     mapCategories();
   }, []);
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
   const toggleSideBar = () => {
-    setIsOpen(!isOpen);
+    setIsSideBarOpen(!isSideBarOpen);
   }
 
+  const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 640) {
+        setDayFormat("long")
+      } else {
+        setDayFormat("short")
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+
+  }, []);
+
   return (
-    <div className="min-h-screen mt-16 flex flex-col sm:flex-row sm:mt-14">
-      <SideBar toggleSideBar={toggleSideBar} isOpen={isOpen}>
+    <div className="min-h-screen flex flex-col sm:flex-row">
+      <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
         <FilterSelector
           categories={currentCategories}
           onClick={handleClickFilter}
@@ -138,23 +153,39 @@ const CalendarPage = () => {
         />
       </SideBar>
       <div className="p-5 pl-2 h-full sm:w-4/6 sm:p-5">
-        <div className="grid grid-cols-6 grid-rows-2 justify-center items-center mb-2 p-2 sm:grid-rows-1">
-          <button onClick={toggleSideBar} className="fixed top-20  z-30 rounded-lg bg-blue-700 px-5 py-2 sm:hidden " type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-            </svg>
-          </button>
-          <div className="col-start-1 col-end-7 row-span-1 mt-10 flex mx-4 sm:col-start-3 sm:col-end-4 sm:row-span-2">
+        <button
+          onClick={toggleSideBar}
+          className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 sm:hidden"
+          type="button"
+        >
+          Filtros
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            className="size-6 stroke-black dark:stroke-white transition-colors duration-300"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+            />
+          </svg>
+        </button>
+        
+        <div className="grid grid-cols-6 grid-rows-2 ml-10 justify-center items-end mb-2 p-2 sm:grid-rows-1">
+          <div className="col-start-1 col-end-7 row-start-2 flex sm:col-start-3 sm:col-end-5 sm:row-start-1 sm:mt-0">
             <LiveIndicator isLive={true} />
             <div className="ml-3 sm:mx-1" />
             Última actualización: 19 de diciembre de 2024
           </div>
-          <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start- col-span-4 row-start-2 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start-1 col-span-6 row-start-1 mt-14 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
               Posibles horarios: {schedule.length}
             </p>
           </div>
-          <div className="col-start-5 col-span-2 row-start-2 justify-self-end flex justify-center items-center sm:col-start-5 sm:row-span-1">
+          <div className={`transition-all duration-500 ${ isSideBarOpen ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -164,10 +195,10 @@ const CalendarPage = () => {
           </div>
         </div>
 
-        <Calendar events={events} />
+        <Calendar events={events} dayFormat={dayFormat} />
 
       </div>
-      <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4">
+      <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4 pb-4 mb-20 mt-10">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (

@@ -4,29 +4,13 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import './calendar.css'
 import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 interface CalendarProps {
     events: { color: string; title: string; start: string; end: string; }[]
+    dayFormat: 'long' | 'short';
 }
 
-const Calendar: React.FC<CalendarProps> = ({ events }) => {
-    const [dayFormat, setDayFormat] = useState<"short" | "long">("short");
-
-    useEffect(() =>{
-        const handleResize = () => {
-            if(window.innerWidth > 640){
-                setDayFormat("long")
-            }else{
-                setDayFormat("short")
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
-
-    }, []);
+const Calendar: React.FC<CalendarProps> = ({ events, dayFormat }) => {
 
     return (
         <div className='h-full'>
