@@ -1,31 +1,31 @@
 "use client";
-import React from "react";
-import FilterSelector from "../components/FilterSelector";
-import SideBar from "../components/SideBar";
-import Calendar from "../components/Calendar";
-import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
-import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
-import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
-import { useEffect, useState } from "react";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
-import Pagination from "../components/Pagination";
-import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
-import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
-import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
 import { Degree } from "@/domain/entities/Degree";
-import { Subject } from "@/domain/entities/Subject";
-import { Professor } from "@/domain/entities/Professor";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
-import ProfessorCategory from "@/domain/entities/ProfessorCategory";
-import SubjectCategory from "@/domain/entities/SubjectCategory";
-import SemesterCategory from "@/domain/entities/SemesterCategory";
-import LiveIndicator from "../components/UpdateIndicator";
-import { Modalities } from "@/domain/entities/Modalities";
-import { getEnumValues } from "@/utils/EnumArray";
-import { ModalityCategory } from "@/domain/entities/ModalityCategory";
 import { Group } from "@/domain/entities/Group";
 import GroupCategory from "@/domain/entities/GroupCategory";
+import { Modalities } from "@/domain/entities/Modalities";
+import { ModalityCategory } from "@/domain/entities/ModalityCategory";
+import { Professor } from "@/domain/entities/Professor";
+import ProfessorCategory from "@/domain/entities/ProfessorCategory";
+import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
+import SemesterCategory from "@/domain/entities/SemesterCategory";
+import { Subject } from "@/domain/entities/Subject";
+import SubjectCategory from "@/domain/entities/SubjectCategory";
+import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
+import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
+import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
+import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
+import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
+import { getEnumValues } from "@/utils/EnumArray";
+import React, { useEffect, useState } from "react";
+import AdBanner from "../components/AdBanner";
+import Calendar from "../components/Calendar";
+import FilterSelector from "../components/FilterSelector";
+import Pagination from "../components/Pagination";
+import SideBar from "../components/SideBar";
+import LiveIndicator from "../components/UpdateIndicator";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -173,7 +173,7 @@ const CalendarPage = () => {
             />
           </svg>
         </button>
-        
+
         <div className="grid grid-cols-6 grid-rows-2 ml-10 justify-center items-end mb-2 p-2 sm:grid-rows-1">
           <div className="col-start-1 col-end-7 row-start-2 flex sm:col-start-3 sm:col-end-5 sm:row-start-1 sm:mt-0">
             <LiveIndicator isLive={true} />
@@ -185,7 +185,7 @@ const CalendarPage = () => {
               Posibles horarios: {schedule.length}
             </p>
           </div>
-          <div className={`transition-all duration-500 ${ isSideBarOpen ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
+          <div className={`transition-all duration-500 ${isSideBarOpen ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -202,17 +202,40 @@ const CalendarPage = () => {
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (
-            <div key={index} className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
-              <h3 className=" font-semibold">{course.subject.name}</h3>
-              <p>Grupo: {course.group}</p>
-              <p>Profesor: {course.professor.fullName}</p>
-              <p>Carrera: {course.subject.degreeResume}</p>
-              <p>Semestre: {course.subject.semestre.join(', ')}</p>
-              <p>Modalidad: {course.modality}</p>
+            <div key={index} >
+              <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
+                <h3 className=" font-semibold">{course.subject.name}</h3>
+                <p>Grupo: {course.group}</p>
+                <p>Profesor: {course.professor.fullName}</p>
+                <p>Carrera: {course.subject.degreeResume}</p>
+                <p>Semestre: {course.subject.semestre.join(', ')}</p>
+                <p>Modalidad: {course.modality}</p>
+              </div>
+
+              {(index + 1) % 2 === 0 &&
+                <div style={{ height: '200px' }} className="bg-transparent mb-4 p-4">
+                  <AdBanner
+                    dataAdSlot="4900058210"
+                    dataAdLayoutKey="-gw-3+1f-3d+2z"
+                    dataAdFormat="fluid"
+                    dataFullWidthResponsive={true}
+                  />
+                </div>
+              }
             </div>
+
           ))
         ) : (
-          <p className="text-center">Sin cursos disponibles</p>
+          <div className="gap-5">
+            <p className="text-center">Sin cursos disponibles</p>
+            <div className="bg-white">
+              <AdBanner
+                dataAdSlot="7039104578"
+                dataAdFormat="auto"
+                dataFullWidthResponsive={true}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>
@@ -220,19 +243,19 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
   const days = {
-    "Lunes": "23",
-    "Martes": "24",
-    "Miercoles": "25",
-    "Jueves": "26",
-    "Viernes": "27",
-    "Sabado": "28",
+    "Lunes": "13",
+    "Martes": "14",
+    "Miercoles": "15",
+    "Jueves": "16",
+    "Viernes": "17",
+    "Sabado": "18",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
   return course.sessions.map((sessionI) => {
 
     const day = days[sessionI.day as keyof typeof days];
-    const dateI = `2024-12-${day}`;
+    const dateI = `2025-01-${day}`;
 
     //Offset de la zona horaria de México (-06:00)
     const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
