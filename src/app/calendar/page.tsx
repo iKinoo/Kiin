@@ -203,9 +203,9 @@ function mapEvents(course: Course) {
     "Lunes": "23",
     "Martes": "24",
     "Miercoles": "25",
-    "Jueves": "27",
-    "Viernes": "29",
-    "Sabado": "30",
+    "Jueves": "26",
+    "Viernes": "27",
+    "Sabado": "28",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
