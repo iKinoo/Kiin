@@ -14,7 +14,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
     return (
         <div className='h-full'>
             <FullCalendar
-            now={'2024-12-23'}
+            now={'2025-01-13'}
             dayHeaderClassNames={
                 ['bg-gray-800', 'text-white', '!border-0 rounded']// Usar clases de Tailwind
             }

@@ -200,19 +200,19 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
   const days = {
-    "Lunes": "23",
-    "Martes": "24",
-    "Miercoles": "25",
-    "Jueves": "26",
-    "Viernes": "27",
-    "Sabado": "28",
+    "Lunes": "13",
+    "Martes": "14",
+    "Miercoles": "15",
+    "Jueves": "16",
+    "Viernes": "17",
+    "Sabado": "18",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
   return course.sessions.map((sessionI) => {
 
     const day = days[sessionI.day as keyof typeof days];
-    const dateI = `2024-12-${day}`;
+    const dateI = `2025-01-${day}`;
 
     //Offset de la zona horaria de México (-06:00)
     const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
