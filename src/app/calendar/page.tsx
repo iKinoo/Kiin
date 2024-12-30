@@ -200,12 +200,12 @@ const CalendarPage = () => {
 };
 function mapEvents(course: Course) {
   const days = {
-    "Lunes": "23",
-    "Martes": "24",
-    "Miercoles": "25",
-    "Jueves": "26",
-    "Viernes": "27",
-    "Sabado": "28",
+    "Lunes": "30",
+    "Martes": "31",
+    "Miercoles": "01",
+    "Jueves": "02",
+    "Viernes": "03",
+    "Sabado": "04",
   };
   const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
