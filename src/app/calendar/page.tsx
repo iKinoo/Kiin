@@ -1,32 +1,31 @@
 "use client";
-import React from "react";
-import FilterSelector from "../components/FilterSelector";
-import SideBar from "../components/SideBar";
-import Calendar from "../components/Calendar";
-import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
-import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
-import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
-import { useEffect, useState } from "react";
 import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
-import Pagination from "../components/Pagination";
-import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
-import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
-import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
 import { Degree } from "@/domain/entities/Degree";
-import { Subject } from "@/domain/entities/Subject";
-import { Professor } from "@/domain/entities/Professor";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
-import ProfessorCategory from "@/domain/entities/ProfessorCategory";
-import SubjectCategory from "@/domain/entities/SubjectCategory";
-import SemesterCategory from "@/domain/entities/SemesterCategory";
-import LiveIndicator from "../components/UpdateIndicator";
-import { Modalities } from "@/domain/entities/Modalities";
-import { getEnumValues } from "@/utils/EnumArray";
-import { ModalityCategory } from "@/domain/entities/ModalityCategory";
 import { Group } from "@/domain/entities/Group";
 import GroupCategory from "@/domain/entities/GroupCategory";
+import { Modalities } from "@/domain/entities/Modalities";
+import { ModalityCategory } from "@/domain/entities/ModalityCategory";
+import { Professor } from "@/domain/entities/Professor";
+import ProfessorCategory from "@/domain/entities/ProfessorCategory";
+import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
+import SemesterCategory from "@/domain/entities/SemesterCategory";
+import { Subject } from "@/domain/entities/Subject";
+import SubjectCategory from "@/domain/entities/SubjectCategory";
+import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
+import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
+import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
+import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
+import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
+import { getEnumValues } from "@/utils/EnumArray";
+import React, { useEffect, useState } from "react";
 import AdBanner from "../components/AdBanner";
+import Calendar from "../components/Calendar";
+import FilterSelector from "../components/FilterSelector";
+import Pagination from "../components/Pagination";
+import SideBar from "../components/SideBar";
+import LiveIndicator from "../components/UpdateIndicator";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
@@ -121,41 +120,85 @@ const CalendarPage = () => {
     mapCategories();
   }, []);
 
+  const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  }
+
+  const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 640) {
+        setDayFormat("long")
+      } else {
+        setDayFormat("short")
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+
+  }, []);
+
   return (
-    <div className="min-h-screen  flex flex-row">
-      <SideBar>
+    <div className="min-h-screen flex flex-col sm:flex-row">
+      <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
         <FilterSelector
           categories={currentCategories}
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentCategories)}
           onChanceSliderValue={handleSliderChange}
           maxSliderValue={maxSubjectsCount}
+          toggleSideBar={toggleSideBar}
         />
       </SideBar>
-      <div className="w-3/6 flex flex-col p-5 h-full">
-        <div className="flex justify-between p-2 items-center">
-          <div className={`${schedule.length == 0 ? "opacity-0" : ""} border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
+      <div className="p-5 pl-2 h-full sm:w-4/6 sm:p-5">
+        <button
+          onClick={toggleSideBar}
+          className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 sm:hidden"
+          type="button"
+        >
+          Filtros
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            className="size-6 stroke-black dark:stroke-white transition-colors duration-300"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+            />
+          </svg>
+        </button>
+
+        <div className="grid grid-cols-6 grid-rows-2 ml-10 justify-center items-end mb-2 p-2 sm:grid-rows-1">
+          <div className="col-start-1 col-end-7 row-start-2 flex sm:col-start-3 sm:col-end-5 sm:row-start-1 sm:mt-0">
+            <LiveIndicator isLive={true} />
+            <div className="ml-3 sm:mx-1" />
+            Última actualización: 19 de diciembre de 2024
+          </div>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start-1 col-span-6 row-start-1 mt-14 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
               Posibles horarios: {schedule.length}
             </p>
           </div>
-          <div className="flex">
-            <LiveIndicator isLive={true} />
-            <div className="mx-1" />
-            Última actualización: 19 de diciembre de 2024
+          <div className={`transition-all duration-500 ${isSideBarOpen ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
+            <Pagination
+              onNext={() => onChangeSchedulePage(page + 1)}
+              onPrevious={() => onChangeSchedulePage(page - 1)}
+              isNextDisabled={page >= schedule.length - 1}
+              isPreviousDisabled={page == 0}
+            />
           </div>
-
-          <Pagination
-            onNext={() => onChangeSchedulePage(page + 1)}
-            onPrevious={() => onChangeSchedulePage(page - 1)}
-            isNextDisabled={page >= schedule.length - 1}
-            isPreviousDisabled={page == 0}
-          />
         </div>
-        <Calendar events={events} />
+
+        <Calendar events={events} dayFormat={dayFormat} />
 
       </div>
-      <div className="w-2/6 m-5 ml-0 px-4">
+      <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4 pb-4 mb-20 mt-10">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
           schedule[page].map((course, index) => (

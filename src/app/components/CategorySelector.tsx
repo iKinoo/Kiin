@@ -34,7 +34,7 @@ const ValueCell: React.FC<{
     return (
         <button
             onClick={onClick}
-            className={`flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-blue-300 dark:hover:bg-gray-700 ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
+            className={`flex items-center w-full p-2 text-left transition duration-75 rounded-lg pl-10 group hover:bg-blue-300 dark:hover:bg-gray-700 ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
         >
             {label}
         </button>
@@ -57,7 +57,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                 <DropdownIcon />
             </button>
 
-            <ul className={`${isVisible ? "block" : "hidden"} py-2 space-y-2`}>
+            <ul className={`${isVisible ? "block" : "hidden"} py-2 space-y-2 `}>
                 {category.values.map((value) => (
                     <ValueCell
                         key={value.id}
