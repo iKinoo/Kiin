@@ -185,7 +185,7 @@ const CalendarPage = () => {
               Posibles horarios: {schedule.length}
             </p>
           </div>
-          <div className={`transition-all duration-500 ${isSideBarOpen ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
+          <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -238,7 +238,7 @@ const CalendarPage = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 function mapEvents(course: Course) {
