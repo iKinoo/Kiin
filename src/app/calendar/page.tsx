@@ -178,7 +178,7 @@ const CalendarPage = () => {
           <div className="col-start-1 col-end-7 row-start-2 flex sm:col-start-3 sm:col-end-5 sm:row-start-1 sm:mt-0">
             <LiveIndicator isLive={true} />
             <div className="ml-3 sm:mx-1" />
-            Última actualización: 19 de diciembre de 2024
+            Última actualización: 2 de enero de 2025
           </div>
           <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start-1 col-span-6 row-start-1 mt-14 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
             <p>
