@@ -16,9 +16,8 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="shadow-lg border-2 fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-purple-500 px-3 py-3 rounded-lg flex space-x-4 z-40 sm:relative sm:bottom-0 sm:py-1">
       <button
-        className={`text-white text-xl px-4 py-2 rounded-md ${
-          isPreviousDisabled ? "text-gray-500 cursor-not-allowed" : "hover:bg-gray-700"
-        }`}
+        className={`text-white text-xl px-4 py-2 rounded-md ${isPreviousDisabled ? "text-purple-500 cursor-not-allowed" : "hover:bg-purple-700"
+          }`}
         onClick={onPrevious}
         disabled={isPreviousDisabled}
       >
@@ -26,9 +25,8 @@ const Pagination: React.FC<PaginationProps> = ({
       </button>
 
       <button
-        className={`text-white text-xl px-4 py-2 rounded-md ${
-          isNextDisabled ? "text-gray-500 cursor-not-allowed" : "hover:bg-gray-700"
-        }`}
+        className={`text-white text-xl px-4 py-2 rounded-md ${isNextDisabled ? "text-purple-500 cursor-not-allowed" : "hover:bg-purple-700"
+          }`}
         onClick={onNext}
         disabled={isNextDisabled}
       >
