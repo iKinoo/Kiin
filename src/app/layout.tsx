@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import NavBar from "./components/NavBar";
 import AdSense from "./components/AdSense";
+import NavBar from "./components/NavBar";
+import "./globals.css";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,7 +16,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Kiin",
-  description: "Tu asistente en la carga académica",
+  description: "Kiin es un asistente para tu carga académica en la Universidad Autónoma de Yucatán. Mediante recursos visuales interactivos para agilizar tu selección de horarios.",
 };
 
 const links = [
@@ -35,20 +35,21 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <html lang="en">
-      <head>
-        <AdSense pId="2263575229671406" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <html lang="en">
+        <head>
+          <AdSense pId="2263575229671406" />
+          <link rel="alternate" type="text/plain" href="/ads.txt" />
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <NavBar links={links} />
-        <div>
-          {children}
-        </div>
-        
-      </body>
-    </html>
+          <div>
+            {children}
+          </div>
+
+        </body>
+      </html>
     </>
   );
 }
