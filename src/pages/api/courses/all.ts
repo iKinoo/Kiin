@@ -18,12 +18,19 @@ export class Courses {
     public static async initialLoad() {
 
         const results = await CoursesModelDao.getCourses();
-        let count = 0;
+        let count = 1;
 
         for (const result of results) {
-            count++;
-            this.courses.push(CourseMapper.fromModelToEntity(count, result));
+            const currentCourse = CourseMapper.fromModelToEntity(count, result);
 
+            const courseAlreadyExist = this.courses.find((course) => course.subject.id == currentCourse.subject.id && course.group == currentCourse.group)
+
+            if (!courseAlreadyExist) {
+                this.courses.push(currentCourse);
+                count++;
+            }else{
+                courseAlreadyExist.addSession(currentCourse.sessions[0]);
+            }
         }
     }
 

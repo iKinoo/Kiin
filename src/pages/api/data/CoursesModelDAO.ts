@@ -12,7 +12,7 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const localDev = false;
+    const localDev = true;
 
     if (localDev) {
       const url = 'public/data.csv'
