@@ -20,7 +20,7 @@ import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsC
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
 import { getEnumValues } from "@/utils/EnumArray";
 import React, { useEffect, useState } from "react";
-import AdBanner from "../components/AdBanner";
+// import AdBanner from "../components/AdBanner";
 import Calendar from "../components/Calendar";
 import FilterSelector from "../components/FilterSelector";
 import Pagination from "../components/Pagination";
@@ -194,7 +194,6 @@ const CalendarPage = () => {
             />
           </div>
         </div>
-
         <Calendar events={events} dayFormat={dayFormat} />
 
       </div>
@@ -212,7 +211,7 @@ const CalendarPage = () => {
                 <p>Modalidad: {course.modality}</p>
               </div>
 
-              {(index + 1) % 2 === 0 &&
+              {/* {(index + 1) % 2 === 0 &&
                 <div style={{ height: '200px' }} className="bg-transparent mb-4 p-4">
                   <AdBanner
                     dataAdSlot="4900058210"
@@ -221,20 +220,20 @@ const CalendarPage = () => {
                     dataFullWidthResponsive={true}
                   />
                 </div>
-              }
+              } */}
             </div>
 
           ))
         ) : (
           <div className="gap-5">
             <p className="text-center">Sin cursos disponibles</p>
-            <div className="bg-white">
+            {/* <div className="bg-white">
               <AdBanner
                 dataAdSlot="7039104578"
                 dataAdFormat="auto"
                 dataFullWidthResponsive={true}
               />
-            </div>
+            </div> */}
           </div>
         )}
       </div>
@@ -269,6 +268,11 @@ function mapEvents(course: Course) {
       title: course.subject.name,
       start: start.toISOString(),
       end: end.toISOString(),
+      borderColor: color,
+      extendedProps: {
+        room: sessionI.room,
+        professor: course.professor.fullName
+      },
     };
   });
 }

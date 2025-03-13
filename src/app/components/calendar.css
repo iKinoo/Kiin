@@ -23,6 +23,9 @@ th[role='presentation'] {
 .fc-timegrid-now-indicator-container{
     display: none;
 }
+.fc-timegrid-event-harness-inset{
+    border-color: none !important;
+}
 
 .fc-timegrid-slot-label{
     border: none !important;
@@ -31,3 +34,10 @@ th[role='presentation'] {
 .fc-timegrid-axis{
     border: none !important;
 }
+.fc-event:hover {
+    /* background-color: #ffcc00 !important; /* Cambia el color de fondo */
+    border-color: #ffaa00 !important; /* Cambia el color del borde */
+    
+    /* opacity: 0.8; /* Ajusta la opacidad */
+    cursor: pointer; /* Cambia el cursor */
+  }
