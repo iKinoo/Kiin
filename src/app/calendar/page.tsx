@@ -26,13 +26,14 @@ import FilterSelector from "../components/FilterSelector";
 import Pagination from "../components/Pagination";
 import SideBar from "../components/SideBar";
 import LiveIndicator from "../components/UpdateIndicator";
+import { Schedule } from "@/domain/entities/Schedule";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<
     { color: string; title: string; start: string; end: string }[]
   >([]);
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
-  const [schedule, setSchedule] = React.useState<Course[][]>([]);
+  const [schedule, setSchedule] = React.useState<Schedule[]>([]);
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
@@ -75,17 +76,17 @@ const CalendarPage = () => {
 
     const generator = new ScheduleGenerator();
     const numberOfSubjects = Array.isArray(selectedSubjectsCount) ? selectedSubjectsCount[0] : selectedSubjectsCount;
-    const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.length === numberOfSubjects : true);
+    const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.courses.length === numberOfSubjects : true);
     setSchedule(schedules);
     const eventsData = getEvents(schedules, 0);
     setEvents(eventsData);
   }
 
-  const getEvents = (schedule: Course[][], index: number) => {
+  const getEvents = (schedule: Schedule[], index: number) => {
     if (schedule.length === 0) {
       return [];
     }
-    return schedule[index].flatMap((course) => {
+    return schedule[index].courses.flatMap((course) => {
       return mapEvents(course);
     });
   };
@@ -200,7 +201,7 @@ const CalendarPage = () => {
       <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4 pb-4 mb-20 mt-10">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
         {schedule.length > 0 ? (
-          schedule[page].map((course, index) => (
+          schedule[page].courses.map((course, index) => (
             <div key={index} >
               <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
                 <h3 className=" font-semibold">{course.subject.name}</h3>

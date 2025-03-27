@@ -1,4 +1,5 @@
 import { Course } from "./Course";
+import { Schedule } from "./Schedule";
 import { Session } from "./Session";
 
 
@@ -30,22 +31,26 @@ export class ScheduleGenerator {
     }
 
     generateSchedules(courses: Course[]) {
-        const schedules: Course[][] = [];
+        const schedules: Schedule[] = [];
     
         for (const course of courses) {
             const compatibleSchedules = schedules.filter((schedule) =>
-                schedule.every(scheduledCourse => 
+                schedule.courses.every(scheduledCourse => 
                     this.courseCompatible(course, scheduledCourse) && 
                     scheduledCourse.subject.id !== course.subject.id
                 )
             );
     
             for (const compatibleSchedule of compatibleSchedules) {
-                schedules.push([...compatibleSchedule, course]);
+                const newSchedule = new Schedule(99);
+                newSchedule.courses = [...compatibleSchedule.courses, course];
+                schedules.push(newSchedule);
             }
     
             // Cada curso puede ser un horario por sí mismo
-            schedules.push([course]);
+            const newSchedule = new Schedule(99);
+            newSchedule.courses = [course];
+            schedules.push(newSchedule);
         }
     
         return schedules;
