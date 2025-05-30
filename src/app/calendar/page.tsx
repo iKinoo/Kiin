@@ -3,12 +3,6 @@ import Category from "@/domain/entities/Category";
 import { Course } from "@/domain/entities/Course";
 import { Degree } from "@/domain/entities/Degree";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
-import { Group } from "@/domain/entities/Group";
-import GroupCategory from "@/domain/entities/GroupCategory";
-import { Modalities } from "@/domain/entities/Modalities";
-import { ModalityCategory } from "@/domain/entities/ModalityCategory";
-import { Professor } from "@/domain/entities/Professor";
-import ProfessorCategory from "@/domain/entities/ProfessorCategory";
 import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
 import SemesterCategory from "@/domain/entities/SemesterCategory";
 import { Subject } from "@/domain/entities/Subject";
@@ -16,9 +10,7 @@ import SubjectCategory from "@/domain/entities/SubjectCategory";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
 import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
 import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
-import { ProfessorsCsvDataSource } from "@/infrastructure/datasource/ProfessorsCsvDataSource";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
-import { getEnumValues } from "@/utils/EnumArray";
 import React, { useEffect, useState } from "react";
 // import AdBanner from "../components/AdBanner";
 import Calendar from "../components/Calendar";
@@ -46,19 +38,13 @@ const CalendarPage = () => {
 
   const mapCategories = async () => {
 
-    const professors: Professor[] = await (new ProfessorsCsvDataSource()).getAll();
-    const professorsCategory: Category = new ProfessorCategory("Profesor", professors);
     const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
     const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
     const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
     const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
     const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
     const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    const modalities: Modalities[] = getEnumValues(Modalities);
-    const modalitiesCategory: Category = new ModalityCategory("Modalidad", modalities);
-    const groups: Group[] = getEnumValues(Group);
-    const groupsCategory: Category = new GroupCategory("Grupo", groups);
-    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory, professorsCategory, modalitiesCategory, groupsCategory]);
+    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory]);
   };
 
   const filterCourses = async (categories: Category[]) => {
