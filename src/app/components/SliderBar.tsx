@@ -1,38 +1,47 @@
-"use client";
+import { useEffect, useState } from "react";
 import { Slider } from "@nextui-org/react";
-// import { useState } from "react";
 
 interface SliderFilterProps {
-  label: string; // El texto del label
-  maxValue: number; // El valor máximo del slider
-  getValue?: (value: number) => string; // La función que devuelve el texto del valor
-  size?: "sm" | "md" | "lg"; // Opcional: tamaño del slider
-  className?: string; // Opcional: clases CSS
+  label: string;
+  maxValue: number;
+  getValue?: (value: number) => string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
   objectNameCounting: string;
   onValueChange: (value: number | number[]) => void;
 }
 
-export function SliderFilter({ maxValue, label, objectNameCounting, onValueChange, }: SliderFilterProps) {
-  // const [selectedValue, setSelectedValue] = useState<number | number[]>(0); // Cambia el tipo inicial
+export function SliderFilter({
+  maxValue,
+  label,
+  objectNameCounting,
+  onValueChange,
+}: SliderFilterProps) {
+  const [selectedValue, setSelectedValue] = useState<number>(maxValue);
+
+  // Solo actualiza el valor por defecto cuando maxValue cambia
+  useEffect(() => {
+    setSelectedValue(maxValue);
+    onValueChange(maxValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxValue]);
 
   const handleSliderChange = (value: number | number[]) => {
-    // setSelectedValue(value);
+    setSelectedValue(value as number);
     onValueChange(value);
-    console.log('Valor seleccionado:', value);
   };
-  return (
-    <>
-      <Slider
-        isDisabled={maxValue === 0 ? true : false}
-        className="max-w-md text-black dark:text-white"
-        getValue={(value) => `${value} of ${maxValue} ${objectNameCounting}`}
-        label={label}
-        maxValue={maxValue}
-        size="sm"
-        onChange={handleSliderChange}
-      />
 
-    </>
+  return (
+    <Slider
+      className="max-w-md text-black dark:text-white"
+      getValue={(value) => `${value} of ${maxValue} ${objectNameCounting}`}
+      label={label}
+      maxValue={maxValue}
+      size="sm"
+      value={selectedValue}
+      onChange={handleSliderChange}
+    />
   );
 }
-export default SliderFilter
+
+export default SliderFilter;
