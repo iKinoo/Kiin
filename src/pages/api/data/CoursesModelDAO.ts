@@ -12,10 +12,10 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const localDev = false;
+    const localDev = true;
 
     if (localDev) {
-      const url = 'public/data.csv'
+      const url = 'public/data_verano_2025.csv'
       this._results = await readLocalCSV(url);
     }
     else {

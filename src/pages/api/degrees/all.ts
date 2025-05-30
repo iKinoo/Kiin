@@ -19,6 +19,9 @@ export class Degrees {
         let count = 0;
 
         for (const result of results) {
+            console.log(result.Apellidos)
+            console.log(result);
+            console.log(JSON.stringify(result, null, 2));
             const degreesResultCsv = result.PE.split("-");
 
             degreesResultCsv.forEach((degreeString) => {
