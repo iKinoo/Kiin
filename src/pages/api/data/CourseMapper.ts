@@ -36,12 +36,11 @@ export class CourseMapper {
         const sessions: Session[] = [];
 
         const days = new Map<keyof CourseCSV, keyof CourseCSV>([
-            ["Lunes", "Aula"],
+            ["Lunes", "Aula1"],
             ["Martes", "Aula2"],
             ["Miercoles", "Aula3"],
             ["Jueves", "Aula4"],
             ["Viernes", "Aula5"],
-            ["Sabado", "Aula6"],
         ]);
 
         for (const day of days) {

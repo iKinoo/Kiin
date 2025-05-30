@@ -24,7 +24,7 @@ export class Professors {
         for (const result of results) {
             if (this.findProfessor(result) === undefined) {
                 count++;
-                this._professors.push(new Professor(count, result.NOMBRES, result.APELLIDOS));
+                this._professors.push(new Professor(count, result.Nombres, result.Apellidos));
             }
         }
     }
@@ -41,8 +41,8 @@ export class Professors {
     public static findProfessor(result: CourseCSV): Professor | undefined {
         return this._professors.find(
             (professor) =>
-                professor.names === result.NOMBRES &&
-                professor.lastNames === result.APELLIDOS
+                professor.names === result.Nombres &&
+                professor.lastNames === result.Apellidos
         )
     }
 
