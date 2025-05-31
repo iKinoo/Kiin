@@ -6,7 +6,7 @@ const ContactPage = () => {
             <h1 className=' text-3xl font-bold pb-10'>Equipo</h1>
             Este proyecto es posible gracias a
 
-            <p className='pt-10 self-start ms-56 text-gray-500'>Actual</p>
+            <p className='pt-10 self-start ms-56 text-gray-500'>Core</p>
 
             <ul className='flex flex-col items-center'>
                 <Member name='Rodrigo' description='Kino' />
@@ -17,7 +17,15 @@ const ContactPage = () => {
                 <Member name='Russel' description='El Gober' />
 
             </ul>
-            <p className='pt-10 self-start ms-56 text-gray-500'>Los primeros</p>
+            <p className='pt-10 self-start ms-56 text-gray-500'>Interacción Humano-Computadora</p>
+
+            <ul className='flex flex-col items-center'>
+                <Member name='Isaías' description='Mesías' />
+                <Member name='Tyrone' description='King Cat' />
+                <Member name='Julio' description='Whitexican' />
+            </ul>
+            
+            <p className='pt-10 self-start ms-56 text-gray-500'>Otros</p>
 
             <ul className='flex flex-col items-center'>
                 <Member name='Breindel' description='Guapo' />
