@@ -33,6 +33,7 @@ export function SliderFilter({
 
   return (
     <Slider
+      isDisabled={maxValue === 0}
       className="max-w-md text-black dark:text-white"
       getValue={(value) => `${value} of ${maxValue} ${objectNameCounting}`}
       label={label}
