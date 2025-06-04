@@ -19,7 +19,8 @@ import Pagination from "../components/Pagination";
 import SideBar from "../components/SideBar";
 import LiveIndicator from "../components/UpdateIndicator";
 import { Schedule } from "@/domain/entities/Schedule";
-
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
+import GoogleCalendarButton from "../components/GoogleCalendarButton";
 const CalendarPage = () => {
   const [events, setEvents] = useState<
     { color: string; title: string; start: string; end: string }[]
@@ -127,6 +128,30 @@ const CalendarPage = () => {
 
   }, []);
 
+  //Prueba de google
+  const [start] = useState(new Date('2025-06-05T08:00:00'));
+  const [end] = useState(new Date('2025-06-28T09:00:00'));
+  const session = useSession();
+  const supabase = useSupabaseClient();
+   async function GoogleSignIn() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar',
+        
+      }
+    });
+    if (error) {
+      console.error('Error signing in:', error.message);
+      alert('Error signing in: ' + error.message);
+    }
+  }
+
+  async function GoogleSignOut() {
+    await supabase.auth.signOut();
+  }
+  //google termina
+
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
       <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
@@ -186,34 +211,75 @@ const CalendarPage = () => {
       </div>
       <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4 pb-4 mb-20 mt-10">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
-        {schedule.length > 0 ? (
-          schedule[page].courses.map((course, index) => (
-            <div key={index} >
-              <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
-                <h3 className=" font-semibold">{course.subject.name}</h3>
-                <p>Grupo: {course.group}</p>
-                <p>Profesor: {course.professor.fullName}</p>
-                <p>Carrera: {course.subject.degreeResume}</p>
-                <p>Semestre: {course.subject.semestre.join(', ')}</p>
-                <p>Modalidad: {course.modality}</p>
-              </div>
 
-              {/* {(index + 1) % 2 === 0 &&
-                <div style={{ height: '200px' }} className="bg-transparent mb-4 p-4">
-                  <AdBanner
-                    dataAdSlot="4900058210"
-                    dataAdLayoutKey="-gw-3+1f-3d+2z"
-                    dataAdFormat="fluid"
-                    dataFullWidthResponsive={true}
+         {schedule.length > 0 ? (
+          <>
+          {session ? (
+                    <div>
+                                      
+                                      {/*<button onClick={GoogleSignOut}>Sign Out</button>*/}
+                                      {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
+                  <div className="mb-4">
+                    <button
+                      onClick={async () => {
+                        const Swal = (await import('sweetalert2')).default;
+                        await Swal.fire({
+                          icon: 'info',
+                          title: 'Sesión expirada',
+                          text: 'Tu sesión de Google ha expirado. Por favor, inicia sesión nuevamente para exportar tu horario.',
+                          confirmButtonText: 'Iniciar sesión'
+                        });
+                        await GoogleSignIn();
+                      }}
+                      className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+                    >
+                      Iniciar sesión con Google
+                    </button>
+                  </div>
+                ) : (
+                  <GoogleCalendarButton
+                    schedule={schedule[page]}
+                    recurrenceStart={start}
+                    recurrenceEnd={end}
                   />
+                )}
+                    </div>
+                  ) : (
+                    <div>
+                      
+                      <button
+                        onClick={async () => {
+                          const Swal = (await import('sweetalert2')).default;
+                          await Swal.fire({
+                            icon: 'info',
+                            title: 'Acceso requerido',
+                            text: 'Debes iniciar sesión con Google para exportar tu horario.',
+                            confirmButtonText: 'Iniciar sesión'
+                          });
+                          await GoogleSignIn();
+                        }}
+                        className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200 mb-3"
+                      >
+                        Agregar horario a Google Calendar
+                      </button>
+                    </div>
+                  )}
+            {schedule[page].courses.map((course, index) => (
+              <div key={index} >
+                <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
+                  <h3 className=" font-semibold">{course.subject.name}</h3>
+                  <p>Grupo: {course.group}</p>
+                  <p>Profesor: {course.professor.fullName}</p>
+                  <p>Carrera: {course.subject.degreeResume}</p>
+                  <p>Semestre: {course.subject.semestre.join(', ')}</p>
+                  <p>Modalidad: {course.modality}</p>
                 </div>
-              } */}
-            </div>
-
-          ))
+              </div>
+            ))}
+          </>
         ) : (
           <div className="gap-5">
-            <p className="text-center">Sin cursos disponibles</p>
+            <p className="text-center">Sin cursos disponibless</p>
             {/* <div className="bg-white">
               <AdBanner
                 dataAdSlot="7039104578"

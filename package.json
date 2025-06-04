@@ -18,6 +18,7 @@
     "@nextui-org/slider": "^2.4.5",
     "@nextui-org/system": "^2.4.4",
     "@nextui-org/theme": "^2.4.3",
+    "@supabase/auth-helpers-react": "^0.5.0",
     "@tsparticles/engine": "^3.7.1",
     "@tsparticles/react": "^3.0.0",
     "csv-parser": "^3.0.0",
@@ -31,6 +32,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-tsparticles": "^2.12.2",
+    "sweetalert2": "^11.22.0",
     "tsparticles": "^3.7.1"
   },
   "devDependencies": {
