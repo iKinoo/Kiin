@@ -48,8 +48,29 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
     const providerToken = session.provider_token || (session.user && session.user.provider_token);
     // @ts-ignore
     const accessToken = providerToken || (session.user && session.user.identities && session.user.identities[0]?.access_token);
+       async function GoogleSignIn() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar',
+        
+      }
+    });
+    if (error) {
+      console.error('Error signing in:', error.message);
+      alert('Error signing in: ' + error.message);
+    }
+  }
     if (!accessToken) {
-      alert('No se pudo obtener el access token de Google.');
+      
+      const Swal = (await import('sweetalert2')).default;
+                          await Swal.fire({
+                            icon: 'info',
+                            title: 'Acceso requerido',
+                            text: 'Debes iniciar sesión con Google para exportar tu horario.',
+                            confirmButtonText: 'Iniciar sesión'
+                          });
+                          await GoogleSignIn();
       return;
     }
 
