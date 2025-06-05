@@ -12,13 +12,13 @@ import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
 import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
 import React, { useEffect, useState } from "react";
 // import AdBanner from "../components/AdBanner";
+import { Schedule } from "@/domain/entities/Schedule";
 import Calendar from "../components/Calendar";
+import ShareLinkButton from "../components/CurrentSchedule";
 import FilterSelector from "../components/FilterSelector";
 import Pagination from "../components/Pagination";
 import SideBar from "../components/SideBar";
 import LiveIndicator from "../components/UpdateIndicator";
-import { Schedule } from "@/domain/entities/Schedule";
-import CurrentSchedule from "../components/CurrentSchedule";
 const CalendarPage = () => {
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Schedule[]>([]);
@@ -167,13 +167,14 @@ const CalendarPage = () => {
 
       </div>
 
-      {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
+      {schedule.length > 0 ? (<ShareLinkButton schedule={schedule[page]} />) : (
 
         <>
-        
+
           <div className=" flex">
-            
+
             <p className="text-center mt-10">Sin horarios disponibles</p>
+
 
           </div>
         </>

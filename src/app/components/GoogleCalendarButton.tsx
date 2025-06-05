@@ -2,6 +2,7 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import React, { useRef, useEffect } from 'react'
 import type { Schedule } from '../../domain/entities/Schedule';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 interface GoogleCalendarButtonProps {
   schedule: Schedule;
   recurrenceStart: Date;
@@ -108,7 +109,6 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
     for (const course of schedule.courses) {
       for (const session of course.sessions) {
         // Log de datos crudos de la sesión para depuración
-       
         // Mapeo de día
         const dayEn = diasMap[session.day] || session.day;
         const firstDate = getNextDateOfDay(recurrenceStart, dayEn);
@@ -198,9 +198,12 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
   return (
     <button
       onClick={handleClick}
-      className="mb-4 px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+      className="h-full w-full flex justify-center items-center px-4 py-2 rounded-lg bg-purple-500 text-white font-semibold shadow hover:bg-purple-800 transition-colors duration-200"
     >
-      Agregar horario a Google Calendar
+      <Image src={'/img/google_calendar_icon.svg'} unoptimized alt={''} width={30} height={30} className='mr-2' />
+
+
+      <span className='justify-self-center'>Agregar a Google Calendar</span>
     </button>
   );
 }
