@@ -1,5 +1,5 @@
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
-import React from 'react';
+import React, { useRef, useEffect } from 'react'
 import type { Schedule } from '../../domain/entities/Schedule';
 import Swal from 'sweetalert2';
 interface GoogleCalendarButtonProps {
@@ -11,6 +11,36 @@ interface GoogleCalendarButtonProps {
 export default function GoogleCalendarButton({ schedule, recurrenceStart, recurrenceEnd }: GoogleCalendarButtonProps) {
   const session = useSession();
   const supabase = useSupabaseClient();
+
+  const popupRef = useRef<Window | null>(null);
+
+  async function GoogleSignIn() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/calendar',
+        redirectTo: window.location.href,
+        skipBrowserRedirect: true,
+      }
+    });
+
+    if (error) {
+      console.error('Error signing in:', error.message);
+      alert('Error signing in: ' + error.message);
+      return;
+    }
+
+    if (data?.url) {
+      popupRef.current = window.open(data.url, 'oauthPopup', 'width=600,height=700');
+    }
+  }
+
+  useEffect(() => {
+    if (session && popupRef.current && !popupRef.current.closed) {
+      popupRef.current.close();
+      popupRef.current = null;
+    }
+  }, [session]);
 
   function getNextDateOfDay(startDate: Date, dayOfWeek: string): Date {
     const daysMap: Record<string, number> = {
@@ -48,29 +78,16 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
     const providerToken = session.provider_token || (session.user && session.user.provider_token);
     // @ts-ignore
     const accessToken = providerToken || (session.user && session.user.identities && session.user.identities[0]?.access_token);
-       async function GoogleSignIn() {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/calendar',
-        
-      }
-    });
-    if (error) {
-      console.error('Error signing in:', error.message);
-      alert('Error signing in: ' + error.message);
-    }
-  }
+
     if (!accessToken) {
-      
       const Swal = (await import('sweetalert2')).default;
-                          await Swal.fire({
-                            icon: 'info',
-                            title: 'Acceso requerido',
-                            text: 'Debes iniciar sesión con Google para exportar tu horario.',
-                            confirmButtonText: 'Iniciar sesión'
-                          });
-                          await GoogleSignIn();
+      await Swal.fire({
+        icon: 'info',
+        title: 'Acceso requerido',
+        text: 'Debes iniciar sesión con Google para exportar tu horario.',
+        confirmButtonText: 'Iniciar sesión'
+      });
+      await GoogleSignIn();
       return;
     }
 
