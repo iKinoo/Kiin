@@ -1,6 +1,5 @@
 "use client";
 import Category from "@/domain/entities/Category";
-import { Course } from "@/domain/entities/Course";
 import { Degree } from "@/domain/entities/Degree";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
 import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
@@ -21,9 +20,6 @@ import LiveIndicator from "../components/UpdateIndicator";
 import { Schedule } from "@/domain/entities/Schedule";
 import CurrentSchedule from "../components/CurrentSchedule";
 const CalendarPage = () => {
-  const [events, setEvents] = useState<
-    { color: string; title: string; start: string; end: string }[]
-  >([]);
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Schedule[]>([]);
   const [page, setPage] = useState(0);
@@ -55,7 +51,6 @@ const CalendarPage = () => {
 
     if (courses.length === 0) {
       setSchedule([]);
-      setEvents([]);
       setIsFilterCoursesEmpty(true);
       return;
     }
@@ -64,22 +59,9 @@ const CalendarPage = () => {
     const numberOfSubjects = Array.isArray(selectedSubjectsCount) ? selectedSubjectsCount[0] : selectedSubjectsCount;
     const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.courses.length === numberOfSubjects : true);
     setSchedule(schedules);
-    const eventsData = getEvents(schedules, 0);
-    setEvents(eventsData);
   }
 
-  const getEvents = (schedule: Schedule[], index: number) => {
-    if (schedule.length === 0) {
-      return [];
-    }
-    return schedule[index].courses.flatMap((course) => {
-      return mapEvents(course);
-    });
-  };
-
   const onChangeSchedulePage = (page: number) => {
-    const eventsData = getEvents(schedule, page);
-    setEvents(eventsData);
     setPage(page);
   };
 
@@ -181,7 +163,7 @@ const CalendarPage = () => {
             />
           </div>
         </div>
-        <Calendar events={events} dayFormat={dayFormat} />
+        <Calendar dayFormat={dayFormat} schedule={schedule[page]} />
 
       </div>
 
@@ -201,40 +183,4 @@ const CalendarPage = () => {
     </div >
   );
 };
-function mapEvents(course: Course) {
-  const days = {
-    "Lunes": "13",
-    "Martes": "14",
-    "Miercoles": "15",
-    "Jueves": "16",
-    "Viernes": "17",
-    "Sabado": "18",
-  };
-  const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-
-  return course.sessions.map((sessionI) => {
-
-    const day = days[sessionI.day as keyof typeof days];
-    const dateI = `2025-01-${day}`;
-
-    //Offset de la zona horaria de México (-06:00)
-    const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
-    const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}-06:00`;
-
-    const start = new Date(startDateTimeString);
-    const end = new Date(endDateTimeString);
-
-    return {
-      color: color,
-      title: course.subject.name,
-      start: start.toISOString(),
-      end: end.toISOString(),
-      borderColor: color,
-      extendedProps: {
-        room: sessionI.room,
-        professor: course.professor.fullName
-      },
-    };
-  });
-}
 export default CalendarPage;
