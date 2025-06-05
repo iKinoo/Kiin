@@ -5,12 +5,11 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useMemo, useState } from 'react';
 import { EventHoveringArg } from '@fullcalendar/core';
 import './calendar.css';
-import { Schedule } from '@/domain/entities/Schedule';
 import { Course } from '@/domain/entities/Course';
 
 
 interface CalendarProps {
-    schedule: Schedule
+    courses: Course[]
     dayFormat: 'long' | 'short';
 }
 
@@ -51,7 +50,7 @@ function mapEvents(course: Course) {
     });
 }
 
-const Calendar: React.FC<CalendarProps> = ({ schedule, dayFormat }) => {
+const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
 
     interface Tooltip {
         visible: boolean;
@@ -63,8 +62,8 @@ const Calendar: React.FC<CalendarProps> = ({ schedule, dayFormat }) => {
     const [tooltip, setTooltip] = useState<Tooltip>({ visible: false, x: 0, y: 0, eventArgs: undefined });
 
     const events = useMemo(() => {
-  return schedule?.courses.flatMap((course) => mapEvents(course)) ?? [];
-}, [schedule]);
+        return courses?.flatMap((course) => mapEvents(course)) ?? [];
+    }, [courses]);
 
 
     return (

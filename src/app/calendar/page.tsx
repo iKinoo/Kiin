@@ -163,10 +163,10 @@ const CalendarPage = () => {
             />
           </div>
         </div>
-        <Calendar dayFormat={dayFormat} schedule={schedule[page]} />
+        <Calendar dayFormat={dayFormat} courses={schedule[page]?.courses} />
 
       </div>
-
+    <div className="md:w-1/5 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
       {schedule.length > 0 ? (<ShareLinkButton schedule={schedule[page]} />) : (
 
         <>
@@ -180,6 +180,8 @@ const CalendarPage = () => {
         </>
 
       )}
+    </div>
+      
 
     </div >
   );

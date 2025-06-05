@@ -59,7 +59,7 @@ function CurrentSchedule({ schedule }: Props) {
     const [showShareLink, setShowShareLink] = useState<string | null>(null);
 
     return (
-        <div className="md:w-1/5 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
+        <div className="">
             <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
 
             <>
