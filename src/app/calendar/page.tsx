@@ -133,7 +133,7 @@ const CalendarPage = () => {
   const [end] = useState(new Date('2025-06-28T09:00:00'));
   const session = useSession();
   const supabase = useSupabaseClient();
-   async function GoogleSignIn() {
+  async function GoogleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -152,8 +152,10 @@ const CalendarPage = () => {
   }
   //google termina
 
+  const [showShareLink, setShowShareLink] = useState<string | null>(null);
+
   return (
-    <div className="min-h-screen flex flex-col sm:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row">
       <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
         <FilterSelector
           categories={currentCategories}
@@ -164,10 +166,10 @@ const CalendarPage = () => {
           toggleSideBar={toggleSideBar}
         />
       </SideBar>
-      <div className="p-5 pl-2 h-full sm:w-4/6 sm:p-5">
+      <div className="p-5 pl-2 h-full md:w-4/6 md:p-5">
         <button
           onClick={toggleSideBar}
-          className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 sm:hidden"
+          className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
           type="button"
         >
           Filtros
@@ -186,18 +188,18 @@ const CalendarPage = () => {
           </svg>
         </button>
 
-        <div className="grid grid-cols-6 grid-rows-2 ml-10 justify-center items-end mb-2 p-2 sm:grid-rows-1">
-          <div className="col-start-1 col-end-7 row-start-2 flex sm:col-start-3 sm:col-end-5 sm:row-start-1 sm:mt-0">
+        <div className=" grid grid-cols-6 grid-rows-2 ml-10 justify-between items-center mb-2 p-2 md:grid-rows-1">
+          <div className="col-start-1 col-end-7 row-start-2 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
             <LiveIndicator isLive={true} />
-            <div className="ml-3 sm:mx-1" />
+            <div className="ml-3 md:mx-1" />
             Última actualización: 20 de marzo de 2025
           </div>
-          <div className={`${schedule.length == 0 ? "opacity-0" : ""} col-start-1 col-span-6 row-start-1 mt-14 sm:col-end-2 sm:row-start-1 border-2 rounded-lg border-gray-300 flex items-center p-2 justify-between`}>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""}  col-start-1 col-span-6 row-start-1  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
             <p>
               Posibles horarios: {schedule.length}
             </p>
           </div>
-          <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center sm:col-start-5 sm:col-span-2 sm:justify-self-end sm:row-span-1"}`}>
+          <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center md:col-start-6  md:justify-self-end md:row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
@@ -209,7 +211,7 @@ const CalendarPage = () => {
         <Calendar events={events} dayFormat={dayFormat} />
 
       </div>
-      <div className="sm:w-1/5 sm:m-5 sm:ml-0 px-4 pb-4 mb-20 mt-10">
+      <div className="md:w-1/5 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
         <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
 
          {schedule.length > 0 ? (
@@ -243,27 +245,64 @@ const CalendarPage = () => {
                     recurrenceEnd={end}
                   />
                 )}
-                    </div>
-                  ) : (
-                    <div>
-                      
+              </div>
+            ) : (
+              <div className="flex flex-row mb-3 gap-2 justify-center items-center  h-[7%]">
+
+                <button
+                  onClick={async () => {
+                    const Swal = (await import('sweetalert2')).default;
+                    await Swal.fire({
+                      icon: 'info',
+                      title: 'Acceso requerido',
+                      text: 'Debes iniciar sesión con Google para exportar tu horario.',
+                      confirmButtonText: 'Iniciar sesión'
+                    });
+                    await GoogleSignIn();
+                  }}
+                  className="h-full px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+                >
+                  Agregar a Google Calendar
+                </button>
+              
+                <div className="relative  h-full">
+                  <button
+                    
+                    onClick={async () => {
+                      const coursesIds = schedule[page].courses.map(course => course.id);
+                      const shareLink = `https://kiin.live/calendar/horario?ids=${coursesIds.toString()}`;
+                      setShowShareLink(shareLink);
+                    }}
+                    className="h-full px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+                  >
+                    Compartir
+                  </button>
+                  {showShareLink && (
+                    <div className="absolute right-1 mt-2 w-max bg-gray-800 border  border-gray-700 rounded shadow-xl p-2 z-10 flex items-center gap-2">
+                      <span className="text-xs break-all text-white">{showShareLink}</span>
                       <button
-                        onClick={async () => {
-                          const Swal = (await import('sweetalert2')).default;
-                          await Swal.fire({
-                            icon: 'info',
-                            title: 'Acceso requerido',
-                            text: 'Debes iniciar sesión con Google para exportar tu horario.',
-                            confirmButtonText: 'Iniciar sesión'
-                          });
-                          await GoogleSignIn();
+                        onClick={() => {
+                          navigator.clipboard.writeText(showShareLink);
                         }}
-                        className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200 mb-3"
+                        className="ml-2 px-2 py-1 text-xs text-black bg-white rounded hover:bg-gray-300"
                       >
-                        Agregar horario a Google Calendar
+                        Copiar
+                      </button>
+                      <button
+                        onClick={() => setShowShareLink(null)}
+                        className="ml-1 px-2 py-1 text-xs text-black bg-white rounded hover:bg-gray-200"
+                        aria-label="Cerrar"
+                      >
+                        ✕
                       </button>
                     </div>
                   )}
+                </div>
+
+                
+
+              </div>
+            )}
             {schedule[page].courses.map((course, index) => (
               <div key={index} >
                 <div className="mb-4 border-2 p-4 rounded-lg border-gray-300 text-small">
