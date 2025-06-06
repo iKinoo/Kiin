@@ -152,13 +152,14 @@ type ShareButtonProps = {
 }
 
 function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareButtonProps) {
+    const [isCopied, setIsCopied] = useState(false);
     return (
         <>
 
             <button
                 onClick={async () => {
                     const coursesIds = schedule.courses.map(course => course.id);
-                    const shareLink = `https://kiin.live/calendar/horario?ids=${coursesIds.toString()}`;
+                    const shareLink = `${window.location.origin}/calendar/horario?ids=${coursesIds.toString()}`;
                     setShowShareLink(shareLink);
                 }}
                 className="flex items-center justify-center h-full w-full px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-800 transition-colors duration-200"
@@ -167,19 +168,23 @@ function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareBut
                 Compartir
             </button>
             {showShareLink && (
-                <div className="absolute -right-2 mt-2 w-max bg-gray-800 border  border-gray-700 rounded shadow-xl p-2 z-10 flex items-center gap-2">
-                    <span className="text-xs break-all text-white">{showShareLink}</span>
+                <div className="absolute right-3 mt-2 w-max bg-gray-800 border  border-gray-700 rounded shadow-xl p-2 z-10 flex items-center gap-2">
+                    <span className="text-xs break-all text-white">{showShareLink.slice(0,30)}...</span>
                     <button
                         onClick={() => {
                             navigator.clipboard.writeText(showShareLink);
+                            setIsCopied(true);
+                            setTimeout(() => {
+                                setIsCopied(false);
+                            }, 2000);
                         }}
-                        className="ml-2 px-2 py-1  text-black bg-white rounded hover:bg-gray-300"
+                        className="ml-2 px-2 py-1  text-white bg-blue-600 rounded hover:bg-blue-800"
                     >
-                        Copiar
+                        {isCopied ? 'Copiado!' : 'Copiar'}
                     </button>
                     <button
                         onClick={() => setShowShareLink(null)}
-                        className="ml-1 px-2 py-1  text-black bg-white rounded hover:bg-gray-200"
+                        className="ml-1 px-2 py-1  text-white bg-blue-600 rounded hover:bg-blue-800"
                         aria-label="Cerrar"
                     >
                         ✕
