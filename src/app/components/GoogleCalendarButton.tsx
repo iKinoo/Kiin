@@ -75,9 +75,11 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
       return;
     }
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const providerToken = session.provider_token || (session.user && session.user.provider_token);
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const accessToken = providerToken || (session.user && session.user.identities && session.user.identities[0]?.access_token);
 
     if (!accessToken) {
@@ -183,6 +185,7 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
             continue;
           }
           successCount++;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
           errorCount++;
         }

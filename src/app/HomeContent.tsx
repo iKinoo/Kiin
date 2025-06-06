@@ -2,6 +2,7 @@
 import React from 'react'
 import Link from 'next/link';
 import ParticlesComponent from './components/Particles';
+import Image from 'next/image';
 const HomeContent: React.FC = () => {
   return (
     <div className=' h-screen flex flex-col overflow-hidden'>
@@ -24,7 +25,7 @@ const HomeContent: React.FC = () => {
           </Link>
         </div>
         <div className="mx-16 flex justify-center lg:justify-start mt-6 lg:mx-0 xl:mx-0 2xl:mx-9">
-          <img
+          <Image
             className="max-w-full h-auto sm:h-80 sm:w-auto lg:h-5/6 lg:w-auto object-cover"
             src="img/banner.png"
             alt="Img bienvenida kiin"
