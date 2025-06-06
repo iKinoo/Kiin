@@ -204,7 +204,7 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
       <PerfilUsuario />
 
 
-      <span className='justify-self-center'>Agregar a Google Calendar</span>
+      <span className='ml-2 justify-self-center'>Agregar a Google Calendar</span>
     </button>
   );
 }
@@ -223,8 +223,8 @@ function PerfilUsuario() {
       <Image
         src={avatarUrl}
         alt={`Foto de perfil de ${nombre}`}
-        width={48}
-        height={48}
+        width={32}
+        height={32}
         className="rounded-full"
       />
     </div>

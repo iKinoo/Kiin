@@ -39,19 +39,17 @@ function HorarioPage() {
     schedule.addCourse(course);
   });
 
-  return (<div className="flex flex-row justify-center p-4">
-    <div className='w-[80%] px-10'>
-      <Calendar courses={courses} dayFormat={'long'} />
+  return (
+    <div className="flex flex-col md:flex-row justify-center p-4 gap-6 min-h-screen">
+      
+      <div className="w-full md:w-[80%] px-2">
+        <Calendar courses={courses} dayFormat={'long'} />
+      </div>
+      <div className="w-full md:w-[20%] mt-6 md:mt-0">
+        <CurrentSchedule schedule={schedule} />
+      </div>
     </div>
-
-    <div className='w-[20%]'>
-
-      <CurrentSchedule schedule={schedule} />
-    </div>
-
-  </div>
-
-  )
+  );
 }
 
 export default HorarioPage
