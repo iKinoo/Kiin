@@ -200,10 +200,33 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
       onClick={handleClick}
       className="h-full w-full flex justify-center items-center px-4 py-2 rounded-lg bg-purple-500 text-white font-semibold shadow hover:bg-purple-800 transition-colors duration-200"
     >
-      <Image src={'/img/google_calendar_icon.svg'} unoptimized alt={''} width={30} height={30} className='mr-2' />
+      {/* <Image src={'/img/google_calendar_icon.svg'}  alt={''} width={30} height={30} className='mr-2' /> */}
+      <PerfilUsuario />
 
 
       <span className='justify-self-center'>Agregar a Google Calendar</span>
     </button>
+  );
+}
+
+
+function PerfilUsuario() {
+  const session = useSession();
+
+  if (!session) return <p>Cargando...</p>;
+
+  const avatarUrl = session.user.user_metadata.avatar_url;
+  const nombre = session.user.user_metadata.full_name;
+
+  return (
+    <div className="flex items-center gap-4">
+      <Image
+        src={avatarUrl}
+        alt={`Foto de perfil de ${nombre}`}
+        width={48}
+        height={48}
+        className="rounded-full"
+      />
+    </div>
   );
 }
