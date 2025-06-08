@@ -113,7 +113,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                 <FullCalendar
                     now={'2025-01-13'}
                     dayHeaderClassNames={
-                        ['bg-gray-800', 'text-white', '!border-0 rounded']// Usar clases de Tailwind
+                        ['bg-gray-800', 'text-white', '!border-0', '!first:rounded']// Usar clases de Tailwind
                     }
                     slotLaneClassNames={
                         ['!border !border-1 dark:!border-gray-500']// Usar clases de Tailwind
@@ -141,7 +141,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     initialView="timeGridWeek"
                     events={events}
                     eventTextColor='black'
-                    eventClassNames={['text-sm' , 'font-semibold']}
+                    eventClassNames={['text-sm' , 'md:font-semibold ']}
                     
                     dayHeaderContent={(args) =>
                         args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).charAt(0).toUpperCase() +
@@ -149,6 +149,15 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     }
                     eventMouseEnter={handleMouseEnter}
                     eventMouseLeave={handleMouseLeave}
+                    eventClick={(e) => {
+                        setTooltip({
+                            visible: true,
+                            x: e.jsEvent.clientX,
+                            y: e.jsEvent.clientY,
+                            eventArgs: e
+                        });
+                    }   
+                }
                 />
             </div>
             {tooltip.visible && (

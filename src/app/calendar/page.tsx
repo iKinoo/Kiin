@@ -127,7 +127,7 @@ const CalendarPage = () => {
           className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
           type="button"
         >
-          Filtros
+          Materias
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

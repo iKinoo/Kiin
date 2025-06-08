@@ -1,7 +1,7 @@
 // app/calendar/horario/HorarioClient.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Calendar from '@/app/components/Calendar';
 import CurrentSchedule from '@/app/components/CurrentSchedule';
@@ -15,6 +15,21 @@ export default function HorarioClient() {
   const ids = React.useMemo(() => idsParam ? idsParam.split(',').map(Number) : [], [idsParam]);
 
   const [courses, setCourses] = React.useState<Course[]>([]);
+
+  const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
+    useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth > 640) {
+          setDayFormat("long")
+        } else {
+          setDayFormat("short")
+        }
+      };
+      window.addEventListener('resize', handleResize);
+      handleResize();
+      return () => window.removeEventListener("resize", handleResize);
+  
+    }, []);
 
   React.useEffect(() => {
     (new CoursesCsvDatasource()).getAll().then(courses => {
@@ -31,7 +46,7 @@ export default function HorarioClient() {
   return (
     <div className="flex flex-col md:flex-row justify-center p-4 gap-6 min-h-screen">
       <div className="w-full md:w-[80%] px-2">
-        <Calendar courses={courses} dayFormat={'long'} />
+        <Calendar courses={courses} dayFormat={dayFormat} />
       </div>
       <div className="w-full md:w-[20%] mt-6 md:mt-0">
         <CurrentSchedule schedule={schedule} />
