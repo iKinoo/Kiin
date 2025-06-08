@@ -2,16 +2,33 @@
 --fc-page-bg-color: none    ;
 }
 
-.fc-day-mon{
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-right: 10px !important;
-    border-right-color: white;
+.fc-day-mon.fc-col-header-cell{
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
 }
 .fc-day-sat{
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
+.fc-day-tue.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-wed.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-thu.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-fri.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+
 
 .fc-day-today.fc-timegrid-col{
     background-color: transparent !important;

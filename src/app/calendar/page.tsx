@@ -121,7 +121,7 @@ const CalendarPage = () => {
           toggleSideBar={toggleSideBar}
         />
       </SideBar>
-      <div className="p-5 pl-2 h-full md:w-4/6 md:p-5">
+      <div className="p-5  h-full md:w-4/6 md:p-5">
         <button
           onClick={toggleSideBar}
           className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
@@ -149,7 +149,7 @@ const CalendarPage = () => {
             <div className="ml-3 md:mx-1" />
             Última actualización: 20 de marzo de 2025
           </div>
-          <div className={`${schedule.length == 0 ? "opacity-0" : ""}  col-start-1 col-span-6 row-start-1  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
+          <div className={`${schedule.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-1  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
             <p>
               Posibles horarios: {schedule.length}
             </p>
@@ -166,7 +166,7 @@ const CalendarPage = () => {
         <Calendar dayFormat={dayFormat} courses={schedule[page]?.courses} />
 
       </div>
-    <div className="md:w-1/6 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
+    <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 pr-3">
       {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
 
         <>
