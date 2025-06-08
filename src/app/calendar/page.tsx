@@ -14,11 +14,11 @@ import React, { useEffect, useState } from "react";
 // import AdBanner from "../components/AdBanner";
 import { Schedule } from "@/domain/entities/Schedule";
 import Calendar from "../components/Calendar";
-import ShareLinkButton from "../components/CurrentSchedule";
 import FilterSelector from "../components/FilterSelector";
 import Pagination from "../components/Pagination";
 import SideBar from "../components/SideBar";
 import LiveIndicator from "../components/UpdateIndicator";
+import CurrentSchedule from "../components/CurrentSchedule";
 const CalendarPage = () => {
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [schedule, setSchedule] = React.useState<Schedule[]>([]);
@@ -166,8 +166,8 @@ const CalendarPage = () => {
         <Calendar dayFormat={dayFormat} courses={schedule[page]?.courses} />
 
       </div>
-    <div className="md:w-1/5 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
-      {schedule.length > 0 ? (<ShareLinkButton schedule={schedule[page]} />) : (
+    <div className="md:w-1/6 md:m-5 md:ml-0 px-4 pb-4 mb-20 mt-10">
+      {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
 
         <>
 
