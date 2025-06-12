@@ -11,10 +11,8 @@ const HeadSideBar: React.FC<HeadSideBarProps> = ({ toggleSideBar }) => {
       <div className='flex flex-col'>
 
         <span className="ms-2 font-semibold">Selecciona tus materias</span>
-        <br />
-        <span className='ms-2  text-gray-500'>
-          
-          Primero <span className='font-bold'>Carrera</span>, luego <span className='font-bold'>Semestre</span> y por último <span className='font-bold'>Materias</span></span>
+        
+        
       </div>
 
       <button className="self-end ml-auto md:hidden" onClick={toggleSideBar}>
@@ -41,6 +39,7 @@ const SideBar: React.FC<SideBarProps> = ({ children, toggleSideBar, isOpen }) =>
       >
         <div className='px-3 py-4 h-5/6'>
           <HeadSideBar toggleSideBar={toggleSideBar} />
+          
           {children}
 
         </div>

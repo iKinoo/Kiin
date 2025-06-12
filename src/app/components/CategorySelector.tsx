@@ -32,12 +32,14 @@ const ValueCell: React.FC<{
     onClick: () => void;
 }> = ({ label, isSelected, onClick }) => {
     return (
-        <button
-            onClick={onClick}
-            className={`flex items-center w-full p-2 text-left transition duration-75 rounded-lg pl-10 group hover:bg-blue-300 dark:hover:bg-gray-700 ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
-        >
-            {label}
-        </button>
+        <div className="flex">
+            <button
+                onClick={onClick}
+                className={`flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group hover:bg-blue-300 dark:hover:bg-gray-700 ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
+            >
+                {label}
+            </button>
+        </div>
     );
 };
 
@@ -45,11 +47,11 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     return (
-        <li className="">
+        <li className="border-1 rounded-lg border-gray-700">
             <button
                 aria-controls="dropdown-example"
                 onClick={() => setIsVisible(!isVisible)}
-                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                className="bg-white dark:border-none border border-gray-500 dark:bg-gray-900 sticky top-0 flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
                 <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                     {category.title}
