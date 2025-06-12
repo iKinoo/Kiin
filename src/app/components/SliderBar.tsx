@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Slider } from "@nextui-org/react";
+import {Slider} from "@heroui/slider";
 
 interface SliderFilterProps {
   label: string;
