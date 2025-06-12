@@ -3,7 +3,6 @@ import Category from "@/domain/entities/Category";
 import { Degree } from "@/domain/entities/Degree";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
 import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
-import SemesterCategory from "@/domain/entities/SemesterCategory";
 import { Subject } from "@/domain/entities/Subject";
 import SubjectCategory from "@/domain/entities/SubjectCategory";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
@@ -37,10 +36,29 @@ const CalendarPage = () => {
     const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
     const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
     const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
-    const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
-    const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
-    const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory]);
+    const semestre1: Category = new SubjectCategory(1, subjects);
+    const semestre2: Category = new SubjectCategory(2, subjects);
+    const semestre3: Category = new SubjectCategory(3, subjects);
+    const semestre4: Category = new SubjectCategory(4, subjects);
+    const semestre5: Category = new SubjectCategory(5, subjects);
+    const semestre6: Category = new SubjectCategory(6, subjects);
+    const semestre7: Category = new SubjectCategory(7, subjects);
+    const semestre8: Category = new SubjectCategory(8, subjects);
+    const semestre9: Category = new SubjectCategory(9, subjects);
+
+
+    setCurrentCategories([degreesCategory,
+      semestre1,
+      semestre2,
+      semestre3,
+      semestre4,
+      semestre5,
+      semestre6,
+      semestre7,
+      semestre8,
+      semestre9,
+
+    ]);
   };
 
   const filterCourses = async (categories: Category[]) => {
@@ -166,22 +184,22 @@ const CalendarPage = () => {
         <Calendar dayFormat={dayFormat} courses={schedule[page]?.courses} />
 
       </div>
-    <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 pr-3">
-      {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
+      <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 pr-3">
+        {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
 
-        <>
+          <>
 
-          <div className=" flex">
+            <div className=" flex">
 
-            <p className="text-center mt-10">Sin horarios disponibles</p>
+              <p className="text-center mt-10">Sin horarios disponibles</p>
 
 
-          </div>
-        </>
+            </div>
+          </>
 
-      )}
-    </div>
-      
+        )}
+      </div>
+
 
     </div >
   );
