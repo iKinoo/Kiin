@@ -15,4 +15,10 @@ export default class SubjectFilter implements CourseFilter {
         }
         return this._subjects.some(subject => subject.id === course.subject.id);
     }
+
+    
+    public get subjects() : Subject[] {
+        return this._subjects;
+    }
+    
 }

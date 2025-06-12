@@ -85,8 +85,14 @@ const CalendarPage = () => {
 
   const handleClickFilter = (category: Category[]) => {
     setCurrentCategories(category);
-    const testL = category.find(c => c.title === 'Materia')?.selectedValues.length ?? 0;
-    setMaxSubjectsCount(testL);
+    const semestersWithSubjectsSelected = category.filter(c => c instanceof SubjectCategory)
+
+    let selectedSubjectsCount = 0;
+    semestersWithSubjectsSelected.forEach(c => {selectedSubjectsCount = c.selectedValues.length + selectedSubjectsCount})
+
+    // const testL = category.find(c => c instanceof SubjectCategory)?.selectedValues.length ?? 0;
+    
+    setMaxSubjectsCount(selectedSubjectsCount);
   }
 
   useEffect(() => {
