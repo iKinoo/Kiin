@@ -5,6 +5,8 @@ import React, { useState } from "react";
 interface CategoryProps {
     category: Category;
     onClick: (valueId: number) => void;
+    isDegreeSelected: boolean
+    setIsDegreeSelected: (value: boolean) => void;
 }
 
 const DropdownIcon = () => {
@@ -38,7 +40,7 @@ const ValueCell: React.FC<{
             <button
                 onClick={onClick}
                 disabled={disabled}
-                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "dark:hover:bg-gray-700"} flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
+                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "md:dark:hover:bg-gray-700"} flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group md:hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
             >
                 {label}
             </button>
@@ -46,9 +48,9 @@ const ValueCell: React.FC<{
     );
 };
 
-const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
+const CategorySelector: React.FC<CategoryProps> = ({ category, onClick , isDegreeSelected, setIsDegreeSelected}) => {
     const [isVisible, setIsVisible] = useState(false);
-    const [isDegreeSelected, setIsDegreeSelected] = useState(false);
+    const [degreeTitle, setDegreeTitle] = useState("");
 
     return (
         <li className="border-1 rounded-lg border-gray-500">
@@ -58,7 +60,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                 className={`bg-white dark:border-none border border-gray-500  dark:bg-gray-900 sticky top-0 flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700`}
             >
                 <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
-                    {category.title}
+                    {(category instanceof DegreeCategory) ? (isDegreeSelected ? degreeTitle : category.title) : category.title}
                 </span>
                 <DropdownIcon />
             </button>
@@ -73,7 +75,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick }) => {
                             onClick(value.id)
                             if ((category instanceof DegreeCategory)) {
                                 setIsDegreeSelected(!isDegreeSelected);
-                                console.log("degree ha sido seleccioando")
+                                setDegreeTitle(value.label)
                             }
                         }}
                         disabled={(category instanceof DegreeCategory) ? (!category.isSelected(value.id) && isDegreeSelected) : false} />

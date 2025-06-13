@@ -1,8 +1,10 @@
 "use client"
 import Category from '@/domain/entities/Category'
-import React from 'react'
+import React, { useState } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 import SliderFilter from './SliderBar';
+import DegreeCategory from '@/domain/entities/DegreeCategory';
+import SubjectCategory from '@/domain/entities/SubjectCategory';
 
 interface FilterSelectorProps {
     categories: Category[]
@@ -24,21 +26,31 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
         onClick(newCategories);
     }
 
+    const [isDegreeSelected, setIsDegreeSelected] = useState(false);
+
     return (
         <>
             <div className="h-4/6 overflow-y-auto p-1 ">
+                <div className='font-bold mb-4 p-1.5'>Selecciona tu Carrera</div>
                 <ul className="space-y-2 ">
-
                     {
-                        categories.map((category, index) => (
-                            <CategorySelector key={index} category={category} onClick={(valueId) => refreshCategories(index, valueId)} />
+                        categories.filter(c => c instanceof DegreeCategory).map((category, index) => (
+                            <CategorySelector isDegreeSelected={isDegreeSelected} setIsDegreeSelected={setIsDegreeSelected} key={index} category={category} onClick={(valueId) => refreshCategories(index, valueId)} />
                         ))
-
                     }
-                    
-                    
-
                 </ul>
+                <div className='font-bold my-4 p-1.5'>Selecciona tus Materias</div>
+
+                {isDegreeSelected ? <ul className="space-y-2 ">
+                    {
+                        categories.filter(c => c instanceof SubjectCategory).map((category, index) => (
+                            <CategorySelector isDegreeSelected={isDegreeSelected} setIsDegreeSelected={setIsDegreeSelected} key={index + 1} category={category} onClick={(valueId) => refreshCategories(index + 1, valueId)} />
+                        ))
+                    }
+                </ul> : <span className='text-gray-500'>
+                    Selecciona tu Plan de Estudios primero
+                </span>}
+
             </div>
             <div className='px-5'>
                 <SliderFilter maxValue={maxSliderValue} label='Materias por horario' objectNameCounting='materias' onValueChange={onChanceSliderValue} />

@@ -6,17 +6,11 @@ interface HeadSideBarProps {
 
 const HeadSideBar: React.FC<HeadSideBarProps> = ({ toggleSideBar }) => {
   return (
-    <div className='flex items-center p-3 bg-gray-300 text-gray-900 rounded-lg mb-3 dark:text-white dark:bg-gray-800'>
-
-      <div className='flex flex-col'>
-
-        <span className="ms-2 font-semibold">Selecciona tus materias</span>
-        
-        
-      </div>
-
-      <button className="self-end ml-auto md:hidden" onClick={toggleSideBar}>
-        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+    <div className='flex justify-end'>
+      
+      <button className="flex justify-center  ml-auto md:hidden w-full items-center p-2 bg-gray-300 text-gray-900 rounded-lg  dark:text-white dark:bg-blue-600" onClick={toggleSideBar}>
+        <svg className='inline mr-2' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+        Colapsar
       </button>
 
     </div>
