@@ -2,21 +2,21 @@
 import Category from '@/domain/entities/Category'
 import React, { useState } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
-import SliderFilter from './SliderBar';
 import DegreeCategory from '@/domain/entities/DegreeCategory';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
+import { Spinner } from "@heroui/spinner";
+
 
 interface FilterSelectorProps {
     categories: Category[]
     onClick: (newCategories: Category[]) => void
     onSubmit: () => void
-    onChanceSliderValue: (value: number | number[]) => void;
-    maxSliderValue: number;
     toggleSideBar: () => void;
+    isLoadingGeneration: boolean;
 }
 
 
-const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit, onChanceSliderValue, maxSliderValue, toggleSideBar }) => {
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit, toggleSideBar, isLoadingGeneration}) => {
     const refreshCategories = (categoryIndex: number, valueId: number) => {
         const newCategories = [...categories];
         const category = newCategories[categoryIndex]
@@ -52,11 +52,12 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
                 </span>}
 
             </div>
-            <div className='px-5'>
-                <SliderFilter maxValue={maxSliderValue} label='Materias por horario' objectNameCounting='materias' onValueChange={onChanceSliderValue} />
-            </div>
-            <button onClick={() => { onSubmit(); toggleSideBar(); }} className="justify-self-center block mt-5 py-2 px-10 bg-purple-500 hover:bg-purple-800 text-white font-bold rounded">
-                Generar Horarios
+            <button onClick={() => { onSubmit(); toggleSideBar(); }} className="grid grid-cols-3  mt-5 items-center  bg-purple-500 hover:bg-purple-800 text-white font-bold rounded">
+                {isLoadingGeneration ? <div className='flex col-start-1  w-max  justify-self-center self-center'>
+                    <Spinner size='md' color='default' classNames={{ label: "text-foreground",  } } variant="simple" />
+                </div> : ""}
+                
+                <div className='col-start-2 justify-center text-center'>{isLoadingGeneration ? "Generando Horarios" : "Generar Horarios"}</div>
             </button>
         </>
     )

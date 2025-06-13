@@ -40,7 +40,7 @@ const ValueCell: React.FC<{
             <button
                 onClick={onClick}
                 disabled={disabled}
-                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "md:dark:hover:bg-gray-700"} flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group md:hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
+                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "md:dark:hover:bg-gray-700"} overflow-hidden flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group md:hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
             >
                 {label}
             </button>
