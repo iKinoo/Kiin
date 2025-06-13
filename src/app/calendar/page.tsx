@@ -36,28 +36,10 @@ const CalendarPage = () => {
     const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
     const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
     const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
-    const semestre1: Category = new SubjectCategory(1, subjects);
-    const semestre2: Category = new SubjectCategory(2, subjects);
-    const semestre3: Category = new SubjectCategory(3, subjects);
-    const semestre4: Category = new SubjectCategory(4, subjects);
-    const semestre5: Category = new SubjectCategory(5, subjects);
-    const semestre6: Category = new SubjectCategory(6, subjects);
-    const semestre7: Category = new SubjectCategory(7, subjects);
-    const semestre8: Category = new SubjectCategory(8, subjects);
-    const semestre9: Category = new SubjectCategory(9, subjects);
-
-
+    const semesters: SubjectCategory[] = Array(9).fill(0).map((_,index) => new SubjectCategory(index+1, subjects))
+    
     setCurrentCategories([degreesCategory,
-      semestre1,
-      semestre2,
-      semestre3,
-      semestre4,
-      semestre5,
-      semestre6,
-      semestre7,
-      semestre8,
-      semestre9,
-
+      ...semesters
     ]);
   };
 
