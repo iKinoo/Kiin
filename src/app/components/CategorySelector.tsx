@@ -1,5 +1,6 @@
 import Category from "@/domain/entities/Category";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
+import { Subject } from "@/domain/entities/Subject";
 import React, { useState } from "react";
 
 interface CategoryProps {
@@ -34,21 +35,25 @@ const ValueCell: React.FC<{
     isSelected: boolean;
     onClick: () => void;
     disabled: boolean;
-}> = ({ label, isSelected, onClick, disabled }) => {
+    subjectType?: string;
+}> = ({ label, isSelected, onClick, disabled, subjectType }) => {
     return (
-        <div className="flex">
+        <div className="flex ">
             <button
                 onClick={onClick}
                 disabled={disabled}
-                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "md:dark:hover:bg-gray-700"} overflow-hidden flex-1 flex items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group md:hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
+                className={`${disabled ? "text-gray-500 hover:bg-transparent" : "md:dark:hover:bg-gray-700"} overflow-hidden flex-1 flex-col items-center  p-2 mx-4 text-left transition duration-75 rounded-lg  group md:hover:bg-blue-300  ${isSelected ? 'bg-blue-500 dark:bg-gray-700 text-white' : ''}`}
             >
+                <div className={`${subjectType === "Obligatoria" ? "text-blue-500" : "text-green-500"} text-start` }> {subjectType}</div>
+
+
                 {label}
             </button>
         </div>
     );
 };
 
-const CategorySelector: React.FC<CategoryProps> = ({ category, onClick , isDegreeSelected, setIsDegreeSelected}) => {
+const CategorySelector: React.FC<CategoryProps> = ({ category, onClick, isDegreeSelected, setIsDegreeSelected }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [degreeTitle, setDegreeTitle] = useState("");
 
@@ -70,6 +75,7 @@ const CategorySelector: React.FC<CategoryProps> = ({ category, onClick , isDegre
                     <ValueCell
                         key={value.id}
                         label={value.label}
+                        subjectType={(value.value as Subject).type}
                         isSelected={category.isSelected(value.id)}
                         onClick={() => {
                             onClick(value.id)

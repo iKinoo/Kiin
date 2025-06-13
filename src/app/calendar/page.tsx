@@ -142,7 +142,7 @@ const CalendarPage = () => {
           toggleSideBar={toggleSideBar} 
           isLoadingGeneration={isGenerating}        />
       </SideBar>
-      <div className="p-5  h-full md:w-4/6 md:p-5">
+      <div className="h-full md:w-4/6 md:p-5">
         <button
           onClick={toggleSideBar}
           className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
@@ -164,13 +164,13 @@ const CalendarPage = () => {
           </svg>
         </button>
 
-        <div className=" grid grid-cols-6 grid-rows-2 ml-10 justify-between items-center mb-2 p-2 md:grid-rows-2">
+        <div className=" grid grid-cols-6 grid-rows-2justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
           <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
             <LiveIndicator isLive={true} />
             <div className="ml-3 md:mx-1" />
             Última actualización: 20 de marzo de 2025
           </div>
-          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-2  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
+          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-2  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2 mt-2 md:mt-0`}>
             <p>
               Posibles horarios: {schedulesToShow.length}
             </p>
@@ -183,14 +183,14 @@ const CalendarPage = () => {
               isPreviousDisabled={page == 0}
             />
           </div>
-          <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6">
+          <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6 mt-3">
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
           </div>
         </div>
         <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
 
       </div>
-      <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 pr-3">
+      <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 mx-3 md:mx-3">
         {schedulesToShow.length > 0 ? (<CurrentSchedule schedule={schedulesToShow[page]} />) : (
 
           <>
