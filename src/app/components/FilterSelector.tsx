@@ -30,7 +30,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
 
     return (
         <>
-            <div className="h-4/6 overflow-y-auto p-1 ">
+            <div className="flex-1 overflow-y-auto p-1 ">
                 <div className='font-bold mb-4 p-1.5'>Selecciona tu Carrera</div>
                 <ul className="space-y-2 ">
                     {

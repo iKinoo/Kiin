@@ -165,12 +165,12 @@ const CalendarPage = () => {
         </button>
 
         <div className=" grid grid-cols-6 grid-rows-2 ml-10 justify-between items-center mb-2 p-2 md:grid-rows-2">
-          <div className="col-start-1 col-end-7 row-start-2 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
+          <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
             <LiveIndicator isLive={true} />
             <div className="ml-3 md:mx-1" />
             Última actualización: 20 de marzo de 2025
           </div>
-          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-1  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
+          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-2  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
             <p>
               Posibles horarios: {schedulesToShow.length}
             </p>
@@ -183,7 +183,7 @@ const CalendarPage = () => {
               isPreviousDisabled={page == 0}
             />
           </div>
-          <div className="col-start-1 col-end-4 row-start-2">
+          <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6">
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
           </div>
         </div>

@@ -41,7 +41,7 @@ export function SliderFilter({
       }}
       label={label}
       maxValue={maxValue}
-      size="sm"
+      size="md"
       value={selectedValue}
       onChange={handleSliderChange}
     />

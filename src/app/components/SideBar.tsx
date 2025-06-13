@@ -31,7 +31,7 @@ const SideBar: React.FC<SideBarProps> = ({ children, toggleSideBar, isOpen }) =>
         className={`bg-gray-50 dark:bg-gray-800 fixed left-0 z-20 w-1/2 h-full transition-transform -translate-x-full md:w-1/6 md:translate-x-0 md:z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
         aria-label="Sidebar"
       >
-        <div className='px-3 py-4 h-5/6'>
+        <div className='px-3 py-4 h-[90%] flex flex-col'>
           <HeadSideBar toggleSideBar={toggleSideBar} />
           
           {children}
