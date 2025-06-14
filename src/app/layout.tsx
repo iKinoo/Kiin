@@ -1,8 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "./components/NavBar";
 import AdSense from "./components/AdSense";
+import SupabaseProvider from "./components/SupabaseProvider"; // 👈 Aquí usamos el cliente
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,30 +28,26 @@ const links = [
   { label: "Motivación", route: "/motivation" },
   { label: "Equipo", route: "/contact" },
   { label: "Blog", route: "/blog" },
-]
-
+];
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
-    <>
     <html lang="en">
       <head>
         <AdSense pId="2263575229671406" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <SupabaseProvider>
           <NavBar links={links} />
-        <div>
-          {children}
-        </div>
-        
+          <div>{children}</div>
+        </SupabaseProvider>
       </body>
     </html>
-    </>
   );
 }
+

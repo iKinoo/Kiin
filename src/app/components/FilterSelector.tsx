@@ -26,7 +26,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
 
     return (
         <>
-            <div className="h-4/6 overflow-y-auto">
+            <div className="h-4/6 overflow-y-auto p-1 ">
                 <ul className="space-y-2 ">
 
                     {
