@@ -3,7 +3,6 @@ import Category from "@/domain/entities/Category";
 import { Degree } from "@/domain/entities/Degree";
 import DegreeCategory from "@/domain/entities/DegreeCategory";
 import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
-import SemesterCategory from "@/domain/entities/SemesterCategory";
 import { Subject } from "@/domain/entities/Subject";
 import SubjectCategory from "@/domain/entities/SubjectCategory";
 import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
@@ -19,28 +18,45 @@ import Pagination from "../components/Pagination";
 import SideBar from "../components/SideBar";
 import LiveIndicator from "../components/UpdateIndicator";
 import CurrentSchedule from "../components/CurrentSchedule";
+import SliderFilter from "../components/SliderBar";
 const CalendarPage = () => {
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
-  const [schedule, setSchedule] = React.useState<Schedule[]>([]);
+  const [generatedSchedules, setGeneratedSchedules] = React.useState<Schedule[]>([]);
+  const [schedulesToShow, setSchedulesToShow] = useState<Schedule[]>([])
   const [page, setPage] = useState(0);
   const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
 
   const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
   const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false)
 
   const handleSliderChange = (value: number | number[]) => {
-    setSelectedSubjectsCount(value);
+    setSelectedSubjectsCount(value);    
   };
+
+  useEffect(
+    () =>{
+      if (typeof selectedSubjectsCount === "number" && selectedSubjectsCount > 0) {
+        setSchedulesToShow(generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount))
+      } else {
+        setSchedulesToShow(generatedSchedules)
+      }
+      setPage(0)
+    }, [generatedSchedules, selectedSubjectsCount]
+  )
+
+  
 
   const mapCategories = async () => {
 
     const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
     const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
     const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
-    const subjectsCategory: Category = new SubjectCategory("Materia", subjects);
-    const semesters: number[] = new Array(9).fill(0).map((_, index) => index + 1);
-    const semestersCategory: Category = new SemesterCategory("Semestre", semesters);
-    setCurrentCategories([degreesCategory, semestersCategory, subjectsCategory]);
+    const semesters: SubjectCategory[] = Array(9).fill(0).map((_,index) => new SubjectCategory(index+1, subjects))
+    
+    setCurrentCategories([degreesCategory,
+      ...semesters
+    ]);
   };
 
   const filterCourses = async (categories: Category[]) => {
@@ -50,15 +66,16 @@ const CalendarPage = () => {
     const courses = await data.getCoursesByFilter(filter)
 
     if (courses.length === 0) {
-      setSchedule([]);
+      setGeneratedSchedules([]);
       setIsFilterCoursesEmpty(true);
       return;
     }
 
     const generator = new ScheduleGenerator();
-    const numberOfSubjects = Array.isArray(selectedSubjectsCount) ? selectedSubjectsCount[0] : selectedSubjectsCount;
-    const schedules = generator.generateSchedules(courses).filter((schedule) => numberOfSubjects > 0 ? schedule.courses.length === numberOfSubjects : true);
-    setSchedule(schedules);
+    setIsGenerating(true)
+    const schedules = generator.generateSchedules(courses)
+    setIsGenerating(false)
+    setGeneratedSchedules(schedules);
   }
 
   const onChangeSchedulePage = (page: number) => {
@@ -67,8 +84,14 @@ const CalendarPage = () => {
 
   const handleClickFilter = (category: Category[]) => {
     setCurrentCategories(category);
-    const testL = category.find(c => c.title === 'Materia')?.selectedValues.length ?? 0;
-    setMaxSubjectsCount(testL);
+    const semestersWithSubjectsSelected = category.filter(c => c instanceof SubjectCategory)
+
+    let selectedSubjectsCount = 0;
+    semestersWithSubjectsSelected.forEach(c => {selectedSubjectsCount = c.selectedValues.length + selectedSubjectsCount})
+
+    // const testL = category.find(c => c instanceof SubjectCategory)?.selectedValues.length ?? 0;
+    
+    setMaxSubjectsCount(selectedSubjectsCount);
   }
 
   useEffect(() => {
@@ -116,12 +139,10 @@ const CalendarPage = () => {
           categories={currentCategories}
           onClick={handleClickFilter}
           onSubmit={() => filterCourses(currentCategories)}
-          onChanceSliderValue={handleSliderChange}
-          maxSliderValue={maxSubjectsCount}
-          toggleSideBar={toggleSideBar}
-        />
+          toggleSideBar={toggleSideBar} 
+          isLoadingGeneration={isGenerating}        />
       </SideBar>
-      <div className="p-5  h-full md:w-4/6 md:p-5">
+      <div className="h-full md:w-4/6 md:p-5">
         <button
           onClick={toggleSideBar}
           className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
@@ -143,45 +164,48 @@ const CalendarPage = () => {
           </svg>
         </button>
 
-        <div className=" grid grid-cols-6 grid-rows-2 ml-10 justify-between items-center mb-2 p-2 md:grid-rows-1">
-          <div className="col-start-1 col-end-7 row-start-2 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
+        <div className=" grid grid-cols-6 grid-rows-2justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
+          <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
             <LiveIndicator isLive={true} />
             <div className="ml-3 md:mx-1" />
             Última actualización: 20 de marzo de 2025
           </div>
-          <div className={`${schedule.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-1  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2`}>
+          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-2  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2 mt-2 md:mt-0`}>
             <p>
-              Posibles horarios: {schedule.length}
+              Posibles horarios: {schedulesToShow.length}
             </p>
           </div>
           <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center md:col-start-6  md:justify-self-end md:row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
-              isNextDisabled={page >= schedule.length - 1}
+              isNextDisabled={page >= schedulesToShow.length - 1}
               isPreviousDisabled={page == 0}
             />
           </div>
+          <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6 mt-3">
+            <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
+          </div>
         </div>
-        <Calendar dayFormat={dayFormat} courses={schedule[page]?.courses} />
+        <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
 
       </div>
-    <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 pr-3">
-      {schedule.length > 0 ? (<CurrentSchedule schedule={schedule[page]} />) : (
+      <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 mx-3 md:mx-3">
+        {schedulesToShow.length > 0 ? (<CurrentSchedule schedule={schedulesToShow[page]} />) : (
 
-        <>
+          <>
 
-          <div className=" flex">
+            <div className=" flex">
 
-            <p className="text-center mt-10">Sin horarios disponibles</p>
+              <p className="text-center mt-10">Sin horarios disponibles</p>
 
 
-          </div>
-        </>
+            </div>
+          </>
 
-      )}
-    </div>
-      
+        )}
+      </div>
+
 
     </div >
   );

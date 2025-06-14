@@ -2,7 +2,6 @@ import Category from "./Category";
 import CourseFilter from "./CourseFilter";
 import { Degree } from "./Degree";
 import DegreeCategory from "./DegreeCategory";
-import SemesterCategory from "./SemesterCategory";
 
 /**
  * This class is responsible for managing the dynamic categories of the filters using degree and semester categories
@@ -23,16 +22,14 @@ export default abstract class DynamicCategory<T> implements Category {
     filterWithCategories(categories: Category[]): void {
         const categoriesHashMap: Map<string, Category> = new Map(categories.map(category => [category.title, category]));
         const degreeCategory = categoriesHashMap.get('Carrera') as (DegreeCategory | undefined);
-        const semesterCategory = categoriesHashMap.get('Semestre') as (SemesterCategory | undefined);
 
-        const isSelected = degreeCategory && semesterCategory && (degreeCategory.selectedValues.length > 0 || semesterCategory.selectedValues.length > 0)
+        const isSelected = degreeCategory && (degreeCategory.selectedValues.length > 0 )
         if (!isSelected) {
             this.values = this._original_values;
             return;
         };
         const selectedDegrees = degreeCategory.selectedValues;
-        const selectedSemesters = semesterCategory.selectedValues;
-        this.values = this.filterWithDegreesAndSemesters(selectedDegrees, selectedSemesters);
+        this.values = this.filterWithDegreesAndSemesters(selectedDegrees);
         this.deleteSelectedValuesWithoutRelation()
     }
 
@@ -42,7 +39,7 @@ export default abstract class DynamicCategory<T> implements Category {
         selectedValuesToKeep.forEach(value => this._selectedValues.set(value.id, value.value));
     }
 
-    abstract filterWithDegreesAndSemesters(selectedDegrees: Degree[], selectedSemesters: number[]): { label: string; id: number; value: T; }[]
+    abstract filterWithDegreesAndSemesters(selectedDegrees: Degree[]): { label: string; id: number; value: T; }[]
 
     get selectedValues(): T[] {
         return Array.from(this._selectedValues.values());
