@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
 import DegreeCategory from '@/domain/entities/DegreeCategory';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
-import { Spinner } from "@heroui/spinner";
 
 
 interface FilterSelectorProps {
@@ -12,11 +11,10 @@ interface FilterSelectorProps {
     onClick: (newCategories: Category[]) => void
     onSubmit: () => void
     toggleSideBar: () => void;
-    isLoadingGeneration: boolean;
 }
 
 
-const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit, toggleSideBar, isLoadingGeneration}) => {
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit, toggleSideBar}) => {
     const refreshCategories = (categoryIndex: number, valueId: number) => {
         const newCategories = [...categories];
         const category = newCategories[categoryIndex]
@@ -53,11 +51,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
 
             </div>
             <button onClick={() => { onSubmit(); toggleSideBar(); }} className="grid grid-cols-3  mt-5 items-center  bg-purple-500 hover:bg-purple-800 text-white font-bold rounded">
-                {isLoadingGeneration ? <div className='flex col-start-1  w-max  justify-self-center self-center'>
-                    <Spinner size='md' color='default' classNames={{ label: "text-foreground",  } } variant="simple" />
-                </div> : ""}
-                
-                <div className='col-start-2 justify-center text-center'>{isLoadingGeneration ? "Generando Horarios" : "Generar Horarios"}</div>
+                <div className='col-start-2 justify-center text-center'>Generar Horarios</div>
             </button>
         </>
     )

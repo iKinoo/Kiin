@@ -1,170 +1,45 @@
-import Category from '@/domain/entities/Category';
-import { Degree } from '@/domain/entities/Degree';
-import DegreeCategory from '@/domain/entities/DegreeCategory';
 import { Schedule } from '@/domain/entities/Schedule';
-import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
-import { Subject } from '@/domain/entities/Subject';
-import SubjectCategory from '@/domain/entities/SubjectCategory';
-import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
-import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
-import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
-import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
-import React, { useEffect, useState } from 'react'
-import SideBar from '../components/SideBar';
-import FilterSelector from '../components/FilterSelector';
+import React from 'react'
 import LiveIndicator from '../components/UpdateIndicator';
 import Pagination from '../components/Pagination';
 import SliderFilter from '../components/SliderBar';
 import Calendar from '../components/Calendar';
 import CurrentSchedule from '../components/CurrentSchedule';
 
-
-
-function SchedulesView() {
+interface SchedulesViewProps {
   
-  const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
-  const [generatedSchedules, setGeneratedSchedules] = React.useState<Schedule[]>([]);
-  const [schedulesToShow, setSchedulesToShow] = useState<Schedule[]>([])
-  const [page, setPage] = useState(0);
-  const [isFilterCoursesEmpty, setIsFilterCoursesEmpty] = useState(false);
-
-  const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
-  const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false)
-
-  const handleSliderChange = (value: number | number[]) => {
-    setSelectedSubjectsCount(value);    
-  };
-
-  useEffect(
-    () =>{
-      if (typeof selectedSubjectsCount === "number" && selectedSubjectsCount > 0) {
-        setSchedulesToShow(generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount))
-      } else {
-        setSchedulesToShow(generatedSchedules)
-      }
-      setPage(0)
-    }, [generatedSchedules, selectedSubjectsCount]
-  )
+  isSideBarOpen: boolean;
 
   
+  
+  schedulesToShow: Schedule[];
+  dayFormat: "short" | "long";
+  onChangeSchedulePage: (page: number) => void;
+  page: number;
+  maxSubjectsCount: number;
+  handleSliderChange: (value: number | number[]) => void;
+}
 
-  const mapCategories = async () => {
+function SchedulesView({
+  
+  isSideBarOpen,
 
-    const degrees: Degree[] = await (new DegreesCsvDataSource()).getAll();
-    const degreesCategory: Category = new DegreeCategory("Carrera", degrees);
-    const subjects: Subject[] = await (new SubjectsCsvDataSource()).getAll();
-    const semesters: SubjectCategory[] = Array(9).fill(0).map((_,index) => new SubjectCategory(index+1, subjects))
-    
-    setCurrentCategories([degreesCategory,
-      ...semesters
-    ]);
-  };
+  schedulesToShow,
+  dayFormat,
+  onChangeSchedulePage,
+  page,
+  maxSubjectsCount,
+  handleSliderChange,
 
-  const filterCourses = async (categories: Category[]) => {
-    setPage(0)
-    const data = new CoursesCsvDatasource();
-    const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
-    const courses = await data.getCoursesByFilter(filter)
+}: SchedulesViewProps) {
 
-    if (courses.length === 0) {
-      setGeneratedSchedules([]);
-      setIsFilterCoursesEmpty(true);
-      return;
-    }
 
-    const generator = new ScheduleGenerator();
-    setIsGenerating(true)
-    const schedules = generator.generateSchedules(courses)
-    setIsGenerating(false)
-    setGeneratedSchedules(schedules);
-  }
-
-  const onChangeSchedulePage = (page: number) => {
-    setPage(page);
-  };
-
-  const handleClickFilter = (category: Category[]) => {
-    setCurrentCategories(category);
-    const semestersWithSubjectsSelected = category.filter(c => c instanceof SubjectCategory)
-
-    let selectedSubjectsCount = 0;
-    semestersWithSubjectsSelected.forEach(c => {selectedSubjectsCount = c.selectedValues.length + selectedSubjectsCount})
-
-    // const testL = category.find(c => c instanceof SubjectCategory)?.selectedValues.length ?? 0;
-    
-    setMaxSubjectsCount(selectedSubjectsCount);
-  }
-
-  useEffect(() => {
-    if (isFilterCoursesEmpty) {
-      alert('No hay cursos disponibles con los filtros seleccionados')
-      setIsFilterCoursesEmpty(false)
-    }
-  }, [isFilterCoursesEmpty])
-
-  // const handleShare = () => {
-  //   const shareText =
-  //     "Mira la carga academica que me encontré: " + window.location.href;
-  //   const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-  //   window.open(url, "_blank");
-  // };
-
-  useEffect(() => {
-    mapCategories();
-  }, []);
-
-  const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
-  const toggleSideBar = () => {
-    setIsSideBarOpen(!isSideBarOpen);
-  }
-
-  const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 640) {
-        setDayFormat("long")
-      } else {
-        setDayFormat("short")
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-
-  }, []);
 
   return (
     <div className="flex-1 overflow-auto border-large border-green-500 flex-col md:flex-row">
-      <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
-        <FilterSelector
-          categories={currentCategories}
-          onClick={handleClickFilter}
-          onSubmit={() => filterCourses(currentCategories)}
-          toggleSideBar={toggleSideBar} 
-          isLoadingGeneration={isGenerating}        />
-      </SideBar>
+      
       <div className="h-full md:w-4/6 md:p-5">
-        <button
-          onClick={toggleSideBar}
-          className="sticky font-medium mt-2 px-3 py-3 top-20 z-10 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
-          type="button"
-        >
-          Materias
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            className="size-6 stroke-black dark:stroke-white transition-colors duration-300"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-            />
-          </svg>
-        </button>
+        
 
         <div className=" grid grid-cols-6 grid-rows-2justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
           <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
@@ -182,8 +57,7 @@ function SchedulesView() {
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
               isNextDisabled={page >= schedulesToShow.length - 1}
-              isPreviousDisabled={page == 0}
-            />
+              isPreviousDisabled={page == 0} />
           </div>
           <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6 mt-3">
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
@@ -209,7 +83,7 @@ function SchedulesView() {
       </div>
 
 
-    </div >
+    </div>
   );
 
 }
