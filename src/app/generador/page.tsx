@@ -128,17 +128,19 @@ const GeneratorPage = () => {
     setIndexSelected(index);
   }
 
-
-  const views = [
-    <SubjectsView
+  const subjectsView = () => {
+    return <SubjectsView
       key={0}
       toggleSideBar={toggleSideBar}
       isSideBarOpen={isSideBarOpen}
       currentCategories={currentCategories}
       handleClickFilter={handleClickFilter}
       filterCourses={filterCourses}
-    />,
-    <SchedulesView
+    />
+  }
+
+  const schedulesView = () => {
+    return <SchedulesView
       key={1}
       isSideBarOpen={isSideBarOpen}
       schedulesToShow={schedulesToShow}
@@ -147,13 +149,23 @@ const GeneratorPage = () => {
       page={page}
       maxSubjectsCount={maxSubjectsCount}
       handleSliderChange={handleSliderChange} />
-  ]
+  }
+
+
 
   return <div className="flex flex-1 flex-col border-large overflow-auto border-green-500">
-    <div className="flex flex-col flex-1 overflow-auto border-large border-purple-500">
-      {views[indexSelected]}
+    <div className="flex flex-col flex-1 overflow-auto ">
+
+      {dayFormat == "long" ?
+        <div>
+          {subjectsView()}
+          {schedulesView()}
+        </div>
+        : (indexSelected == 0 ? subjectsView() : schedulesView())}
+
+
     </div>
-    <div className="rounded-large p-2 gap-3 flex flex-row justify-center z-40 bg-gray-800 fixed bottom-1 self-center w-[90%]">
+    <div className="rounded-large p-2 gap-3 flex flex-row justify-center z-40 bg-gray-800 fixed bottom-1 self-center w-2/3 md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />

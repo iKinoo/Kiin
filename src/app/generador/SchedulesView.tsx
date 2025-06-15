@@ -21,27 +21,22 @@ interface SchedulesViewProps {
 }
 
 function SchedulesView({
-  
   isSideBarOpen,
-
   schedulesToShow,
   dayFormat,
   onChangeSchedulePage,
   page,
   maxSubjectsCount,
   handleSliderChange,
-
 }: SchedulesViewProps) {
 
-
-
   return (
-    <div className="flex-1 overflow-auto border-large border-green-500 flex-col md:flex-row">
+    <div className="flex-1 overflow-auto border-large border-purple-500 flex-col md:flex-row">
       
-      <div className="h-full md:w-4/6 md:p-5">
+      <div className="border-large border-blue-500 h-max md:w-4/6 md:p-5">
         
 
-        <div className=" grid grid-cols-6 grid-rows-2justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
+        <div className=" grid grid-cols-6 grid-rows-2 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
           <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
             <LiveIndicator isLive={true} />
             <div className="ml-3 md:mx-1" />
@@ -66,7 +61,7 @@ function SchedulesView({
         <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
 
       </div>
-      <div className="md:w-1/6 md:m-1  pb-4 mb-20 mt-10 mx-3 md:mx-3">
+      <div className="border-large border-red-500 md:w-1/6 md:m-1  pb-4 mb-20  mx-3 md:mx-3">
         {schedulesToShow.length > 0 ? (<CurrentSchedule schedule={schedulesToShow[page]} />) : (
 
           <>
