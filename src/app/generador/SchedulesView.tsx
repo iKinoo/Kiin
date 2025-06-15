@@ -1,25 +1,27 @@
-"use client";
-import Category from "@/domain/entities/Category";
-import { Degree } from "@/domain/entities/Degree";
-import DegreeCategory from "@/domain/entities/DegreeCategory";
-import { ScheduleGenerator } from "@/domain/entities/ScheduleGenerator";
-import { Subject } from "@/domain/entities/Subject";
-import SubjectCategory from "@/domain/entities/SubjectCategory";
-import { CoursesCsvDatasource } from "@/infrastructure/datasource/CoursesCsvDatasource";
-import { DegreesCsvDataSource } from "@/infrastructure/datasource/DegreesCsvDataSource";
-import { FilterImpl } from "@/infrastructure/datasource/FilterImpl";
-import { SubjectsCsvDataSource } from "@/infrastructure/datasource/SubjectsCSvDataSource";
-import React, { useEffect, useState } from "react";
-// import AdBanner from "../components/AdBanner";
-import { Schedule } from "@/domain/entities/Schedule";
-import Calendar from "../components/Calendar";
-import FilterSelector from "../components/FilterSelector";
-import Pagination from "../components/Pagination";
-import SideBar from "../components/SideBar";
-import LiveIndicator from "../components/UpdateIndicator";
-import CurrentSchedule from "../components/CurrentSchedule";
-import SliderFilter from "../components/SliderBar";
-const CalendarPage = () => {
+import Category from '@/domain/entities/Category';
+import { Degree } from '@/domain/entities/Degree';
+import DegreeCategory from '@/domain/entities/DegreeCategory';
+import { Schedule } from '@/domain/entities/Schedule';
+import { ScheduleGenerator } from '@/domain/entities/ScheduleGenerator';
+import { Subject } from '@/domain/entities/Subject';
+import SubjectCategory from '@/domain/entities/SubjectCategory';
+import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
+import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
+import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
+import React, { useEffect, useState } from 'react'
+import SideBar from '../components/SideBar';
+import FilterSelector from '../components/FilterSelector';
+import LiveIndicator from '../components/UpdateIndicator';
+import Pagination from '../components/Pagination';
+import SliderFilter from '../components/SliderBar';
+import Calendar from '../components/Calendar';
+import CurrentSchedule from '../components/CurrentSchedule';
+
+
+
+function SchedulesView() {
+  
   const [currentCategories, setCurrentCategories] = React.useState<Category[]>([]);
   const [generatedSchedules, setGeneratedSchedules] = React.useState<Schedule[]>([]);
   const [schedulesToShow, setSchedulesToShow] = useState<Schedule[]>([])
@@ -133,7 +135,7 @@ const CalendarPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="flex-1 overflow-auto border-large border-green-500 flex-col md:flex-row">
       <SideBar toggleSideBar={toggleSideBar} isOpen={isSideBarOpen}>
         <FilterSelector
           categories={currentCategories}
@@ -145,7 +147,7 @@ const CalendarPage = () => {
       <div className="h-full md:w-4/6 md:p-5">
         <button
           onClick={toggleSideBar}
-          className="sticky font-medium mt-2 px-3 py-3 top-20 z-30 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
+          className="sticky font-medium mt-2 px-3 py-3 top-20 z-10 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
           type="button"
         >
           Materias
@@ -209,5 +211,7 @@ const CalendarPage = () => {
 
     </div >
   );
-};
-export default CalendarPage;
+
+}
+
+export default SchedulesView
