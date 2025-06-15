@@ -153,8 +153,8 @@ const GeneratorPage = () => {
 
 
 
-  return <div className="flex flex-1 flex-col border-large overflow-auto border-green-500">
-    <div className="flex flex-col flex-1 overflow-auto ">
+  return <div className="flex flex-1 flex-col border-large overflow-auto border-green-500 ">
+    <div className="flex flex-col flex-1 overflow-auto border-large border-purple-500 relative">
 
       {dayFormat == "long" ?
         <div>
@@ -165,7 +165,7 @@ const GeneratorPage = () => {
 
 
     </div>
-    <div className="rounded-large p-2 gap-3 flex flex-row justify-center z-40 bg-gray-800 fixed bottom-1 self-center w-2/3 md:hidden">
+    <div className="rounded-large border-large border-gray-700 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-800 fixed bottom-1 self-center w-2/3 md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />

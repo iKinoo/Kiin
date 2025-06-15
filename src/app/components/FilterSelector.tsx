@@ -9,12 +9,11 @@ import SubjectCategory from '@/domain/entities/SubjectCategory';
 interface FilterSelectorProps {
     categories: Category[]
     onClick: (newCategories: Category[]) => void
-    onSubmit: () => void
-    toggleSideBar: () => void;
+    
 }
 
 
-const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onSubmit, toggleSideBar}) => {
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick}) => {
     const refreshCategories = (categoryIndex: number, valueId: number) => {
         const newCategories = [...categories];
         const category = newCategories[categoryIndex]
@@ -50,9 +49,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, on
                 </span>}
 
             </div>
-            <button onClick={() => { onSubmit(); toggleSideBar(); }} className="grid grid-cols-3  mt-5 items-center  bg-purple-500 hover:bg-purple-800 text-white font-bold rounded">
-                <div className='col-start-2 justify-center text-center'>Generar Horarios</div>
-            </button>
+            
         </>
     )
 }
