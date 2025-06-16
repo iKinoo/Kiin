@@ -153,8 +153,8 @@ const GeneratorPage = () => {
 
 
 
-  return <div className="flex flex-1 flex-col border-large overflow-auto border-green-500 ">
-    <div className="flex flex-col flex-1 overflow-auto border-large border-purple-500 relative">
+  return <div className="flex flex-1 flex-col  overflow-auto  ">
+    <div className="flex flex-col flex-1 overflow-auto   relative">
 
       {dayFormat == "long" ?
         <div>

@@ -25,10 +25,10 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ children, toggleSideBar, isOpen }) => {
   return (
-    <div className={`w-full md:w-1/6 border-large  border-blue-500 flex-1 ${isOpen ? "absolute h-full z-40" : "overflow-hidden"}`}>
+    <div className={` w-full md:w-1/6 border-large  border-blue-500 flex-1 ${isOpen ? "absolute h-full z-40" : "hidden"}`}>
       <aside
         id="sidebar"
-        className={`border-large border-red-500  dark:bg-gray-800  left-0 z-20 w-2/3 h-full transition-transform -translate-x-full md:w-1/6 md:translate-x-0 md:z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`animate-appearance-in border-large border-red-500  dark:bg-gray-800  left-0 z-20 w-2/3 h-full transition-transform -translate-x-full md:w-1/6 md:translate-x-0 md:z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
         aria-label="Sidebar"
       >
         <div className='px-3 py-4 h-full flex flex-col'>
