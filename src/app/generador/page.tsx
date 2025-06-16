@@ -77,7 +77,24 @@ const GeneratorPage = () => {
 
     const generator = new ScheduleGenerator();
     const schedules = generator.generateSchedules(courses)
-    setGeneratedSchedules(schedules);
+
+    const withPivots = schedules.filter(schedule => scheduleHasPivots(schedule, pivots))
+
+    console.log(withPivots)
+    setGeneratedSchedules(withPivots);
+  }
+
+  const scheduleHasPivots = (schedule: Schedule, pivots: Pivot[]) => {
+
+    return (
+      pivots.every((pivot) => (
+        schedule.courses.some((course) => (
+          (course.subject.id === pivot.idSubject) 
+          &&
+          (course.professor.id === pivot.idProfessor)
+        ))
+      ))
+    )
   }
 
   const onChangeSchedulePage = (page: number) => {

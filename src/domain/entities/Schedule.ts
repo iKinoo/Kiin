@@ -7,7 +7,7 @@ export class Schedule {
 
     private _id: number;
     private _subjects: Subject[] = [];
-    private _professors: Professor[] = [];
+    private _professors: Set<Professor> = new Set();
     private _courses: Course[] = [];
 
     constructor(id: number) {
@@ -19,10 +19,10 @@ export class Schedule {
     }
 
     public get subjects(): Subject[] {
-        return this.subjects;
+        return this._subjects;
     }
 
-    public get professors(): Professor[] {
+    public get professors(): Set<Professor> {
         return this._professors;
     }
 
@@ -35,22 +35,31 @@ export class Schedule {
     }
 
     public addProfessor(professor: Professor): void {
-        this._professors.push(professor);
+        this._professors.add(professor);
     }
 
     public addCourse(course: Course): void {
         this._courses.push(course);
+        this._subjects.push(course.subject)
+        this.professors.add(course.professor)
     }
 
     public set subjects(subjects: Subject[]) {
         this._subjects = subjects;
     }
 
-    public set professors(professors: Professor[]) {
+    public set professors(professors: Set<Professor>) {
         this._professors = professors;
     }
 
     public set courses(courses: Course[]) {
         this._courses = courses;
+        // Reset subjects and professors to keep them in sync with courses
+        this._subjects = [];
+        this._professors = new Set();
+        for (const course of courses) {
+            this._subjects.push(course.subject);
+            this._professors.add(course.professor);
+        }
     }
 }
