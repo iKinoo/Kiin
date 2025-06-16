@@ -1,9 +1,12 @@
 import Category from '@/domain/entities/Category';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SideBar from '../components/SideBar';
 import FilterSelector from '../components/FilterSelector';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
 import { Subject } from '@/domain/entities/Subject';
+import { ProfessorsCsvDataSource } from '@/infrastructure/datasource/ProfessorsCsvDataSource';
+import { Professor } from '@/domain/entities/Professor';
+import Pivot from './Pivot';
 
 interface SubjctsViewProps {
     toggleSideBar: () => void;
@@ -11,8 +14,12 @@ interface SubjctsViewProps {
     currentCategories: Category[];
     handleClickFilter: (category: Category[]) => void;
     filterCourses: (categories: Category[]) => Promise<void>;
+    setPivots: (ids: Pivot[]) => void,
+    pivots: Pivot[];
 
 }
+
+
 
 function SubjectsView({
     toggleSideBar,
@@ -20,10 +27,30 @@ function SubjectsView({
     currentCategories,
     handleClickFilter,
     filterCourses,
+    pivots,
+    setPivots
 
 }: SubjctsViewProps) {
 
 
+
+    const [professorsData, setProfessorsData] = useState<Professor[]>([])
+
+    const getProfessors = async () => {
+        const professorsDataSource = new ProfessorsCsvDataSource()
+        const professorsData = await professorsDataSource.getAll();
+        setProfessorsData(professorsData)
+    }
+
+    useEffect(() => {
+        getProfessors()
+    }, [])
+
+
+
+    useEffect(() => {
+        console.log(pivots)
+    }, [pivots])
 
     return (
         <div className='border-large border-white h-full flex flex-col'>
@@ -51,19 +78,19 @@ function SubjectsView({
                     Generar Horarios
                 </button>
             </div>
-            <div className='border-large border-red-500 flex-1 overflow-auto flex flex-col gap-2 p-4'>
+            <div className='border-large border-red-500 flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24'>
 
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
-                        (sb) => (
-                            (
-                                sb.selectedValues?.map(
-                                    (sbv) => (
-                                        <SubjectCard key={sbv.id} subject={sbv} />
-                                    )
+                    (sb) => (
+                        (
+                            sb.selectedValues?.map(
+                                (sbv) => (
+                                    <SubjectCard pivots={pivots} setPivots={setPivots} key={sbv.id} subject={sbv} allProfessors={professorsData} />
                                 )
                             )
                         )
-                    )}
+                    )
+                )}
 
             </div>
 
@@ -83,11 +110,18 @@ function SubjectsView({
 }
 
 interface SubjectCardProps {
-    subject: Subject
+    subject: Subject;
+    allProfessors: Professor[]
+    setPivots: (ids: Pivot[]) => void,
+    pivots: Pivot[];
 }
 
 
-function SubjectCard({ subject }: SubjectCardProps) {
+
+
+
+function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardProps) {
+
     return <div className='border-2 border-gray-600 rounded-large p-2 px-2'>
 
         <div className='flex flex-row '>
@@ -113,7 +147,49 @@ function SubjectCard({ subject }: SubjectCardProps) {
                 Profesores
             </div>
         </div>
+        <div className='flex flex-col gap-1'>
+            {allProfessors.filter(professor => subject.professors.includes(professor.id)).map(e => (
+                <ProfessorRow setPivots={setPivots} pivots={pivots} key={e.id} professor={e} idSubject={subject.id}></ProfessorRow>
+            ))}
+        </div>
     </div>
 }
 
 export default SubjectsView
+
+
+function ProfessorRow({ professor, setPivots: setSelectedProfessors, pivots: selectedProfessors, idSubject }
+    : {
+        professor: Professor,
+        setPivots: (ids: Pivot[]) => void,
+        pivots: Pivot[];
+        idSubject: number
+    }) {
+
+    const [isSelected, setIsSelected] = useState(false);
+
+    return (
+        <div key={professor.id} className=' flex flex-row  border-green-500'>
+            <button
+                onClick={() => {
+                    setIsSelected(!isSelected);
+                    if (isSelected) {
+                        setSelectedProfessors(selectedProfessors.filter(pivot => pivot.idProfessor != professor.id));
+                    } else {
+                        setSelectedProfessors([...selectedProfessors, { idProfessor: professor.id, idSubject: idSubject }]);
+                    }
+                }}
+                className={`border-2 border-gray-800 ${isSelected ? "bg-gray-700 " : ""}  rounded-large h-max p-1 flex flex-row mr-2 `}>
+                {isSelected ? <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M680-840v80h-40v327l-80-80v-247H400v87l-87-87-33-33v-47h400ZM480-40l-40-40v-240H240v-80l80-80v-46L56-792l56-56 736 736-58 56-264-264h-6v240l-40 40ZM354-400h92l-44-44-2-2-46 46Zm126-193Zm-78 149Z" /></svg>
+                    : <svg className='inline ' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+                }
+
+
+                {isSelected ? "Fijado" : "Fijar"}
+            </button>
+            <span className='mt-2 border-red-500'>
+                {professor.fullName}
+            </span>
+        </div>
+    )
+}

@@ -16,6 +16,7 @@ import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvData
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
 import React, { useEffect, useState } from 'react'
+import Pivot from "./Pivot";
 
 
 
@@ -30,6 +31,10 @@ const GeneratorPage = () => {
 
   const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
   const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
+
+
+
+  const [pivots, setPivots] = useState<Pivot[]>([]);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -130,6 +135,8 @@ const GeneratorPage = () => {
 
   const subjectsView = () => {
     return <SubjectsView
+      pivots={pivots}
+      setPivots={setPivots}
       key={0}
       toggleSideBar={toggleSideBar}
       isSideBarOpen={isSideBarOpen}
@@ -165,7 +172,7 @@ const GeneratorPage = () => {
 
 
     </div>
-    <div className="rounded-large border-large border-gray-700 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-800 fixed bottom-1 self-center w-2/3 md:hidden">
+    <div className=" border-t-large border-gray-700 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-800 fixed bottom-1 self-center w-full md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />
@@ -190,7 +197,7 @@ const ButtonSwitchView = ({ isSelected, label, onClick, index }: ButtonSwitchVie
       onClick={() => {
         onClick(index)
       }}
-      className={`rounded-lg p-2 border-2 border-gray-500 ${isSelected ? "bg-gray-500" : ""}`}>
+      className={`rounded-lg p-2 border-2 border-gray-500 ${isSelected ? "bg-gray-700" : ""}`}>
       {label}
     </button>
   )
