@@ -8,7 +8,7 @@ import { Course } from '@/domain/entities/Course';
 
 type Props = {
     schedule: Schedule;
-    pivots: Pivot[]
+    pivots?: Pivot[]
 }
 
 

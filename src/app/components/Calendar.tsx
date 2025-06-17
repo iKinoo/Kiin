@@ -13,7 +13,7 @@ interface CalendarProps {
     dayFormat: 'long' | 'short';
 }
 
-function mapEvents(course: Course, colorSeed: number) {
+function mapEvents(course: Course) {
     const days = {
         "Lunes": "13",
         "Martes": "14",
@@ -36,7 +36,7 @@ function mapEvents(course: Course, colorSeed: number) {
         "#4F6CFF",
     ]
 
-    const color = colors[colorSeed];
+    const color = colors[course.subject.id % colors.length];
 
     return course.sessions.map((sessionI) => {
 
@@ -75,7 +75,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
     const [tooltip, setTooltip] = useState<Tooltip>({ visible: false, x: 0, y: 0, eventArgs: undefined });
 
     const events = useMemo(() => {
-        return courses?.flatMap((course, index) => mapEvents(course, index)) ?? [];
+        return courses?.flatMap((course) => mapEvents(course)) ?? [];
     }, [courses]);
 
     // Referencia para limpiar el event listener
