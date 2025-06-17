@@ -165,6 +165,7 @@ const GeneratorPage = () => {
 
   const schedulesView = () => {
     return <SchedulesView
+    pivots={pivots}
       key={1}
       isSideBarOpen={isSideBarOpen}
       schedulesToShow={schedulesToShow}

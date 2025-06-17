@@ -3,14 +3,17 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useRef, useState } from 'react';
 import GoogleCalendarButton from './GoogleCalendarButton';
 import Image from 'next/image';
+import Pivot from '../generador/Pivot';
+import { Course } from '@/domain/entities/Course';
 
 type Props = {
     schedule: Schedule;
+    pivots: Pivot[]
 }
 
 
 
-function CurrentSchedule({ schedule }: Props) {
+function CurrentSchedule({ schedule, pivots }: Props) {
 
     //Prueba de google
     const [start] = useState(new Date('2025-06-05T08:00:00'));
@@ -70,6 +73,8 @@ function CurrentSchedule({ schedule }: Props) {
         "#B570FF",
         "#4F6CFF",
     ]
+
+
 
     return (
         <>
@@ -134,20 +139,7 @@ function CurrentSchedule({ schedule }: Props) {
 
                 {schedule.courses.map((course, index) => (
                     <div key={index} >
-                        <div className="mb-4 border-2 p-4 rounded-lg border-gray-500 text-small">
-                            <h3 className=" font-semibold">{course.subject.name}</h3>
-
-
-
-                            <div className='h-1 my-2 rounded' style={{ backgroundColor: colors[index] }}>    
-                            </div>
-                            
-                            <p>Grupo: {course.group}</p>
-                            <p>Profesor: {course.professor.fullName}</p>
-                            <p>Carrera: {course.subject.degreeResume}</p>
-                            <p>Semestre: {course.subject.semestre.join(', ')}</p>
-                            <p>Modalidad: {course.modality}</p>
-                        </div>
+                        {CourseCard(course, colors, pivots ?? [])}
                     </div>
                 ))}
             </>
@@ -167,6 +159,40 @@ type ShareLinkButtonProps = {
     schedule: Schedule;
     setShowShareLink: (link: string | null) => void;
     showShareLink: string | null;
+}
+
+function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
+
+    const isPinned = pivots?.some(
+        selectedPivot => (
+            selectedPivot.idProfessor === course.professor.id && selectedPivot.idSubject == course.subject.id
+        )
+    );
+
+    return <div className="mb-4 border-2 p-4 rounded-lg border-gray-500 text-small">
+
+        <h3 className=" font-semibold flex flex-row items-center">
+            {course.subject.name}
+        </h3>
+
+        <div className='h-1 my-2 rounded' style={{ backgroundColor: colors[course.subject.id % colors.length] }}>
+        </div>
+
+        <p>Grupo: {course.group}</p>
+        <p className='flex flex-row items-center'>
+            {isPinned ? <div className='rounded-large bg-white inline h-max mr-2 my-1'>
+                <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+            </div>
+                : ""}
+
+            <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>
+
+            {course.professor.fullName}
+        </p>
+        <p>Carrera: {course.subject.degreeResume}</p>
+        <p>Semestre: {course.subject.semestre.join(', ')}</p>
+        <p>Modalidad: {course.modality}</p>
+    </div>;
 }
 
 function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareLinkButtonProps) {
