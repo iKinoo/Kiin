@@ -1,7 +1,7 @@
 "use client";
 
-import SchedulesView from "./SchedulesView";
-import SubjectsView from "./SubjectsView";
+import SchedulesView from "../widgets/SchedulesView";
+import SubjectsView from "../widgets/SubjectsView";
 
 
 import Category from '@/domain/entities/Category';
@@ -15,8 +15,8 @@ import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvData
 import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
-import React, { useEffect, useState } from 'react'
-import Pivot from "./Pivot";
+import React, { useEffect, useState } from 'react';
+import Pivot from "../../domain/entities/Pivot";
 
 
 
@@ -89,7 +89,7 @@ const GeneratorPage = () => {
     return (
       pivots.every((pivot) => (
         schedule.courses.some((course) => (
-          (course.subject.id === pivot.idSubject) 
+          (course.subject.id === pivot.idSubject)
           &&
           (course.professor.id === pivot.idProfessor)
         ))
@@ -165,7 +165,7 @@ const GeneratorPage = () => {
 
   const schedulesView = () => {
     return <SchedulesView
-    pivots={pivots}
+      pivots={pivots}
       key={1}
       isSideBarOpen={isSideBarOpen}
       schedulesToShow={schedulesToShow}

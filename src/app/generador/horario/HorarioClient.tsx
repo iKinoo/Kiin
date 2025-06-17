@@ -1,13 +1,13 @@
 // app/calendar/horario/HorarioClient.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Calendar from '@/app/components/Calendar';
-import CurrentSchedule from '@/app/components/CurrentSchedule';
-import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import CurrentSchedule from '@/app/widgets/CurrentSchedule';
 import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
+import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 export default function HorarioClient() {
   const searchParams = useSearchParams();
@@ -17,19 +17,19 @@ export default function HorarioClient() {
   const [courses, setCourses] = React.useState<Course[]>([]);
 
   const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth > 640) {
-          setDayFormat("long")
-        } else {
-          setDayFormat("short")
-        }
-      };
-      window.addEventListener('resize', handleResize);
-      handleResize();
-      return () => window.removeEventListener("resize", handleResize);
-  
-    }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 640) {
+        setDayFormat("long")
+      } else {
+        setDayFormat("short")
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+
+  }, []);
 
   React.useEffect(() => {
     (new CoursesCsvDatasource()).getAll().then(courses => {

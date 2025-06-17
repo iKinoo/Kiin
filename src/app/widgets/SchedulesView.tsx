@@ -1,11 +1,10 @@
 import { Schedule } from '@/domain/entities/Schedule';
-import React from 'react'
-import LiveIndicator from '../components/UpdateIndicator';
+import Pivot from '../../domain/entities/Pivot';
+import Calendar from '../components/Calendar';
 import Pagination from '../components/Pagination';
 import SliderFilter from '../components/SliderBar';
-import Calendar from '../components/Calendar';
-import CurrentSchedule from '../components/CurrentSchedule';
-import Pivot from './Pivot';
+import LiveIndicator from '../components/UpdateIndicator';
+import CurrentSchedule from './CurrentSchedule';
 
 interface SchedulesViewProps {
 

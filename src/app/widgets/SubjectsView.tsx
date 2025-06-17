@@ -1,12 +1,12 @@
 import Category from '@/domain/entities/Category';
-import React, { useEffect, useState } from 'react'
-import SideBar from '../components/SideBar';
-import FilterSelector from '../components/FilterSelector';
-import SubjectCategory from '@/domain/entities/SubjectCategory';
-import { Subject } from '@/domain/entities/Subject';
-import { ProfessorsCsvDataSource } from '@/infrastructure/datasource/ProfessorsCsvDataSource';
 import { Professor } from '@/domain/entities/Professor';
-import Pivot from './Pivot';
+import { Subject } from '@/domain/entities/Subject';
+import SubjectCategory from '@/domain/entities/SubjectCategory';
+import { ProfessorsCsvDataSource } from '@/infrastructure/datasource/ProfessorsCsvDataSource';
+import { useEffect, useState } from 'react';
+import Pivot from '../../domain/entities/Pivot';
+import FilterSelector from '../components/FilterSelector';
+import SideBar from '../components/SideBar';
 
 interface SubjctsViewProps {
     toggleSideBar: () => void;

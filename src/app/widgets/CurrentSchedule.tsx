@@ -1,10 +1,10 @@
+import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useEffect, useRef, useState } from 'react';
-import GoogleCalendarButton from './GoogleCalendarButton';
 import Image from 'next/image';
-import Pivot from '../generador/Pivot';
-import { Course } from '@/domain/entities/Course';
+import { useEffect, useRef, useState } from 'react';
+import Pivot from '../../domain/entities/Pivot';
+import GoogleCalendarButton from '../components/GoogleCalendarButton';
 
 type Props = {
     schedule: Schedule;
