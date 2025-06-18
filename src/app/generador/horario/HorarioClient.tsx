@@ -44,12 +44,13 @@ export default function HorarioClient() {
   courses?.forEach(course => schedule.addCourse(course));
 
   return (
-    <div className="flex flex-col md:flex-row justify-center p-4 gap-6 min-h-screen">
-      <div className="w-full md:w-[80%] px-2">
+    <div className="flex flex-col md:flex-row  md:p-4 md:gap-6  h-full overflow-auto">
+      
+      <div className="w-full md:w-[70%] md:px-2  md:overflow-auto md:h-full h-screen md:mt-0 mt-5">
         <Calendar courses={courses} dayFormat={dayFormat} />
       </div>
-      <div className="w-full md:w-[20%] mt-6 md:mt-0">
-        <CurrentSchedule schedule={schedule} />
+      <div className="w-full md:w-[30%] mt-6 md:mt-0 md:h-full">
+        <CurrentSchedule schedule={schedule} label={'Horario'} />
       </div>
     </div>
   );

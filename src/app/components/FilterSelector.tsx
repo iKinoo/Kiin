@@ -26,7 +26,7 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) 
     const [isDegreeSelected, setIsDegreeSelected] = useState(false);
 
     return (
-        <div className="flex-1 overflow-y-auto p-1 border border-green-500 h-full pb-32">
+        <div className="flex-1 overflow-y-auto p-1 h-full pb-32">
             <div className='font-bold mb-4 p-1.5'>Selecciona tu Carrera</div>
             <ul className="space-y-2 ">
                 {

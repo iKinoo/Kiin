@@ -28,9 +28,9 @@ function SchedulesView({
 }: SchedulesViewProps) {
 
   return (
-    <div className="flex-1 overflow-auto border-large border-red-500 flex-col md:h-full">
+    <div className="flex-1 overflow-auto  flex-col md:h-full">
 
-      <div className="border-large border-blue-500 md:h-full  md:p-5 flex flex-col">
+      <div className="md:h-full  md:p-5 flex flex-col">
 
 
         <div className=" grid grid-cols-6 grid-rows-2 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
@@ -57,7 +57,7 @@ function SchedulesView({
           </div>
 
         </div>
-        <div className='border border-green-500 flex-1 overflow-auto'>
+        <div className=' flex-1 overflow-auto'>
           <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
         </div>
 

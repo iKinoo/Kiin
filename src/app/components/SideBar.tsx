@@ -25,11 +25,11 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ children, toggleSideBar, isOpen }) => {
   return (
-    <div className={` w-2/3  border-large  border-blue-500 bg-gray-800 ${isOpen ? "absolute" : "hidden"} flex flex-col h-full overflow-auto`}>
+    <div className={` w-2/3   bg-gray-800 ${isOpen ? "absolute" : "hidden"} flex flex-col h-full overflow-auto`}>
       <HeadSideBar toggleSideBar={toggleSideBar} />
       <aside
         id="sidebar"
-        className={`stick border border-red-500 flex-1 overflow-auto`}
+        className={`stick  flex-1 overflow-auto`}
         aria-label="Sidebar"
       >
 

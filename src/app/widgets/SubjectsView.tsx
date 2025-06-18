@@ -53,8 +53,8 @@ function SubjectsView({
     }, [pivots])
 
     return (
-        <div className='border-large border-yellow-500 h-full flex flex-col relative '>
-            <div className='flex flex-row gap-5 justify-center fixed self-center'>
+        <div className='h-full flex flex-col relative '>
+            <div className='flex flex-row gap-5 justify-center fixed self-center mt-2.5'>
                 <button
                     onClick={toggleSideBar}
                     className="border-2 border-gray-500 bg-gray-800 text-gray-100 flex flex-row gap-2 rounded-md items-center p-2"
@@ -66,7 +66,7 @@ function SubjectsView({
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
-                        className="size-6 stroke-black dark:stroke-white transition-colors duration-300"
+                        className="size-6 stroke-white transition-colors duration-300"
                     >
                         <path
                             strokeLinecap="round"
@@ -78,7 +78,7 @@ function SubjectsView({
                     Generar Horarios
                 </button>
             </div>
-            <div className='border-large border-red-500 flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24 pt-16'>
+            <div className=' flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24 pt-16'>
 
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
                     (sb) => (
@@ -146,9 +146,9 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardP
 
         </div>
 
-        <div className='flex flex-row items-center gap-2 text-gray-400 mb-2'>
+        <div className='flex flex-row items-center gap-2 dark:text-gray-400 text-gray-600 mb-2'>
             {subject.type}
-            <div className='h-2 w-2 rounded-large bg-gray-400 inline-block'></div>
+            <div className='h-2 w-2 rounded-large dark:bg-gray-400 bg-gray-400 inline-block'></div>
             {(Array.from((new Set(subject.semestre)))).join("°, ")}
             <div className='h-2 w-2 rounded-large bg-gray-400 inline-block'></div>
             8 Créditos
@@ -159,7 +159,7 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardP
                 onClick={
                     () => setShowProfessors(!showProfessors)
                 }
-                className={`flex flex-row items-center border border-gray-500 rounded-lg w-max p-2 text-sm ${showProfessors ? "bg-gray-700" : "bg-gray-800"}`}>
+                className={`text-white flex flex-row items-center border border-gray-500 rounded-lg w-max p-2 text-sm ${showProfessors ? "bg-gray-700" : "bg-gray-800"}`}>
                 {showProfessors ?
                     <svg className='inline mr-1' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z" /></svg>
                     : <svg className='inline mr-1' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" /></svg>
@@ -197,7 +197,7 @@ function ProfessorRow({ professor, setPivots: setSelectedProfessors, pivots: sel
 
 
     return (
-        <div key={professor.id} className=' flex flex-row  border-green-500'>
+        <div key={professor.id} className=' flex flex-row'>
             <button
                 onClick={() => {
                     if (isSelected) {
@@ -206,9 +206,9 @@ function ProfessorRow({ professor, setPivots: setSelectedProfessors, pivots: sel
                         setSelectedProfessors([...selectedPivots, { idProfessor: professor.id, idSubject: idSubject }]);
                     }
                 }}
-                className={`border-2 border-gray-800 ${isSelected ? "bg-gray-700 " : ""}  rounded-large h-max p-1 flex flex-row mr-2 `}>
+                className={`border-2 border-purple-600 ${isSelected ? "bg-purple-600 text-white" : ""}  rounded-large h-max p-1 flex flex-row mr-2 `}>
                 {isSelected ? <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M680-840v80h-40v327l-80-80v-247H400v87l-87-87-33-33v-47h400ZM480-40l-40-40v-240H240v-80l80-80v-46L56-792l56-56 736 736-58 56-264-264h-6v240l-40 40ZM354-400h92l-44-44-2-2-46 46Zm126-193Zm-78 149Z" /></svg>
-                    : <svg className='inline ' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+                    : <svg className='fill-black dark:fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
                 }
 
 

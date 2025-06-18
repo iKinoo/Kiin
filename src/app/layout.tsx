@@ -41,7 +41,7 @@ export default function RootLayout({
       <head>
         <AdSense pId="2263575229671406" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased border-large border-orange-500 h-screen`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased  h-screen`}>
         <SupabaseProvider>
           <NavBar links={links} />
           {children}

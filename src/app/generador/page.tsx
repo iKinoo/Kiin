@@ -185,25 +185,25 @@ const GeneratorPage = () => {
     <div className="flex flex-col flex-1 overflow-auto   relative">
 
       {dayFormat == "long" ?
-        <div className="flex flex-row border-large h-full">
+        <div className="flex flex-row  h-full">
 
-          <div className="w-[30%] border-large border-green-500">
+          <div className="w-[30%] md:dark:bg-gray-900 md:bg-gray-200">
             {subjectsView()}
           </div>
-          <div className="w-[45%] border-large border-orange-500">
+          <div className="w-[45%] ">
             {schedulesView()}
           </div>
-          <div className="w-[25%] border-large border-blue-500">
-            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} />
+          <div className="w-[25%] ">
+            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={"Horario Actual"} />
           </div>
 
         </div>
         : (indexSelected == 0 ? subjectsView() : <div>{schedulesView()}
-          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} /></div>)}
+          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={"Horario Actual"} /></div>)}
 
 
     </div>
-    <div className=" border-t-large border-gray-800 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-900 fixed bottom-1 self-center w-full md:hidden">
+    <div className="shadow-md  shadow-black  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />
@@ -228,7 +228,7 @@ const ButtonSwitchView = ({ isSelected, label, onClick, index }: ButtonSwitchVie
       onClick={() => {
         onClick(index)
       }}
-      className={`rounded-lg p-2  ${isSelected ? "bg-gray-700" : ""}`}>
+      className={`rounded-lg p-2  ${isSelected ? "bg-gray-700 text-white" : ""}`}>
       {label}
     </button>
   )

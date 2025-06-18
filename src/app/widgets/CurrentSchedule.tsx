@@ -9,11 +9,12 @@ import GoogleCalendarButton from '../components/GoogleCalendarButton';
 type Props = {
     schedule: Schedule;
     pivots?: Pivot[]
+    label: string
 }
 
 
 
-function CurrentSchedule({ schedule, pivots }: Props) {
+function CurrentSchedule({ schedule, pivots,label }: Props) {
 
     //Prueba de google
     const [start] = useState(new Date('2025-06-05T08:00:00'));
@@ -77,11 +78,11 @@ function CurrentSchedule({ schedule, pivots }: Props) {
 
 
     return schedule ?
-        <div className='border-large md:h-full border-blue-500 overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
-            
+        <div className='md:h-full  overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
 
-            <div className='flex flex-row mb-5 gap-2  border border-green-500 items-center md:sticky md:top-0'>
-                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full">Horario Actual</h2>
+
+            <div className='flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
+                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full text-white">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
                 {session ? (
@@ -127,16 +128,16 @@ function CurrentSchedule({ schedule, pivots }: Props) {
                         }}
                         className="bg-blue-600  p-2 rounded-full flex items-center justify-center"
                     >
-                        <Image src={'/img/google_calendar_mono.svg'} alt='google' width={24} height={24}/>
+                        <Image src={'/img/google_calendar_mono.svg'} alt='google' width={24} height={24} />
 
 
-                        
+
 
                     </button>
                 )}
             </div>
 
-            <div className='border border-green-500'>
+            <div className=''>
                 {schedule.courses.map((course, index) => (
                     <div key={index} >
                         {CourseCard(course, colors, pivots ?? [])}
@@ -174,30 +175,40 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
             selectedPivot.idProfessor === course.professor.id && selectedPivot.idSubject == course.subject.id
         )
     );
-    
+
     return <div className="mb-4 border-2 p-4 pl-2 rounded-lg border-gray-500 text-small flex flex-row">
 
         <div className='w-1 mr-1  rounded' style={{ backgroundColor: colors[course.subject.id % colors.length] }}></div>
         <div>
-            <h3 className=" font-semibold flex flex-row items-center">
-            {course.subject.name}
-        </h3>
+            <div className=" font-semibold">
+                {course.subject.name}
 
-        <p>Grupo: {course.group}</p>
-        <div className='flex flex-row items-center'>
-            {isPinned ? <div className='rounded-large bg-white inline h-max mr-2 my-1'>
-                <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+
+                
+
             </div>
-                : ""}
 
-            <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-240q-56 0-107 17.5T280-170v10h400v-10q-42-35-93-52.5T480-240Zm0-80q69 0 129 21t111 59v-560H240v560q51-38 111-59t129-21Zm0-160q-25 0-42.5-17.5T420-540q0-25 17.5-42.5T480-600q25 0 42.5 17.5T540-540q0 25-17.5 42.5T480-480ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Zm240-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z"/></svg>
+            Grupo: {course.group}
 
-            {course.professor.fullName}
+
+
+            <div className='flex flex-row items-center '>
+                {isPinned ? <div className='rounded-large bg-purple-800 inline h-max mr-2 my-1'>
+                    <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+                </div>
+                    : ""}
+
+                <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-240q-56 0-107 17.5T280-170v10h400v-10q-42-35-93-52.5T480-240Zm0-80q69 0 129 21t111 59v-560H240v560q51-38 111-59t129-21Zm0-160q-25 0-42.5-17.5T420-540q0-25 17.5-42.5T480-600q25 0 42.5 17.5T540-540q0 25-17.5 42.5T480-480ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Zm240-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z" /></svg>
+
+                {course.professor.fullName}
+            </div>
+            <div className='flex flex-row items-center '>
+                <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>
+                {course.subject.degreeResume}
+            </div>
         </div>
-        <div className='flex flex-row items-center'><svg className='mr-2' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>{course.subject.degreeResume}</div>
-        </div>
-        
-        
+
+
     </div>;
 }
 
