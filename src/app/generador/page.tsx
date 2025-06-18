@@ -17,6 +17,7 @@ import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
 import React, { useEffect, useState } from 'react';
 import Pivot from "../../domain/entities/Pivot";
+import CurrentSchedule from "../widgets/CurrentSchedule";
 
 
 
@@ -127,12 +128,14 @@ const GeneratorPage = () => {
 
   const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
   const toggleSideBar = () => {
+    console.log(!isSideBarOpen)
     setIsSideBarOpen(!isSideBarOpen);
   }
 
   const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
   useEffect(() => {
     const handleResize = () => {
+      console.log("something happen?")
       if (window.innerWidth > 640) {
         setDayFormat("long")
       } else {
@@ -165,7 +168,7 @@ const GeneratorPage = () => {
 
   const schedulesView = () => {
     return <SchedulesView
-      pivots={pivots}
+
       key={1}
       isSideBarOpen={isSideBarOpen}
       schedulesToShow={schedulesToShow}
@@ -182,15 +185,25 @@ const GeneratorPage = () => {
     <div className="flex flex-col flex-1 overflow-auto   relative">
 
       {dayFormat == "long" ?
-        <div>
-          {subjectsView()}
-          {schedulesView()}
+        <div className="flex flex-row border-large h-full">
+
+          <div className="w-[30%] border-large border-green-500">
+            {subjectsView()}
+          </div>
+          <div className="w-[45%] border-large border-purple-500">
+            {schedulesView()}
+          </div>
+          <div className="w-[25%] border-large border-blue-500">
+            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} />
+          </div>
+
         </div>
-        : (indexSelected == 0 ? subjectsView() : schedulesView())}
+        : (indexSelected == 0 ? subjectsView() : <div>{schedulesView()}
+          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} /></div>)}
 
 
     </div>
-    <div className=" border-t-large border-gray-700 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-800 fixed bottom-1 self-center w-full md:hidden">
+    <div className=" border-t-large border-gray-800 p-2 gap-3 flex flex-row justify-center z-20 bg-gray-900 fixed bottom-1 self-center w-full md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />
@@ -215,7 +228,7 @@ const ButtonSwitchView = ({ isSelected, label, onClick, index }: ButtonSwitchVie
       onClick={() => {
         onClick(index)
       }}
-      className={`rounded-lg p-2 border-2 border-gray-500 ${isSelected ? "bg-gray-700" : ""}`}>
+      className={`rounded-lg p-2  ${isSelected ? "bg-gray-700" : ""}`}>
       {label}
     </button>
   )

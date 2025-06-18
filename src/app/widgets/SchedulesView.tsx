@@ -1,16 +1,13 @@
 import { Schedule } from '@/domain/entities/Schedule';
-import Pivot from '../../domain/entities/Pivot';
 import Calendar from '../components/Calendar';
 import Pagination from '../components/Pagination';
 import SliderFilter from '../components/SliderBar';
 import LiveIndicator from '../components/UpdateIndicator';
-import CurrentSchedule from './CurrentSchedule';
 
 interface SchedulesViewProps {
 
   isSideBarOpen: boolean;
 
-  pivots: Pivot[]
 
   schedulesToShow: Schedule[];
   dayFormat: "short" | "long";
@@ -21,7 +18,6 @@ interface SchedulesViewProps {
 }
 
 function SchedulesView({
-  pivots,
   isSideBarOpen,
   schedulesToShow,
   dayFormat,
@@ -34,49 +30,37 @@ function SchedulesView({
   return (
     <div className="flex-1 overflow-auto border-large border-purple-500 flex-col md:flex-row">
 
-      <div className="border-large border-blue-500 h-max md:w-4/6 md:p-5">
+      <div className="border-large border-blue-500 h-max  md:p-5">
 
 
         <div className=" grid grid-cols-6 grid-rows-2 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
-          <div className="col-start-1 col-end-7 row-start-1 flex md:col-start-3 md:col-end-6 md:col-span-3 md:row-start-1 md:mt-0 ">
-            <LiveIndicator isLive={true} />
-            <div className="ml-3 md:mx-1" />
-            Última actualización: 20 de marzo de 2025
+          <div className="col-start-1 col-span-6 mt-3">
+            <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
           </div>
-          <div className={`${schedulesToShow.length == 0 ? "opacity-0" : ""} w-max col-start-1 col-span-6 row-start-2  md:col-end-3 mr-5 md:row-start-1 border-2 rounded-lg border-gray-300 flex p-2 mt-2 md:mt-0`}>
+
+          <div className={`w-max col-start-1  row-start-2   border-2 rounded-lg border-gray-300 flex p-2 mt-2 `}>
             <p>
-              Posibles horarios: {schedulesToShow.length}
+              Posibles: {schedulesToShow.length}
             </p>
           </div>
-          <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center md:col-start-6  md:justify-self-end md:row-span-1"}`}>
+          <div className="col-start-4 md:col-start-3 col-span-2  row-start-2 flex ">
+            <LiveIndicator isLive={true} />
+            <div className="ml-3" />
+            20/mar/25
+          </div>
+          <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center col-start-6  justify-self-end row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
               isNextDisabled={page >= schedulesToShow.length - 1}
               isPreviousDisabled={page == 0} />
           </div>
-          <div className="md:col-start-1 md:col-end-4 md:row-start-2 col-start-1 col-span-6 mt-3">
-            <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
-          </div>
+
         </div>
         <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
 
       </div>
-      <div className="border-large border-red-500 md:w-1/6 md:m-1  pb-4 mb-20  mx-3 md:mx-3">
-        {schedulesToShow.length > 0 ? (<CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} />) : (
 
-          <>
-
-            <div className=" flex">
-
-              <p className="text-center mt-10">Sin horarios disponibles</p>
-
-
-            </div>
-          </>
-
-        )}
-      </div>
 
 
     </div>

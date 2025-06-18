@@ -53,11 +53,11 @@ function SubjectsView({
     }, [pivots])
 
     return (
-        <div className='border-large border-white h-full flex flex-col'>
-            <div className='flex flex-row gap-5 justify-center'>
+        <div className='border-large border-yellow-500 h-full flex flex-col relative '>
+            <div className='flex flex-row gap-5 justify-center fixed self-center'>
                 <button
                     onClick={toggleSideBar}
-                    className="sticky font-medium  px-3 py-3  z-10 rounded-lg border-2 border-gray-500 bg-white text-black dark:bg-gray-800 dark:text-gray-100 flex flex-row justify-center gap-2 transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-gray-900 active:bg-gray-600 dark:active:bg-gray-800 md:hidden"
+                    className="border-2 border-gray-500 bg-gray-800 text-gray-100 flex flex-row gap-2 rounded-md items-center p-2"
                     type="button"
                 >
                     Materias
@@ -78,7 +78,7 @@ function SubjectsView({
                     Generar Horarios
                 </button>
             </div>
-            <div className='border-large border-red-500 flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24'>
+            <div className='border-large border-red-500 flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24 pt-16'>
 
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
                     (sb) => (
