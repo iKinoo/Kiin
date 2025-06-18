@@ -77,11 +77,11 @@ function CurrentSchedule({ schedule, pivots }: Props) {
 
 
     return schedule ?
-        <div className='border-large h-full border-red-500 overflow-auto p-2'>
+        <div className='border-large md:h-full border-blue-500 overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
             
 
-            <div className='flex flex-row mb-5 gap-2 relative border border-green-500 items-center'>
-                <h2 className="text-center text-xl font-bold my-4">Horario Actual</h2>
+            <div className='flex flex-row mb-5 gap-2  border border-green-500 items-center md:sticky md:top-0'>
+                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full">Horario Actual</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
                 {session ? (

@@ -190,7 +190,7 @@ const GeneratorPage = () => {
           <div className="w-[30%] border-large border-green-500">
             {subjectsView()}
           </div>
-          <div className="w-[45%] border-large border-purple-500">
+          <div className="w-[45%] border-large border-orange-500">
             {schedulesView()}
           </div>
           <div className="w-[25%] border-large border-blue-500">
