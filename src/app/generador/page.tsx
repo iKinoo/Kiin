@@ -187,14 +187,14 @@ const GeneratorPage = () => {
       {dayFormat == "long" ?
         <div className="flex flex-row  h-full">
 
-          <div className="w-[30%] md:dark:bg-gray-900 md:bg-gray-200">
+          <div className="w-[25%] md:dark:bg-gray-950 md:bg-gray-100">
             {subjectsView()}
           </div>
-          <div className="w-[45%] ">
+          <div className="w-[50%] ">
             {schedulesView()}
           </div>
           <div className="w-[25%] ">
-            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={"Horario Actual"} />
+            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page+1}/${schedulesToShow.length}`} />
           </div>
 
         </div>
@@ -203,7 +203,7 @@ const GeneratorPage = () => {
 
 
     </div>
-    <div className="shadow-md  shadow-black  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
+    <div style={{boxShadow: "0px 6px 10px black"}} className="  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />

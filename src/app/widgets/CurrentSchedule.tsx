@@ -81,8 +81,8 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
         <div className='md:h-full  overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
 
 
-            <div className='flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
-                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full text-white">{label}</h2>
+            <div className='relative flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
+                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
                 {session ? (
@@ -188,12 +188,12 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
 
             </div>
 
-            Grupo: {course.group}
+            Grupo {course.group}
 
 
 
             <div className='flex flex-row items-center '>
-                {isPinned ? <div className='rounded-large bg-purple-800 inline h-max mr-2 my-1'>
+                {isPinned ? <div className='rounded-large bg-purple-900 inline h-max mr-2 my-1'>
                     <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
                 </div>
                     : ""}
@@ -202,11 +202,7 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
 
                 {course.professor.fullName}
             </div>
-            <div className='flex flex-row items-center '>
-                <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>
-                {course.subject.degreeResume}
-            </div>
-        </div>
+                    </div>
 
 
     </div>;
@@ -230,7 +226,7 @@ function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareLin
             </button>
             {showShareLink &&
 
-                <div className="absolute w-full  animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5 -mt-1 rounded-lg">
+                <div className="absolute w-full animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5 -mt-1 rounded-lg">
                     <div className="flex-1 text-xs dark:text-white text-black overflow-hidden truncate dark:bg-gray-800 dark:border-none border border-black  p-2 py-2.5 rounded-md">
                         {showShareLink}
                     </div>

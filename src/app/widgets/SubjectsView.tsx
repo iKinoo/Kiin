@@ -85,7 +85,7 @@ function SubjectsView({
                         (
                             sb.selectedValues?.map(
                                 (sbv) => (
-                                    <SubjectCard pivots={pivots} setPivots={setPivots} key={sbv.id} subject={sbv} allProfessors={professorsData} />
+                                    <SubjectCard category={sb} pivots={pivots} setPivots={setPivots} key={sbv.id} subject={sbv} allProfessors={professorsData} />
                                 )
                             )
                         )
@@ -114,6 +114,7 @@ interface SubjectCardProps {
     allProfessors: Professor[]
     setPivots: (ids: Pivot[]) => void,
     pivots: Pivot[];
+    category: Category;
 }
 
 const colors = [
@@ -131,7 +132,7 @@ const colors = [
 
 
 
-function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardProps) {
+function SubjectCard({ subject, allProfessors, pivots, setPivots, category }: SubjectCardProps) {
 
     const [showProfessors, setShowProfessors] = useState(false);
 
@@ -142,7 +143,12 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardP
                 {subject.name}
                 <div className='h-1 rounded-large  mb-1 mt-1 w-full' style={{ backgroundColor: colors[subject.id % colors.length] }}></div>
             </div>
-            <svg className='inline ' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg>
+            <button className='border border-green-500 flex'
+            onClick={() => (category.onClick(subject.id))}
+            >
+
+                <svg className=' fill-red-500 ' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg>
+            </button>
 
         </div>
 
@@ -153,6 +159,11 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots }: SubjectCardP
             <div className='h-2 w-2 rounded-large bg-gray-400 inline-block'></div>
             8 Créditos
         </div>
+        <div className='flex flex-row items-center mb-2'>
+            <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>
+            {subject.degreeResume}
+        </div>
+
 
         <div className='flex flex-row justify-end'>
             <button

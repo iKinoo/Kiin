@@ -38,12 +38,16 @@ function SchedulesView({
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
           </div>
 
-          <div className={`w-max col-start-1  row-start-2   border-2 rounded-lg border-gray-300 flex p-2 mt-2 `}>
+          <div className={`justify-center col-start-3  col-span-2 w-full row-start-2    flex p-2 mt-2`}>
             <p>
-              Posibles: {schedulesToShow.length}
+              Horarios:
+              <span className=' text-white  bg-black dark:bg-white dark:text-black p-1 rounded-full ml-2'>
+                {schedulesToShow.length}
+              </span>
+
             </p>
           </div>
-          <div className="col-start-4 md:col-start-3 col-span-2  row-start-2 flex ">
+          <div className="col-start-4 md:col-start-1 col-span-2  row-start-2 flex ">
             <LiveIndicator isLive={true} />
             <div className="ml-3" />
             20/mar/25
