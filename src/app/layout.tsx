@@ -41,10 +41,10 @@ export default function RootLayout({
       <head>
         <AdSense pId="2263575229671406" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased  h-screen`}>
         <SupabaseProvider>
           <NavBar links={links} />
-          <div>{children}</div>
+          {children}
         </SupabaseProvider>
       </body>
     </html>

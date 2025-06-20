@@ -13,7 +13,7 @@ interface CalendarProps {
     dayFormat: 'long' | 'short';
 }
 
-function mapEvents(course: Course, colorSeed: number) {
+function mapEvents(course: Course) {
     const days = {
         "Lunes": "13",
         "Martes": "14",
@@ -36,7 +36,7 @@ function mapEvents(course: Course, colorSeed: number) {
         "#4F6CFF",
     ]
 
-    const color = colors[colorSeed];
+    const color = colors[course.subject.id % colors.length];
 
     return course.sessions.map((sessionI) => {
 
@@ -75,7 +75,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
     const [tooltip, setTooltip] = useState<Tooltip>({ visible: false, x: 0, y: 0, eventArgs: undefined });
 
     const events = useMemo(() => {
-        return courses?.flatMap((course, index) => mapEvents(course, index)) ?? [];
+        return courses?.flatMap((course) => mapEvents(course)) ?? [];
     }, [courses]);
 
     // Referencia para limpiar el event listener
@@ -107,6 +107,28 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
         setTooltip({ visible: false, x: 0, y: 0, eventArgs: undefined });
     };
 
+    const minStartHour = useMemo(() => {
+        // Encuentra la hora de inicio más temprana entre todos los eventos
+        if (!events.length) return "18:00:00";
+        const hours = events.map(e => new Date(e.start).getHours() * 60 + new Date(e.start).getMinutes());
+        const minMinutes = Math.min(...hours) - 30; // media hora antes
+        const minHour = Math.floor(Math.max(minMinutes, 0) / 60);
+        const minMinute = Math.max(minMinutes, 0) % 60;
+        // Devuelve en formato HH:MM:00
+        return `${minHour.toString().padStart(2, '0')}:${minMinute.toString().padStart(2, '0')}:00`;
+    }, [events]);
+
+    const maxStartHour = useMemo(() => {
+        // Encuentra la hora de finalización más tardía entre todos los eventos
+        if (!events.length) return "18:00:00";
+        const minutes = events.map(e => new Date(e.end).getHours() * 60 + new Date(e.end).getMinutes());
+        const maxMinutes = Math.max(...minutes) + 30; // media hora después
+        const maxHour = Math.floor(Math.min(maxMinutes, 24 * 60 - 1) / 60);
+        const maxMinute = Math.min(maxMinutes, 24 * 60 - 1) % 60;
+        // Devuelve en formato HH:MM:00
+        return `${maxHour.toString().padStart(2, '0')}:${maxMinute.toString().padStart(2, '0')}:00`;
+    }, [events]);
+
     return (
         <>
             <div className='h-full'>
@@ -135,7 +157,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     dayHeaderFormat={{ weekday: "long" }}
                     locale={"es-MX"}
                     allDaySlot={false}
-                    slotMinTime="07:00:00"
+                    slotMinTime={minStartHour}
+                    slotMaxTime={maxStartHour}
                     hiddenDays={[0, 7]}
                     plugins={[timeGridPlugin]}
                     initialView="timeGridWeek"

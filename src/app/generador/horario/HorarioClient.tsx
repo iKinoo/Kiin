@@ -1,13 +1,13 @@
 // app/calendar/horario/HorarioClient.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Calendar from '@/app/components/Calendar';
-import CurrentSchedule from '@/app/components/CurrentSchedule';
-import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import CurrentSchedule from '@/app/widgets/CurrentSchedule';
 import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
+import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvDatasource';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 export default function HorarioClient() {
   const searchParams = useSearchParams();
@@ -17,19 +17,19 @@ export default function HorarioClient() {
   const [courses, setCourses] = React.useState<Course[]>([]);
 
   const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth > 640) {
-          setDayFormat("long")
-        } else {
-          setDayFormat("short")
-        }
-      };
-      window.addEventListener('resize', handleResize);
-      handleResize();
-      return () => window.removeEventListener("resize", handleResize);
-  
-    }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 640) {
+        setDayFormat("long")
+      } else {
+        setDayFormat("short")
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+
+  }, []);
 
   React.useEffect(() => {
     (new CoursesCsvDatasource()).getAll().then(courses => {
@@ -44,12 +44,13 @@ export default function HorarioClient() {
   courses?.forEach(course => schedule.addCourse(course));
 
   return (
-    <div className="flex flex-col md:flex-row justify-center p-4 gap-6 min-h-screen">
-      <div className="w-full md:w-[80%] px-2">
+    <div className="flex flex-col md:flex-row  md:p-4 md:gap-6  h-full overflow-auto">
+      
+      <div className="w-full md:w-[70%] md:px-2  md:overflow-auto md:h-full h-screen md:mt-0 mt-5">
         <Calendar courses={courses} dayFormat={dayFormat} />
       </div>
-      <div className="w-full md:w-[20%] mt-6 md:mt-0">
-        <CurrentSchedule schedule={schedule} />
+      <div className="w-full md:w-[30%] mt-6 md:mt-0 md:h-full">
+        <CurrentSchedule schedule={schedule} label={'Horario'} />
       </div>
     </div>
   );
