@@ -41,7 +41,7 @@ function SchedulesView({
           <div className={`justify-center col-start-3  col-span-2 w-full row-start-2    flex p-2 mt-2`}>
             <p>
               Horarios:
-              <span className=' text-white  bg-black dark:bg-white dark:text-black p-1 rounded-full ml-2'>
+              <span className=' text-white  bg-black dark:bg-white dark:text-black p-1 px-2.5 rounded-full ml-2'>
                 {schedulesToShow.length}
               </span>
 

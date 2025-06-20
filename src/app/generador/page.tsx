@@ -36,6 +36,7 @@ const GeneratorPage = () => {
 
 
   const [pivots, setPivots] = useState<Pivot[]>([]);
+  const [pinnedSubjects, setPinnedSubjects] = useState<number[]>([])
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -79,22 +80,36 @@ const GeneratorPage = () => {
     const generator = new ScheduleGenerator();
     const schedules = generator.generateSchedules(courses)
 
-    const withPivots = schedules.filter(schedule => scheduleHasPivots(schedule, pivots))
+    const withPivots = schedules.filter(schedule => withPinnedSubjects(schedule, pinnedSubjects)).filter(s => scheduleHasPivots(s, pivots))
 
     console.log(withPivots)
     setGeneratedSchedules(withPivots);
   }
 
+  const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
+    return (
+      pinnedSubjects.every(pinnedS => (
+        schedule.courses.some(
+          course => (course.subject.id === pinnedS)
+        )
+      ))
+    )
+  }
+
   const scheduleHasPivots = (schedule: Schedule, pivots: Pivot[]) => {
 
     return (
-      pivots.every((pivot) => (
-        schedule.courses.some((course) => (
-          (course.subject.id === pivot.idSubject)
-          &&
-          (course.professor.id === pivot.idProfessor)
-        ))
-      ))
+      pivots.every((pivot) => {
+        // tiene la materia del pivote?
+        if (schedule.courses.some((course) => (course.subject.id === pivot.idSubject))) {
+          // tiene el profesor del pivote?D
+          return schedule.courses.some((course) => (course.professor.id === pivot.idProfessor && course.subject.id === pivot.idSubject));
+        } else {
+          // si no tienes la materia no pasa nada, aquí somos compas, perdonamos
+          return true;
+        }
+      }
+      )
     )
   }
 
@@ -135,7 +150,6 @@ const GeneratorPage = () => {
   const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
   useEffect(() => {
     const handleResize = () => {
-      console.log("something happen?")
       if (window.innerWidth > 640) {
         setDayFormat("long")
       } else {
@@ -163,6 +177,8 @@ const GeneratorPage = () => {
       currentCategories={currentCategories}
       handleClickFilter={handleClickFilter}
       filterCourses={filterCourses}
+      pinnedSubjects={pinnedSubjects}
+      setPinnedSubjects={setPinnedSubjects}
     />
   }
 
@@ -187,14 +203,14 @@ const GeneratorPage = () => {
       {dayFormat == "long" ?
         <div className="flex flex-row  h-full">
 
-          <div className="w-[25%] md:dark:bg-gray-950 md:bg-gray-100">
+          <div className="w-[25%] md:dark:bg-gray-950 md:bg-gray-100 md:border-r md:border-gray-300 dark:border-none">
             {subjectsView()}
           </div>
           <div className="w-[50%] ">
             {schedulesView()}
           </div>
           <div className="w-[25%] ">
-            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page+1}/${schedulesToShow.length}`} />
+            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} />
           </div>
 
         </div>
@@ -203,7 +219,7 @@ const GeneratorPage = () => {
 
 
     </div>
-    <div style={{boxShadow: "0px 6px 10px black"}} className="  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
+    <div style={{ boxShadow: "0px 6px 10px black" }} className="  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
 
       <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
       <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />
