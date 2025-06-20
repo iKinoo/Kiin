@@ -19,7 +19,7 @@ export class CoursesModelDao {
       this._results = await readLocalCSV(url);
     }
     else {
-      const url = 'https://kiin-rho.vercel.app/data_verano_2025.csv';
+      const url = 'https://kiin-rho.vercel.app/data.csv';
       this._results = await readCSV(url);
     }
 

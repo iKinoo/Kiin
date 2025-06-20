@@ -216,7 +216,7 @@ function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareLin
             <button
                 onClick={async () => {
                     const coursesIds = schedule.courses.map(course => course.id);
-                    const shareLink = `${window.location.origin}/calendar/horario?ids=${coursesIds.toString()}`;
+                    const shareLink = `${window.location.href}/horario?ids=${coursesIds.toString()}`;
                     setShowShareLink(shareLink);
                 }}
                 className="bg-blue-600  p-2 rounded-full flex items-center justify-center"

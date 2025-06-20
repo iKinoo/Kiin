@@ -18,7 +18,7 @@ const HomeContent: React.FC = () => {
           <p className="text-lg sm:text-xl lg:text-2xl">
             Una herramienta de y para estudiantes
           </p>
-          <Link href={'/calendar'}>
+          <Link href={'/generador'}>
             <button className="block py-3 px-10 bg-orange-500 hover:bg-orange-700 text-white font-bold rounded-xl transform transition-transform duration-150 active:scale-110">
               Comenzar
             </button>
