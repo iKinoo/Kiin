@@ -83,7 +83,9 @@ const GeneratorPage = () => {
     const withPivots = schedules.filter(schedule => withPinnedSubjects(schedule, pinnedSubjects)).filter(s => scheduleHasPivots(s, pivots))
 
     console.log(withPivots)
-    setGeneratedSchedules(withPivots);
+    setGeneratedSchedules(
+      withPivots.sort((a, b) => a.courses.length - b.courses.length)
+    );
   }
 
   const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
@@ -220,7 +222,7 @@ const GeneratorPage = () => {
 
         </div>
         : (indexSelected == 0 ? subjectsView() : <div>{schedulesView()}
-          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={"Horario Actual"} /></div>)}
+          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} /></div>)}
 
 
     </div>

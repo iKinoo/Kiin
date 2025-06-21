@@ -82,7 +82,7 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
 
 
             <div className='relative flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
-                <h2 className="text-center text-xl font-bold p-2 bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
+                <h2 className="text-center text-lg p-2 font-bold  bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
                 {session ? (
@@ -135,6 +135,12 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
 
                     </button>
                 )}
+                <div className={`flex flex-col items-center`}>
+                    Materias
+                    <div className=' text-white  bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
+                        {schedule?.subjects.length ?? 0}
+                    </div>
+                </div>
             </div>
 
             <div className=''>
@@ -202,7 +208,7 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
 
                 {course.professor.fullName}
             </div>
-                    </div>
+        </div>
 
 
     </div>;
