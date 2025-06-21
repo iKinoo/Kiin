@@ -117,9 +117,14 @@ const GeneratorPage = () => {
     setPage(page);
   };
 
-  const handleClickFilter = (category: Category[]) => {
-    setCurrentCategories(category);
-    const semestersWithSubjectsSelected = category.filter(c => c instanceof SubjectCategory)
+  const handleClickFilter = (categories: Category[]) => {
+    setCurrentCategories(categories);
+
+    const semestersWithSubjectsSelected = categories.filter(c => c instanceof SubjectCategory)
+    
+    const selectedSubjects = semestersWithSubjectsSelected.flatMap(s => s.selectedValues.flatMap(sv => sv.id))
+    
+    setPinnedSubjects(pinnedSubjects.filter(pn => selectedSubjects.includes(pn)))
 
     let selectedSubjectsCount = 0;
     semestersWithSubjectsSelected.forEach(c => { selectedSubjectsCount = c.selectedValues.length + selectedSubjectsCount })
