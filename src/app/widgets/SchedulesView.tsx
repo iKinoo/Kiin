@@ -1,7 +1,7 @@
 import { Schedule } from '@/domain/entities/Schedule';
 import Calendar from '../components/Calendar';
 import Pagination from '../components/Pagination';
-import SliderFilter from '../components/SliderBar';
+// import SliderFilter from '../components/SliderBar';
 import LiveIndicator from '../components/UpdateIndicator';
 
 interface SchedulesViewProps {
@@ -23,8 +23,8 @@ function SchedulesView({
   dayFormat,
   onChangeSchedulePage,
   page,
-  maxSubjectsCount,
-  handleSliderChange,
+  // maxSubjectsCount,
+  // handleSliderChange,
 }: SchedulesViewProps) {
 
   return (
@@ -33,25 +33,21 @@ function SchedulesView({
       <div className="md:h-full  md:p-5 flex flex-col">
 
 
-        <div className=" grid grid-cols-6 grid-rows-2 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2 md:grid-rows-2">
-          <div className="col-start-1 col-span-6 mt-3">
-            <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
-          </div>
-
-          <div className={`justify-center col-start-3  col-span-2 w-full row-start-2    flex p-2 mt-2`}>
-            <p>
-              Horarios:
-              <span className=' text-white  bg-black dark:bg-white dark:text-black p-1 px-2.5 rounded-full ml-2'>
-                {schedulesToShow.length}
-              </span>
-
-            </p>
-          </div>
-          <div className="col-start-4 md:col-start-1 col-span-2  row-start-2 flex ">
+        <div className=" grid grid-cols-6 grid-rows-1 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2   ">
+          <div className="col-start-1 md:col-start-1 col-span-2  row-start-1 flex ">
             <LiveIndicator isLive={true} />
             <div className="ml-3" />
             20/mar/25
           </div>
+          
+          <div className={`justify-center items-center  col-start-3 col-span-2   w-full md:row-start-1  row-start-2   flex flex-col`}>
+            Horarios
+              <div className=' text-white  bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{lineHeight: 1.5}}>
+                {schedulesToShow.length}
+              </div>
+          </div>
+          
+          
           <div className={`transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center col-start-6  justify-self-end row-span-1"}`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
