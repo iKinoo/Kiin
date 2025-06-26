@@ -186,8 +186,8 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects
 
         <div className='flex flex-row items-center gap-2 dark:text-gray-400 text-gray-600 '>
             {subject.type}
-            <div className='h-2 w-2 rounded-large dark:bg-gray-400 bg-gray-400 inline-block'></div>
-            8 Créditos
+            {/* <div className='h-2 w-2 rounded-large dark:bg-gray-400 bg-gray-400 inline-block'></div>
+            8 Créditos */}
         </div>
         <div className='dark:text-gray-400 text-gray-600 mb-1'>
             Semestre {(Array.from((new Set(subject.semestre)))).join(", ")}

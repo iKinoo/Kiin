@@ -127,6 +127,7 @@ const GeneratorPage = () => {
     const selectedSubjects = semestersWithSubjectsSelected.flatMap(s => s.selectedValues.flatMap(sv => sv.id))
     
     setPinnedSubjects(pinnedSubjects.filter(pn => selectedSubjects.includes(pn)))
+    setPivots(pivots.filter(p => selectedSubjects.includes(p.idSubject)))
 
     let selectedSubjectsCount = 0;
     semestersWithSubjectsSelected.forEach(c => { selectedSubjectsCount = c.selectedValues.length + selectedSubjectsCount })
@@ -217,12 +218,12 @@ const GeneratorPage = () => {
             {schedulesView()}
           </div>
           <div className="w-[25%] ">
-            <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} />
+            <CurrentSchedule schedule={schedulesToShow[page]} pinnedSubjects={pinnedSubjects} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} />
           </div>
 
         </div>
         : (indexSelected == 0 ? subjectsView() : <div>{schedulesView()}
-          <CurrentSchedule schedule={schedulesToShow[page]} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} /></div>)}
+          <CurrentSchedule schedule={schedulesToShow[page]} pinnedSubjects={pinnedSubjects}  pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} /></div>)}
 
 
     </div>

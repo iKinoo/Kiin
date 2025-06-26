@@ -8,13 +8,14 @@ import GoogleCalendarButton from '../components/GoogleCalendarButton';
 
 type Props = {
     schedule: Schedule;
-    pivots?: Pivot[]
+    pivots?: Pivot[];
+    pinnedSubjects?: number[];
     label: string
 }
 
 
 
-function CurrentSchedule({ schedule, pivots,label }: Props) {
+function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
 
     //Prueba de google
     const [start] = useState(new Date('2025-06-05T08:00:00'));
@@ -147,15 +148,15 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
             <div className=''>
                 {schedule.courses.map((course, index) => (
                     <div key={index} >
-                        {CourseCard(course, colors, pivots ?? [])}
+                        {CourseCard(course, colors, pivots ?? [], pinnedSubjects ?? [])}
                     </div>
                 ))}
             </div>
         </div>
         :
-        <div className="">
+        <div className="px-10">
 
-            <p className="text-center mt-10">Sin horarios disponibles</p>
+            <p className="text-center mt-10">Prueba con otras materias y/o profesores</p>
 
 
         </div>
@@ -175,23 +176,31 @@ type ShareLinkButtonProps = {
     showShareLink: string | null;
 }
 
-function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
+function CourseCard(course: Course, colors: string[], pivots: Pivot[], pinnedSubjects: number[]) {
 
-    const isPinned = pivots?.some(
+    const isProfessorPinned = pivots?.some(
         selectedPivot => (
             selectedPivot.idProfessor === course.professor.id && selectedPivot.idSubject == course.subject.id
         )
     );
+    const isSubjectPinned = pinnedSubjects.includes(course.subject.id);
 
     return <div className="mb-4 border-2 p-4 pl-2 rounded-lg border-gray-500 text-small flex flex-row">
 
         <div className='w-1 mr-1  rounded' style={{ backgroundColor: colors[course.subject.id % colors.length] }}></div>
-        <div>
-            <div className=" font-semibold">
-                {course.subject.name}
+        <div className='w-full'>
+            <div className=" font-semibold flex flex-row items-center w-full">
+
+                <div className='flex-1'>
+                    {course.subject.name}
+                </div>
+                {isSubjectPinned ? <div className='rounded-large bg-purple-900 inline h-max ml-2 my-1'>
+                    <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
+                </div>
+                    : ""}
 
 
-                
+
 
             </div>
 
@@ -200,7 +209,7 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[]) {
 
 
             <div className='flex flex-row items-center '>
-                {isPinned ? <div className='rounded-large bg-purple-900 inline h-max mr-2 my-1'>
+                {isProfessorPinned ? <div className='rounded-large bg-purple-900 inline h-max mr-2 my-1'>
                     <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
                 </div>
                     : ""}

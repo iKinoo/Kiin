@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination';
 // import SliderFilter from '../components/SliderBar';
 import LiveIndicator from '../components/UpdateIndicator';
 import SliderFilter from '../components/SliderBar';
+import Image from 'next/image';
 
 interface SchedulesViewProps {
 
@@ -38,7 +39,7 @@ function SchedulesView({
           <div className="col-start-1  md:row-start-1 col-span-6  mb-5 justify-center   row-start-1 flex  self-start">
             <LiveIndicator isLive={true} />
             <div className='ml-2'> </div>
-            20 de mayo de
+            20 de mayo de 2025
           </div>
           <div className=" md:row-start-2 col-start-1 col-span-4  ">
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />
@@ -60,9 +61,15 @@ function SchedulesView({
           </div>
 
         </div>
-        <div className=' flex-1 overflow-auto'>
+        <div className=' flex-1 overflow-auto  relative'>
           <Calendar dayFormat={dayFormat} courses={schedulesToShow[page]?.courses} />
+          {schedulesToShow.length < 1 && <div className='absolute bottom-0 w-full h-full  flex justify-center items-center '>
+          <Image src={"/img/fantasmita.svg"} alt='Fantasmita' width={400} height={400}></Image>
+        </div>}
         </div>
+        
+
+
 
       </div>
 
