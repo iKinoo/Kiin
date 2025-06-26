@@ -82,6 +82,7 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
 
 
             <div className='relative flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
+                <div className='absolute h-full w-full  -z-20 backdrop-blur-sm'></div>
                 <h2 className="text-center text-lg p-2 font-bold  bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
@@ -126,7 +127,7 @@ function CurrentSchedule({ schedule, pivots,label }: Props) {
                             });
                             await GoogleSignIn();
                         }}
-                        className="bg-blue-600  p-2 rounded-full flex items-center justify-center"
+                        className="hidden bg-blue-600  p-2 rounded-full items-center justify-center"
                     >
                         <Image src={'/img/google_calendar_mono.svg'} alt='google' width={24} height={24} />
 
@@ -232,7 +233,7 @@ function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareLin
             </button>
             {showShareLink &&
 
-                <div className="absolute w-full animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5 -mt-1 rounded-lg">
+                <div className="absolute w-full animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5  rounded-lg">
                     <div className="flex-1 text-xs dark:text-white text-black overflow-hidden truncate dark:bg-gray-800 dark:border-none border border-black  p-2 py-2.5 rounded-md">
                         {showShareLink}
                     </div>

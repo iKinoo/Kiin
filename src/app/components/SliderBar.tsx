@@ -34,7 +34,7 @@ export function SliderFilter({
   return (
     <Slider
       isDisabled={maxValue === 0}
-      className="max-w-md text-black dark:text-white"
+      className=" text-black dark:text-white"
       getValue={(value) => {
         const numValue = typeof value === "number" ? value : Array.isArray(value) ? value[0] : 0;
         return `${numValue > 0 ? `${numValue} de ${maxValue} ${objectNameCounting}` : "Todas las posibles combinaciones"}`;
