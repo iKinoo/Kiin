@@ -38,8 +38,7 @@ function SchedulesView({
         <div className=" grid grid-cols-6 grid-rows-1 justify-between items-center mb-2 px-5 mt-5 md:mt-0 md:px-2   ">
           <div className="col-start-1  md:row-start-1 col-span-6  mb-5 justify-center   row-start-1 flex  self-start">
             <LiveIndicator isLive={true} />
-            <div className='ml-2'> </div>
-            20 de mayo de 2025
+            
           </div>
           <div className=" md:row-start-2 col-start-1 col-span-4  ">
             <SliderFilter maxValue={maxSubjectsCount} label='Materias por horario' objectNameCounting='materias' onValueChange={handleSliderChange} />

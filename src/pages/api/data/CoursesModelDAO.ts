@@ -1,7 +1,9 @@
 import csvParser from "csv-parser";
-import { CourseCSV } from "./CourseModel";
-import { Readable } from "stream";
 import fs from "fs";
+import path from "path";
+import { Readable } from "stream";
+import * as XLSX from "xlsx";
+import { CourseCSV } from "./CourseModel";
 
 
 export class CoursesModelDao {
@@ -12,51 +14,17 @@ export class CoursesModelDao {
       return this._results;
     }
 
-    const localDev = false;
-
-    if (localDev) {
-      const url = 'public/data_verano_2025.csv'
-      this._results = await readLocalCSV(url);
-    }
-    else {
-      const url = 'https://kiin-rho.vercel.app/data.csv';
-      this._results = await readCSV(url);
-    }
+    // Buscar el archivo Excel más reciente en la carpeta public
+    this._results = await readLatestExcelFile();
 
     return this._results;
   }
+
+  // Método para limpiar el cache (útil para pruebas o recargas)
+  static clearCache(): void {
+    this._results = [];
+  }
 }
-
-const readCSV = async (url: string): Promise<CourseCSV[]> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        return reject(new Error(`Failed to fetch CSV file: ${response.statusText}`));
-      }
-
-      const csvText = await response.text(); // Obtener el contenido del archivo CSV como texto
-
-      const results: CourseCSV[] = [];
-
-
-      // Usar un stream legible para procesar el texto del CSV
-
-      const readableStream = Readable.from(csvText);
-
-      readableStream
-        .pipe(csvParser())
-        .on('data', (data) => {
-          results.push(fromRawToCourseCSV(data)); // Procesar cada fila y convertirla a CourseCSV
-        }) // Procesar cada fila
-        .on('end', () => resolve(results)) // Resolver al finalizar
-        .on('error', (error) => reject(error)); // Manejar errores
-    } catch (error) {
-      reject(error); // Manejar cualquier error de fetch o de otro tipo
-    }
-  });
-};
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,7 +70,7 @@ const fromRawToCourseCSV = (raw: any): CourseCSV => {
     key => key.trim().toLowerCase().replace(/[^a-z]/g, '') === 'martes'
   );
   const miercolesKey = Object.keys(raw).find(
-    key => key.trim().toLowerCase().replace(/[^\wáéíóúüñ]/g, '').replace('é','e') === 'miercoles'
+    key => key.trim().toLowerCase().replace(/[^\wáéíóúüñ]/g, '').replace('é', 'e') === 'miercoles'
   );
   const juevesKey = Object.keys(raw).find(
     key => key.trim().toLowerCase().replace(/[^a-z]/g, '') === 'jueves'
@@ -163,17 +131,159 @@ const fromRawToCourseCSV = (raw: any): CourseCSV => {
 }
 
 
+interface ExcelFileInfo {
+  filename: string;
+  label: string;
+  date: Date;
+  version: number; // Número de versión (_1, _2, etc.) 0 para archivos sin número
+  fullPath: string;
+}
 
+/**
+ * Lee el archivo Excel más reciente de la carpeta public/data
+ */
+const readLatestExcelFile = async (): Promise<CourseCSV[]> => {
+  try {
+    const dataDir = path.join(process.cwd(), 'public', 'data');
 
-const readLocalCSV = (filePath: string): Promise<CourseCSV[]> => {
-  return new Promise((resolve,
-    reject) => {
+    // Leer todos los archivos en la carpeta public/data
+    const files = fs.readdirSync(dataDir);
+
+    // Filtrar solo archivos Excel (.xlsx, .xls)
+    const excelFiles = files.filter(file =>
+      file.endsWith('.xlsx') || file.endsWith('.xls')
+    );
+
+    if (excelFiles.length === 0) {
+      throw new Error('No Excel files found in public/data directory');
+    }
+
+    // Extraer información de cada archivo Excel
+    const excelFilesWithDates: ExcelFileInfo[] = [];
+
+    for (const filename of excelFiles) {
+      const fullPath = path.join(dataDir, filename);
+
+      // Parsear el archivo usando el nuevo formato
+      const fileInfo = parseExcelFileName(filename, fullPath);
+
+      if (fileInfo) {
+        excelFilesWithDates.push(fileInfo);
+      }
+    }
+
+    if (excelFilesWithDates.length === 0) {
+      throw new Error('No valid Excel files found with the expected format: data_label_DD.MM.YYYY[_version].xlsx');
+    }
+
+    console.log("archivos encontrados: \n", excelFilesWithDates);
+
+    // Ordenar por fecha (más reciente primero) y luego por versión (más alta primero)
+    excelFilesWithDates.sort((a, b) => {
+      const dateA = a.date.getTime();
+      const dateB = b.date.getTime();
+
+      // Si las fechas son diferentes, usar esa diferencia
+      if (dateA !== dateB) {
+        return dateB - dateA; // Más reciente primero
+      }
+
+      // Si las fechas son iguales, comparar por versión (más alta primero)
+      return b.version - a.version;
+    });
+
+    const latestFile = excelFilesWithDates[0];
+
+    console.log(`Loading latest Excel file: ${latestFile.filename}`);
+    console.log(`  - Label: ${latestFile.label}`);
+    console.log(`  - Date: ${latestFile.date.toISOString()}`);
+    console.log(`  - Version: ${latestFile.version}`);
+
+    // Leer el contenido del archivo Excel más reciente
+    const workbook = XLSX.readFile(latestFile.fullPath);
+
+    // Obtener la primera hoja del Excel
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    // Convertir a CSV y procesar como antes
+    const csvData = XLSX.utils.sheet_to_csv(worksheet);
+
+    // Procesar el CSV usando la lógica existente
+    return await processCSVData(csvData);
+
+  } catch (error) {
+    console.error('Error reading latest Excel file:', error);
+    throw error;
+  }
+};
+
+/**
+ * Procesa los datos CSV convertidos desde Excel
+ */
+const processCSVData = async (csvData: string): Promise<CourseCSV[]> => {
+  return new Promise((resolve, reject) => {
     const results: CourseCSV[] = [];
 
-    fs.createReadStream(filePath) // Leer el archivo CSV
-      .pipe(csvParser()) // Pasarlo a través del parser
-      .on('data', (data) => results.push(data)) // Procesar cada fila
-      .on('end', () => resolve(results)) // Resolver al finalizar
-      .on('error', (error) => reject(error)); // Manejar errores
+    // Crear un stream legible desde el string CSV
+    const readableStream = Readable.from(csvData);
+
+    readableStream
+      .pipe(csvParser())
+      .on('data', (data) => {
+        results.push(fromRawToCourseCSV(data));
+      })
+      .on('end', () => resolve(results))
+      .on('error', (error) => reject(error));
   });
 };
+
+/**
+ * Parsea el nombre del archivo Excel según el formato: data_label_DD.MM.YYYY[_version].xlsx
+ * @param filename - Nombre del archivo
+ * @param fullPath - Ruta completa del archivo
+ * @returns ExcelFileInfo o null si no coincide con el formato
+ */
+function parseExcelFileName(filename: string, fullPath: string): ExcelFileInfo | null {
+  // Remover la extensión (.xlsx, .xls)
+  const nameWithoutExt = filename.replace(/\.(xlsx|xls)$/i, '');
+
+  // Patrón para: data_label_DD.MM.YYYY[_version]
+  // Ejemplos: data_verano_26.06.2025, data_verano_26.06.2025_1, data_agosto-diciembre_01.07.2025_2
+  const pattern = /^data_([^_]+(?:_[^_]+)*)_(\d{1,2})\.(\d{1,2})\.(\d{4})(?:_(\d+))?$/;
+
+  const match = nameWithoutExt.match(pattern);
+
+  if (!match) {
+    console.warn(`File ${filename} does not match expected format: data_label_DD.MM.YYYY[_version].xlsx`);
+    return null;
+  }
+
+  try {
+    const label = match[1];
+    const day = parseInt(match[2]);
+    const month = parseInt(match[3]);
+    const year = parseInt(match[4]);
+    const version = match[5] ? parseInt(match[5]) : 0; // 0 si no hay versión
+
+    // Validar fecha
+    if (day < 1 || day > 31 || month < 1 || month > 12) {
+      console.warn(`Invalid date in filename: ${filename}`);
+      return null;
+    }
+
+    const date = new Date(year, month - 1, day); // month - 1 porque Date usa 0-indexado
+
+    return {
+      filename,
+      label,
+      date,
+      version,
+      fullPath
+    };
+
+  } catch (error) {
+    console.warn(`Could not parse date from filename: ${filename}`, error);
+    return null;
+  }
+}
