@@ -123,9 +123,7 @@ const GeneratorPage = () => {
     setCurrentCategories(categories);
 
     const semestersWithSubjectsSelected = categories.filter(c => c instanceof SubjectCategory)
-    
     const selectedSubjects = semestersWithSubjectsSelected.flatMap(s => s.selectedValues.flatMap(sv => sv.id))
-    
     setPinnedSubjects(pinnedSubjects.filter(pn => selectedSubjects.includes(pn)))
     setPivots(pivots.filter(p => selectedSubjects.includes(p.idSubject)))
 
@@ -222,8 +220,24 @@ const GeneratorPage = () => {
           </div>
 
         </div>
-        : (indexSelected == 0 ? subjectsView() : <div>{schedulesView()}
-          <CurrentSchedule schedule={schedulesToShow[page]} pinnedSubjects={pinnedSubjects}  pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} /></div>)}
+        : (
+          <>
+            <div className="flex-1" style={{ display: indexSelected === 0 ? 'block' : 'none' }}>
+              {subjectsView()}
+            </div>
+
+            <div style={{ display: indexSelected === 0 ? 'none' : 'block' }}>
+              {schedulesView()}
+              <CurrentSchedule
+                schedule={schedulesToShow[page]}
+                pinnedSubjects={pinnedSubjects}
+                pivots={pivots}
+                label={`Horario ${page + 1}/${schedulesToShow.length}`}
+              />
+            </div>
+
+          </>
+        )}
 
 
     </div>
