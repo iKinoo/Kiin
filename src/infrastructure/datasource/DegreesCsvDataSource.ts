@@ -10,8 +10,6 @@ export class DegreesCsvDataSource implements DegreesDataSource {
       return this.degrees;
     }
 
-    // Eliminar la informacion desactualizada
-    localStorage.removeItem("degree-info");
 
     const res = await fetch("/api/version");
     const versionDeLaAPI = await res.json();
@@ -25,6 +23,12 @@ export class DegreesCsvDataSource implements DegreesDataSource {
 
       this.degrees = degrees;
     } else {
+      // Eliminar la informacion desactualizada
+      // Eliminar todas las claves que comienzan con "degree-info-"
+      Object.keys(localStorage)
+        .filter(key => key.startsWith("degree-info-"))
+        .forEach(key => localStorage.removeItem(key));
+
       console.log("Recuperado de la API");
       const response = await fetch("/api/degrees/all");
 

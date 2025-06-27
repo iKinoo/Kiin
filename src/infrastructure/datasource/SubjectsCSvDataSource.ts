@@ -10,8 +10,6 @@ export class SubjectsCsvDataSource implements SubjectsDatasource {
       return this.subjects;
     }
 
-    // Eliminar la informacion desactualizada
-    localStorage.removeItem("subject-info");
 
     const res = await fetch("/api/version");
     const versionDeLaAPI = await res.json();
@@ -25,6 +23,11 @@ export class SubjectsCsvDataSource implements SubjectsDatasource {
 
       this.subjects = subjects;
     } else {
+      // Eliminar la informacion desactualizada
+      Object.keys(localStorage)
+        .filter(key => key.startsWith("subject-info-"))
+        .forEach(key => localStorage.removeItem(key));
+
       console.log("Asignaturas recuperados de la API");
       const response = await fetch("/api/subjects/all");
 
