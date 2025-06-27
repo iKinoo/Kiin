@@ -38,3 +38,74 @@ body::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
+
+/* Animated words styles */
+.animated-word {
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.animated-word.fade-enter {
+  animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animated-word.fade-exit {
+  animation: fadeOutScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+}
+
+/* Add a subtle glow effect for the animated words */
+.animated-word-glow {
+  text-shadow: 0 0 10px currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+/* Typewriter animation styles */
+.typewriter-text {
+  position: relative;
+  display: inline-block;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  margin-left: 3px;
+  font-weight: bold;
+  font-size: 1em;
+  animation: typewriter-blink 1s infinite;
+  color: currentColor;
+}
+
+@keyframes typewriter-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Enhanced typewriter glow effect */

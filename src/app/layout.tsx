@@ -27,7 +27,6 @@ const links = [
   { label: "FAQ", route: "/faq" },
   { label: "Motivación", route: "/motivation" },
   { label: "Equipo", route: "/contact" },
-  { label: "Blog", route: "/blog" },
 ];
 
 export default function RootLayout({

@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim"; // Carga el paquete ligero
+import { useEffect, useMemo, useState } from "react";
 // Container,
-import {  ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
+import { ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
+import React from "react";
 
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
@@ -20,23 +21,23 @@ const ParticlesBackground = () => {
   const options: ISourceOptions = useMemo(
     () => ({
       background: {
-        color: { value: "#FFFFF" }, 
+        color: { value: "#FFFFF" },
       },
       fpsLimit: 120,
       interactivity: {
         events: {
-          onClick: { enable: true, mode: "push" }, 
-          onHover: { enable: true, mode: "repulse" }, 
+          onClick: { enable: true, mode: "push" },
+          onHover: { enable: true, mode: "repulse" },
         },
         modes: {
-          push: { quantity: 4 }, 
+          push: { quantity: 4 },
           repulse: { distance: 100, duration: 0.4 },
         },
       },
       particles: {
-        color: { value: "#ec7d5a" }, 
+        color: { value: "#9333ea" },
         links: {
-          color: "#ec7d5a",
+          color: "#9333ea",
           distance: 150,
           enable: true,
           opacity: 0.5,
@@ -53,10 +54,10 @@ const ParticlesBackground = () => {
           value: 80,
         },
         opacity: { value: 0.5 },
-        shape: { type: "circle" }, 
+        shape: { type: "circle" },
         size: { value: { min: 1, max: 5 } },
       },
-      detectRetina: true, 
+      detectRetina: true,
     }),
     []
   );
@@ -75,4 +76,7 @@ const ParticlesBackground = () => {
   return null;
 };
 
-export default ParticlesBackground;
+// Usar React.memo para evitar re-renders innecesarios
+const MemoizedParticlesBackground = React.memo(ParticlesBackground);
+
+export default MemoizedParticlesBackground;

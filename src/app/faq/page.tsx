@@ -39,19 +39,25 @@ const FaqPage = () => {
     },
 
     {
-      pregunta: "¿Que es un maestro pivote?",
+      pregunta: "¿Qué significa fijar una materia?",
       respuesta:
-        "Supongamos que, por algún motivo, deseas cargar específicamente con un maestro. En esa situación, nuestra herramienta se adaptará para cumplir dicha condición.",
+        "Kiin genera todas las posibles combinaciones de materias y profesores, eso incluye horarios que pueden no incluir todas las materias que necesitas. Fijar una materia significa que Kiin generará combinaciones que incluyan esa materia específica, lo que te permitirá ver todas las opciones disponibles con esa materia incluida.",
+    },
+    {
+      pregunta: "¿Qué significa fijar un profesor?",
+      respuesta:
+        "Fijar un profesor significa que Kiin generará combinaciones de horarios que incluyan ese profesor específico para la materia seleccionada. Esto te permite ver todas las opciones disponibles con ese profesor en particular.",
     },
     {
       pregunta: "¿Cómo podemos apoyarlos?",
       respuesta:
-        "Compartan en redes sociales para que todos los estudiantes se enteren.",
+        "Comparte en redes sociales para que todos los estudiantes se enteren. Si quieres involucrarte más en el desarrollo visita el repositorio de GitHub en https://github.com/iKinoo/Kiin. O contáctate con Rodrigo Pacab",
     },
     {
       pregunta: "¿Dónde puedo obtener más información?",
       respuesta:
-        "Puedes consultar nuestra página oficial en https://www.linkedin.com/company/kiinmx/",
+        "Puedes consultar nuestra página oficial en https://www.linkedin.com/company/kiinmx/ o el repositorio de GitHub en https://github.com/iKinoo/Kiin",
+        
     },
   ];
 
@@ -62,15 +68,15 @@ const FaqPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
+    <div className=" p-6 flex-1 overflow-auto">
       <h1 className="text-center text-4xl font-bold mb-6 mt-10">
         Preguntas Frecuentes (FAQ)
       </h1>
       <div className="max-w-2xl mx-auto mt-5">
         {faqs.map((faq, index) => (
-          <div key={index} className="border-b border-gray-200 py-4">
+          <div key={index} className="border-b border-gray-200 dark:border-gray-500 py-4">
             <button
-              className="w-full text-left flex justify-between items-center text-2xl focus:outline-none"
+              className="w-full text-left flex justify-between items-center text-2xl focus:outline-none dark:text-gray-500  "
               onClick={() => toggleFaq(index)}
             >
               {faq.pregunta}
