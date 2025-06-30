@@ -19,9 +19,7 @@ export class Degrees {
         let count = 0;
 
         for (const result of results) {
-            console.log(result.Apellidos)
-            console.log(result);
-            console.log(JSON.stringify(result, null, 2));
+            
             const degreesResultCsv = result.PE.split("-");
 
             degreesResultCsv.forEach((degreeString) => {
@@ -57,8 +55,6 @@ export class Degrees {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const degrees = await Degrees.getAll()
-
-    console.log(degrees);
 
     return res.status(200).json(degrees);
 }

@@ -53,7 +53,13 @@ export class Mapper {
     static toCourse(json: any): Course {
         const subject = Mapper.toSubject(json._subject);
         const professor = Mapper.toProfessor(json._professor);
-        const sessions = json._sessions.map((sessionJson: any) => Mapper.toSession(sessionJson));
+
+        const sessions = json._sessions.map((sessionJson: any) => {
+            if (sessionJson === null) {
+                return
+            }
+            return Mapper.toSession(sessionJson)
+        });
         const course = new Course(
             json._id,
             subject,
@@ -80,7 +86,7 @@ export class Mapper {
         degree.subjects = Mapper.toSubjects(json._subjects);
 
         return degree
-        
+
     }
 
     static toDegrees(jsonArray: any[]): Degree[] {

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Slider } from "@nextui-org/react";
+import { useState } from "react";
+import { Slider } from "@heroui/slider";
 
 interface SliderFilterProps {
   label: string;
@@ -19,12 +19,12 @@ export function SliderFilter({
 }: SliderFilterProps) {
   const [selectedValue, setSelectedValue] = useState<number>(maxValue);
 
-  // Solo actualiza el valor por defecto cuando maxValue cambia
-  useEffect(() => {
-    setSelectedValue(maxValue);
-    onValueChange(maxValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxValue]);
+  // // Solo actualiza el valor por defecto cuando maxValue cambia
+  // useEffect(() => {
+  //   setSelectedValue(maxValue);
+  //   onValueChange(maxValue);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [maxValue]);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedValue(value as number);
@@ -34,11 +34,14 @@ export function SliderFilter({
   return (
     <Slider
       isDisabled={maxValue === 0}
-      className="max-w-md text-black dark:text-white"
-      getValue={(value) => `${value} of ${maxValue} ${objectNameCounting}`}
+      className=" text-black dark:text-white"
+      getValue={(value) => {
+        const numValue = typeof value === "number" ? value : Array.isArray(value) ? value[0] : 0;
+        return `${numValue > 0 ? `${numValue} de ${maxValue} ${objectNameCounting}` : "Todas las posibles combinaciones"}`;
+      }}
       label={label}
       maxValue={maxValue}
-      size="sm"
+      size="md"
       value={selectedValue}
       onChange={handleSliderChange}
     />

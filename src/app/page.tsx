@@ -2,14 +2,12 @@
 import HomeContent from "./HomeContent";
 
 export default async function Home() {
-  
+
 
   return (
 
-    <div>
-      <main className="">
-        <HomeContent />
-      </main>
-    </div>
+    <main className="flex-1  overflow-auto">
+      <HomeContent />
+    </main>
   );
 }

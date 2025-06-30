@@ -5,138 +5,107 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb: #cccccc;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #111111;
     --foreground: #ededed;
+    --scrollbar-bg: transparent;
+    --scrollbar-thumb: rgb(135, 135, 135);
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  
 }
 
-.navbar-container {
-  display: flex;
-  width: 100vw;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--background);
-  color: var(--foreground);
+/* Custom scrollbar styles */
+body {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+  scrollbar-width: thin;
 }
 
-.navbar-name {
-  font-size: 1.5rem;
-  font-weight: 500;
+body::-webkit-scrollbar {
+  width: 8px;
+  background: var(--scrollbar-bg);
 }
 
-.navbar-links {
-  display: flex;
-  width: 100%;
-  gap: 1rem;
-  align-items: right;
-  justify-items: right;
-}
-
-.btn-open-form {
-  background-color: #0070f3;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-open-form:hover {
-  background-color: #005bb5;
-}
-
-.form-container {
-  width: 300px;
-  top: 50px;
-  left: 20%;
-  transform: translateX(-50%);
-}
-
-form div {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
-textarea {
-  resize: none;
+/* Animated words styles */
+.animated-word {
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
 }
 
-.btn-submit {
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.animated-word.fade-enter {
+  animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.btn-submit:hover {
-  background-color: #218838;
+.animated-word.fade-exit {
+  animation: fadeOutScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-input[type="color"] {
-  /* Elimina los estilos predeterminados */
-  appearance: none; /* Para navegadores basados en Chromium */
-  -webkit-appearance: none; /* Para Safari */
-  border: none;
-  padding: 0;
-  width: 40px; /* Tamaño ajustable */
-  height: 40px; /* Tamaño ajustable */
-  cursor: pointer;
-
-  /* Borde y fondo para mejor visibilidad */
-  border-radius: 8px; /* Bordes redondeados */
-  background-color: transparent;
-  box-shadow: 0 0 0 2px #ccc; /* Borde gris */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-input[type="color"]::-webkit-color-swatch {
-  border: none; /* Elimina el borde interno */
-  border-radius: 8px; /* Bordes redondeados para el área del color */
+@keyframes fadeOutScale {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
 }
 
-input[type="color"]::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border: none;
+/* Add a subtle glow effect for the animated words */
+.animated-word-glow {
+  text-shadow: 0 0 10px currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
 }
 
-/* Efecto hover */
-input[type="color"]:hover {
-  box-shadow: 0 0 0 2px #888; /* Cambia el color del borde */
+/* Typewriter animation styles */
+.typewriter-text {
+  position: relative;
+  display: inline-block;
 }
 
-/* Efecto cuando está enfocado */
-input[type="color"]:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #007bff; /* Borde azul para indicar enfoque */
+.typewriter-cursor {
+  display: inline-block;
+  margin-left: 3px;
+  font-weight: bold;
+  font-size: 1em;
+  animation: typewriter-blink 1s infinite;
+  color: currentColor;
 }
 
-
-#tsparticles{
-  z-index: 0;
+@keyframes typewriter-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
+
+/* Enhanced typewriter glow effect */

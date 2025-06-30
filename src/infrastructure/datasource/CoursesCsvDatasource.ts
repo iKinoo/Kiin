@@ -13,8 +13,6 @@ export class CoursesCsvDatasource implements CoursesDataSource {
       return this.courses;
     }
 
-    // Eliminar la informacion desactualizada
-    localStorage.removeItem("course-info");
 
     const res = await fetch("/api/version");
     const versionDeLaAPI = await res.json();
@@ -28,6 +26,11 @@ export class CoursesCsvDatasource implements CoursesDataSource {
 
       this.courses = courses;
     } else {
+      // Eliminar la informacion desactualizada
+      Object.keys(localStorage)
+        .filter(key => key.startsWith("course-info-"))
+        .forEach(key => localStorage.removeItem(key));
+
       console.log("Cursos recuperados de la API");
       const response = await fetch("/api/courses/all");
 

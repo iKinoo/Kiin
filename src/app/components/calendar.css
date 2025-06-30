@@ -1,3 +1,38 @@
+:root{
+--fc-page-bg-color: none    ;
+}
+
+.fc-day-mon.fc-col-header-cell{
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-sat{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.fc-day-tue.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-wed.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-thu.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+.fc-day-fri.fc-col-header-cell{
+    border-right-width: 0.6ex !important;
+    border-right-color: var(--background) !important;
+}
+
+
+.fc-day-today.fc-timegrid-col{
+    background-color: transparent !important;
+}
 .fc-scrollgrid {
     border-color: transparent !important;
     ;
@@ -22,9 +57,6 @@ th[role='presentation'] {
 
 .fc-timegrid-now-indicator-container{
     display: none;
-}
-.fc-timegrid-event-harness-inset{
-    border-color: none !important;
 }
 
 .fc-timegrid-slot-label{

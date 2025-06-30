@@ -10,8 +10,6 @@ export class ProfessorsCsvDataSource implements ProfessorsDataSource {
       return this.professors;
     }
 
-    // Eliminar la informacion desactualizada
-    localStorage.removeItem("professor-info");
 
     const res = await fetch("/api/version");
     const versionDeLaAPI = await res.json();
@@ -25,6 +23,10 @@ export class ProfessorsCsvDataSource implements ProfessorsDataSource {
 
       this.professors = professors;
     } else {
+      // Eliminar la informacion desactualizada
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("professor-info-"))
+      .forEach(key => localStorage.removeItem(key));
       console.log("Profesores recuperados de la API");
       const response = await fetch("/api/professors/all");
 

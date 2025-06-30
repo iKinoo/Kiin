@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import React from 'react'
 import { useState } from 'react'
 interface NavBarProps {
@@ -24,12 +25,17 @@ const AppLogo = () => {
     return (
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <div className="flex items-center justify-center h-8 w-8 logo">
-                {/*Logo para tema claro*/}
-                <img src="/img/logo/color_black.png" alt=""
+                <Image
+                    src="/img/logo/color_black.png"
+                    alt=""
                     className="dark:hidden"
+                    width={32}
+                    height={32}
+                    priority
                 />
+                
                 {/*Logo para tema oscuro*/}
-                <img src="/img/logo/color_white.png" alt=""
+                <Image src="/img/logo/color_white.png" alt="" width={32} height={32}
                     className="hidden dark:block"
                 />
 
