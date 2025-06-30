@@ -85,6 +85,8 @@ function SubjectsView({
             </div>
             <div className=' flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24 pt-16'>
 
+                <span className='text-gray-500' >Cada que cambies algo aquí, vuelve a generar horarios para que se actualice la generación de horarios</span>
+
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
                     (sb) => (
                         (
