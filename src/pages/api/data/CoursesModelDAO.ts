@@ -70,7 +70,7 @@ const fromRawToCourseCSV = (raw: any): CourseCSV => {
     key => key.trim().toLowerCase().replace(/[^a-z]/g, '') === 'martes'
   );
   const miercolesKey = Object.keys(raw).find(
-    key => key.trim().toLowerCase().replace(/[^\wáéíóúüñ]/g, '').replace('é', 'e') === 'miercoles'
+    key => key.trim().toLowerCase().replace(/[^\wáéíóúüñ]/g, '').replace(/[éè]/g, 'e').replace(/[íì]/g, 'i') === 'miercoles'
   );
   const juevesKey = Object.keys(raw).find(
     key => key.trim().toLowerCase().replace(/[^a-z]/g, '') === 'jueves'
@@ -231,6 +231,7 @@ const processCSVData = async (csvData: string): Promise<CourseCSV[]> => {
     readableStream
       .pipe(csvParser())
       .on('data', (data) => {
+        console.log(data)
         results.push(fromRawToCourseCSV(data));
       })
       .on('end', () => resolve(results))
