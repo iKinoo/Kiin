@@ -5,6 +5,7 @@ import "./globals.css";
 import NavBar from "./components/NavBar";
 import AdSense from "./components/AdSense";
 import SupabaseProvider from "./components/SupabaseProvider"; // 👈 Aquí usamos el cliente
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <SupabaseProvider>
           <NavBar links={links} />
           {children}
+          <Analytics />
         </SupabaseProvider>
       </body>
     </html>
