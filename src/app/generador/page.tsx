@@ -99,20 +99,28 @@ const GeneratorPage = () => {
   }
 
   const scheduleHasPivots = (schedule: Schedule, pivots: Pivot[]) => {
-
-    return (
-      pivots.every((pivot) => {
-        // tiene la materia del pivote?
-        if (schedule.courses.some((course) => (course.subject.id === pivot.idSubject))) {
-          // tiene el profesor del pivote?D
-          return schedule.courses.some((course) => (course.professor.id === pivot.idProfessor && course.subject.id === pivot.idSubject));
-        } else {
-          // si no tienes la materia no pasa nada, aquí somos compas, perdonamos
-          return true;
-        }
+    // Agrupar pivotes por materia
+    const pivotsBySubject = pivots.reduce((acc, pivot) => {
+      if (!acc[pivot.idSubject]) {
+        acc[pivot.idSubject] = [];
       }
-      )
-    )
+      acc[pivot.idSubject].push(pivot.idProfessor);
+      return acc;
+    }, {} as { [subjectId: number]: number[] });
+
+    // Verificar que para cada materia que tenga pivotes, el profesor del curso esté en la lista de profesores válidos
+    return Object.entries(pivotsBySubject).every(([subjectId, professorIds]) => {
+      const subjectIdNum = parseInt(subjectId);
+      const courseForSubject = schedule.courses.find((course) => course.subject.id === subjectIdNum);
+
+      if (courseForSubject) {
+        // Si el horario tiene esta materia, verificar que el profesor esté en los pivotes
+        return professorIds.includes(courseForSubject.professor.id);
+      } else {
+        // Si no tiene la materia, no hay restricción
+        return true;
+      }
+    });
   }
 
   const onChangeSchedulePage = (page: number) => {
