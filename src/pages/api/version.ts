@@ -68,7 +68,9 @@ async function getLatestExcelFileDate(): Promise<string> {
         const month = (latestFile.date.getMonth() + 1).toString().padStart(2, '0');
         const year = latestFile.date.getFullYear();
 
-        return `${day}.${month}.${year}`;
+        // Incluir la versión si existe (diferente de 0)
+        const dateString = `${day}.${month}.${year}`;
+        return latestFile.version > 0 ? `${dateString}_${latestFile.version}` : dateString;
 
     } catch (error) {
         console.error('Error getting latest Excel file date:', error);
