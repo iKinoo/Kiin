@@ -231,7 +231,6 @@ const processCSVData = async (csvData: string): Promise<CourseCSV[]> => {
     readableStream
       .pipe(csvParser())
       .on('data', (data) => {
-        console.log(data)
         results.push(fromRawToCourseCSV(data));
       })
       .on('end', () => resolve(results))

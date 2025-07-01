@@ -47,9 +47,16 @@ export class CourseMapper {
             if (!result[day[0]]) {
                 continue;
             }
-            const hours = this.getHours(result[day[0]]);
-            const session = new Session(day[0], hours[0], hours[1], result[day[1]]);
-            sessions.push(session);
+            
+            const timeSlots = result[day[0]].split('\r\n');
+            const classrooms = result[day[1]].split('\r\n');
+            
+            for (let i = 0; i < timeSlots.length; i++) {
+                const hours = this.getHours(timeSlots[i]);
+                const classroom = classrooms[i] || classrooms[0]; // Use first classroom if not enough classrooms
+                const session = new Session(day[0], hours[0], hours[1], classroom);
+                sessions.push(session);
+            }
         }
 
         return sessions;
