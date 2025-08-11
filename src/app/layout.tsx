@@ -1,11 +1,12 @@
 // app/layout.tsx
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import NavBar from "./components/NavBar";
 import AdSense from "./components/AdSense";
+import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
+import NavBar from "./components/NavBar";
 import SupabaseProvider from "./components/SupabaseProvider"; // 👈 Aquí usamos el cliente
-import { Analytics } from '@vercel/analytics/next';
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,7 +36,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   return (
     <html lang="en">
       <head>
@@ -45,6 +46,7 @@ export default function RootLayout({
         <SupabaseProvider>
           <NavBar links={links} />
           {children}
+          <FloatingWhatsAppButton />
           <Analytics />
         </SupabaseProvider>
       </body>
