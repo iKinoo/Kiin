@@ -120,10 +120,10 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                         onClick={async () => {
                             const Swal = (await import('sweetalert2')).default;
                             await Swal.fire({
-                                icon: 'info',
                                 title: 'Acceso Requerido',
-                                text: 'Debes iniciar sesión con Google para exportar tu horario. Nos encontramos en proceso de validación de Google pero tranquil@, no mordemos.',
-
+                                text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
+                                imageUrl: '/img/google_export.jpg',
+                                imageHeight: 400,
                                 confirmButtonText: 'Iniciar sesión'
                                 
                             });
