@@ -1,11 +1,11 @@
 'use client'
 
+import { Course } from '@/domain/entities/Course';
+import { EventHoveringArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useMemo, useRef, useState } from 'react';
-import { EventHoveringArg } from '@fullcalendar/core';
 import './calendar.css';
-import { Course } from '@/domain/entities/Course';
 
 
 interface CalendarProps {
@@ -43,9 +43,8 @@ function mapEvents(course: Course) {
         const day = days[sessionI.day as keyof typeof days];
         const dateI = `2025-01-${day}`;
 
-        //Offset de la zona horaria de México (-06:00)
-        const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
-        const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}-06:00`;
+        const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}`;
+        const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}`;
 
         const start = new Date(startDateTimeString);
         const end = new Date(endDateTimeString);
@@ -164,8 +163,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     initialView="timeGridWeek"
                     events={events}
                     eventTextColor='black'
-                    eventClassNames={['text-sm' , 'md:font-semibold md:p-1']}
-                    
+                    eventClassNames={['text-sm', 'md:font-semibold md:p-1']}
+
                     dayHeaderContent={(args) =>
                         args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).charAt(0).toUpperCase() +
                         args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).slice(1)
@@ -179,8 +178,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                             y: e.jsEvent.clientY,
                             eventArgs: e
                         });
-                    }   
-                }
+                    }
+                    }
                 />
             </div>
             {tooltip.visible && (
