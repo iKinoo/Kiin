@@ -18,7 +18,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
 
     //Prueba de google
     const [start] = useState(new Date('2025-08-13T08:00:00'));
-    const [end] = useState(new Date('2025-12-05T09:00:00'));
+    const [end] = useState(new Date('2025-12-06T09:00:00'));
     const session = useSession();
     const supabase = useSupabaseClient();
 
