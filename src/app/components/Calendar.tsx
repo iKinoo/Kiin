@@ -1,11 +1,11 @@
 'use client'
 
+import { Course } from '@/domain/entities/Course';
+import { EventHoveringArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useMemo, useRef, useState } from 'react';
-import { EventHoveringArg } from '@fullcalendar/core';
 import './calendar.css';
-import { Course } from '@/domain/entities/Course';
 
 
 interface CalendarProps {
@@ -43,18 +43,16 @@ function mapEvents(course: Course) {
         const day = days[sessionI.day as keyof typeof days];
         const dateI = `2025-01-${day}`;
 
-        //Offset de la zona horaria de México (-06:00)
-        const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}-06:00`;
-        const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}-06:00`;
-
-        const start = new Date(startDateTimeString);
-        const end = new Date(endDateTimeString);
+        // Crear fechas sin offset de zona horaria para evitar conversiones automáticas
+        // Los horarios escolares deben mostrarse exactamente como están almacenados
+        const startDateTimeString = `${dateI}T${sessionI.startHour.format('HH:mm:ss')}`;
+        const endDateTimeString = `${dateI}T${sessionI.endHour.format('HH:mm:ss')}`;
 
         return {
             color: color,
             title: course.subject.name,
-            start: start.toISOString(),
-            end: end.toISOString(),
+            start: startDateTimeString,
+            end: endDateTimeString,
             borderColor: color,
             extendedProps: {
                 room: sessionI.room,
@@ -110,7 +108,12 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
     const minStartHour = useMemo(() => {
         // Encuentra la hora de inicio más temprana entre todos los eventos
         if (!events.length) return "18:00:00";
-        const hours = events.map(e => new Date(e.start).getHours() * 60 + new Date(e.start).getMinutes());
+        const hours = events.map(e => {
+            // Extraer hora directamente del string de fecha sin crear objeto Date
+            const timeStr = typeof e.start === 'string' ? e.start.split('T')[1] : '';
+            const [hour, minute] = timeStr.split(':').map(Number);
+            return hour * 60 + minute;
+        });
         const minMinutes = Math.min(...hours) - 30; // media hora antes
         const minHour = Math.floor(Math.max(minMinutes, 0) / 60);
         const minMinute = Math.max(minMinutes, 0) % 60;
@@ -121,7 +124,12 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
     const maxStartHour = useMemo(() => {
         // Encuentra la hora de finalización más tardía entre todos los eventos
         if (!events.length) return "18:00:00";
-        const minutes = events.map(e => new Date(e.end).getHours() * 60 + new Date(e.end).getMinutes());
+        const minutes = events.map(e => {
+            // Extraer hora directamente del string de fecha sin crear objeto Date
+            const timeStr = typeof e.end === 'string' ? e.end.split('T')[1] : '';
+            const [hour, minute] = timeStr.split(':').map(Number);
+            return hour * 60 + minute;
+        });
         const maxMinutes = Math.max(...minutes) + 30; // media hora después
         const maxHour = Math.floor(Math.min(maxMinutes, 24 * 60 - 1) / 60);
         const maxMinute = Math.min(maxMinutes, 24 * 60 - 1) % 60;
@@ -134,6 +142,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
             <div className='h-full'>
                 <FullCalendar
                     now={'2025-01-13'}
+                    timeZone='local'
                     dayHeaderClassNames={
                         ['bg-gray-800', 'text-white', '!border-0']// Usar clases de Tailwind
                     }
@@ -164,8 +173,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     initialView="timeGridWeek"
                     events={events}
                     eventTextColor='black'
-                    eventClassNames={['text-sm' , 'md:font-semibold md:p-1']}
-                    
+                    eventClassNames={['text-sm', 'md:font-semibold md:p-1']}
+
                     dayHeaderContent={(args) =>
                         args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).charAt(0).toUpperCase() +
                         args.date.toLocaleDateString('es-MX', { weekday: dayFormat }).slice(1)
@@ -179,8 +188,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                             y: e.jsEvent.clientY,
                             eventArgs: e
                         });
-                    }   
-                }
+                    }
+                    }
                 />
             </div>
             {tooltip.visible && (
