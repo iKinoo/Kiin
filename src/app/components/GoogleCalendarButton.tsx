@@ -64,6 +64,31 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
   async function handleClick() {
     if (isExporting) return; // Prevenir múltiples clics
 
+    // Mostrar disclaimer antes de proceder
+    const disclaimerResult = await Swal.fire({
+      icon: 'info',
+      title: 'Exportar a Google Calendar',
+      html: `
+        <div class="text-left">
+          <p><strong>⚠️ Importante:</strong></p>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>El horario actual será exportado a Google Calendar</li>
+            <li>Una vez exportado, cualquier cambio posterior deberá hacerse directamente en Google Calendar</li>
+            <li>Esta aplicación no sincroniza cambios futuros con Google Calendar</li>
+          </ul>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Continuar con la exportación',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#1e40af',
+      cancelButtonColor: '#6b7280'
+    });
+
+    if (!disclaimerResult.isConfirmed) {
+      return; // Usuario canceló la operación
+    }
+
     setIsExporting(true);
 
     try {
