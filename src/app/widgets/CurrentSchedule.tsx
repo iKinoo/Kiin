@@ -94,13 +94,18 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                                 <button
                                     onClick={async () => {
                                         const Swal = (await import('sweetalert2')).default;
-                                        await Swal.fire({
+                                        const result = await Swal.fire({
                                             icon: 'info',
                                             title: 'Sesión expirada',
                                             text: 'Tu sesión de Google ha expirado. Por favor, inicia sesión nuevamente para exportar tu horario.',
-                                            confirmButtonText: 'Iniciar sesión'
+                                            confirmButtonText: 'Iniciar sesión',
+                                            showCancelButton: true,
+                                            cancelButtonText: 'Cancelar'
                                         });
-                                        await GoogleSignIn();
+
+                                        if (result.isConfirmed) {
+                                            await GoogleSignIn();
+                                        }
                                     }}
                                     className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
                                 >
@@ -119,15 +124,19 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                     <button
                         onClick={async () => {
                             const Swal = (await import('sweetalert2')).default;
-                            await Swal.fire({
+                            const result = await Swal.fire({
                                 title: 'Acceso Requerido',
                                 text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
                                 imageUrl: '/img/google_export.jpg',
                                 imageHeight: 400,
-                                confirmButtonText: 'Iniciar sesión'
-                                
+                                confirmButtonText: 'Iniciar sesión',
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancelar'
                             });
-                            await GoogleSignIn();
+
+                            if (result.isConfirmed) {
+                                await GoogleSignIn();
+                            }
                         }}
                         className=" bg-blue-700  p-2 rounded-full items-center justify-center"
                     >
