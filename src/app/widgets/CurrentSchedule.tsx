@@ -4,6 +4,7 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useRef, useState } from 'react';
 import Pivot from '../../domain/entities/Pivot';
 import GoogleCalendarButton from '../components/GoogleCalendarButton';
+import ICSButton from '../components/ICSButton';
 
 type Props = {
     schedule: Schedule;
@@ -86,6 +87,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                 <h2 className="text-center text-lg p-2 font-bold  bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
+                <ICSButton schedule={schedule} semesterStart={start} semesterEnd={end} />
                 {session ? (
                     <>
                         {/*<button onClick={GoogleSignOut}>Sign Out</button>*/}
