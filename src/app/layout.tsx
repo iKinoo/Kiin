@@ -5,7 +5,6 @@ import localFont from "next/font/local";
 import AdSense from "./components/AdSense";
 import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
 import NavBar from "./components/NavBar";
-import SupabaseProvider from "./components/SupabaseProvider"; // 👈 Aquí usamos el cliente
 import "./globals.css";
 
 const geistSans = localFont({
@@ -43,12 +42,10 @@ export default function RootLayout({
         <AdSense pId="2263575229671406" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased  h-screen`}>
-        <SupabaseProvider>
-          <NavBar links={links} />
-          {children}
-          <FloatingWhatsAppButton />
-          <Analytics />
-        </SupabaseProvider>
+        <NavBar links={links} />
+        {children}
+        <FloatingWhatsAppButton />
+        <Analytics />
       </body>
     </html>
   );

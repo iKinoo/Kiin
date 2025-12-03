@@ -59,6 +59,7 @@ body::-webkit-scrollbar-thumb {
     opacity: 0;
     transform: scale(0.8) translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -70,6 +71,7 @@ body::-webkit-scrollbar-thumb {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+
   100% {
     opacity: 0;
     transform: scale(0.8) translateY(-10px);
@@ -98,13 +100,40 @@ body::-webkit-scrollbar-thumb {
 }
 
 @keyframes typewriter-blink {
+
   0%,
   49% {
     opacity: 1;
   }
+
   50%,
   100% {
     opacity: 0;
+  }
+}
+
+@media print {
+
+  /* Ocultar todo lo que no sea el horario */
+  header,
+  aside,
+  /* Si usas aside para el buscador */
+  button,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Asegurar que el calendario ocupe toda la hoja */
+  main {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  /* Forzar impresión de colores de fondo (background graphics) */
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 
