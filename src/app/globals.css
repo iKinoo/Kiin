@@ -137,4 +137,54 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
+
+@media print {
+  @page {
+    margin: 0.5cm;
+    size: landscape;
+  }
+
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Ocultamos todo excepto el calendario principal */
+  nav,
+  aside,
+  button,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Ajustamos el contenedor del calendario para que use toda la hoja */
+  main {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  section#resultados-section {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* Scrollbar bonito para la barra lateral */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+
 /* Enhanced typewriter glow effect */
