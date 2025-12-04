@@ -1,26 +1,30 @@
 import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
 
-// 1. LEER (Con Filtros Avanzados)
+// 1. LEER (Con Filtros Avanzados y Tipo de Asignatura Optimizado)
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const periodo = searchParams.get('periodo');
     const modalidad = searchParams.get('modalidad');
     const busqueda = searchParams.get('busqueda');
-    const carrera = searchParams.get('carrera');   // Nuevo filtro
-    const semestre = searchParams.get('semestre'); // Nuevo filtro
+    const carrera = searchParams.get('carrera');
+    const semestre = searchParams.get('semestre');
 
     try {
+        // CORRECCIÓN BASADA EN TU SQL:
+        // El campo 'Tipo' está en la tabla ASIGNATURAS (alias 'a'), no en la malla.
+        // Esto hace la consulta mucho más rápida.
         let sql = `
-      SELECT 
-        g.ClvGrupo, g.Modalidad, g.Periodo, g.ClvProfesor, g.ClvAsignatura,
-        a.NomAsignatura,
-        p.NomProfesor
-      FROM GRUPOS g
-      JOIN ASIGNATURAS a ON g.ClvAsignatura = a.ClvAsignatura
-      JOIN PROFESORES p ON g.ClvProfesor = p.ClvProfesor
-      WHERE 1=1
-    `;
+          SELECT 
+            g.ClvGrupo, g.Modalidad, g.Periodo, g.ClvProfesor, g.ClvAsignatura,
+            a.NomAsignatura,
+            a.Tipo as TipoAsignatura,  -- <-- Dato directo de ASIGNATURAS
+            p.NomProfesor
+          FROM GRUPOS g
+          JOIN ASIGNATURAS a ON g.ClvAsignatura = a.ClvAsignatura
+          JOIN PROFESORES p ON g.ClvProfesor = p.ClvProfesor
+          WHERE 1=1
+        `;
 
         const params = [];
 
@@ -38,17 +42,15 @@ export async function GET(request: Request) {
             params.push(`%${busqueda}%`, `%${busqueda}%`);
         }
 
-        // NUEVOS FILTROS (Usamos EXISTS para filtrar por Malla sin duplicar filas)
+        // Filtros de Malla (Carrera / Semestre)
+        // Mantenemos el EXISTS porque es la forma correcta de filtrar sin duplicar filas
         if (carrera && carrera !== 'todos' && semestre && semestre !== 'todos') {
-            // Si hay ambos, buscamos coincidencia exacta en la malla
             sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.ClvCarrera = ? AND m.Semestre = ?)';
             params.push(carrera, semestre);
         } else if (carrera && carrera !== 'todos') {
-            // Solo carrera
             sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.ClvCarrera = ?)';
             params.push(carrera);
         } else if (semestre && semestre !== 'todos') {
-            // Solo semestre (en cualquier carrera)
             sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.Semestre = ?)';
             params.push(semestre);
         }
@@ -57,7 +59,7 @@ export async function GET(request: Request) {
 
         const [rows]: any = await pool.query(sql, params);
 
-        // Cargar horarios para estos grupos
+        // Cargar horarios
         if (rows.length > 0) {
             const ids = rows.map((r: any) => r.ClvGrupo);
             const placeholders = ids.map(() => '?').join(',');
@@ -75,6 +77,7 @@ export async function GET(request: Request) {
         return NextResponse.json(rows);
 
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ message: 'Error interno' }, { status: 500 });
     }
 }
@@ -87,6 +90,7 @@ export async function POST(request: Request) {
 
         await connection.beginTransaction();
 
+        // Nota: Asumimos que ClvGrupo es AUTO_INCREMENT en tu tabla GRUPOS final
         const [res]: any = await connection.query(
             'INSERT INTO GRUPOS (ClvProfesor, ClvAsignatura, Modalidad, Periodo) VALUES (?, ?, ?, ?)',
             [profesor, asignatura, modalidad, periodo]
@@ -106,6 +110,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: 'Grupo creado', id: idGrupo });
     } catch (error) {
         await connection.rollback();
+        console.error(error);
         return NextResponse.json({ message: 'Error al crear' }, { status: 500 });
     } finally {
         connection.release();

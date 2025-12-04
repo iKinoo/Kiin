@@ -6,9 +6,10 @@ interface Props {
     materias: GrupoOferta[];
 }
 
+// CAMBIO 1: Aumentamos un poco la altura por hora para que quepa la info (de 45 a 55)
 const HORA_INICIO = 7;
 const HORA_FIN = 21;
-const ALTURA_HORA = 45;
+const ALTURA_HORA = 55;
 const DIAS = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const COLORES = [
     'bg-blue-200 border-blue-400 text-blue-800',
@@ -79,7 +80,8 @@ export default function CalendarioVisual({ materias }: Props) {
                             return (
                                 <div
                                     key={`${materia.id}-${hIndex}`}
-                                    className={`absolute rounded px-1.5 py-0.5 border-l-4 text-xs overflow-hidden hover:z-20 hover:shadow-lg transition-all cursor-pointer ${colorClase} print:bg-white print:border print:border-black print:text-black`}
+                                    // CAMBIO 2: Agregué flex y flex-col para controlar mejor el contenido interno
+                                    className={`absolute rounded px-1.5 py-1 border-l-4 text-xs overflow-hidden hover:z-20 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between ${colorClase} print:bg-white print:border print:border-black print:text-black`}
                                     style={{
                                         top: `${topPx}px`,
                                         height: `${heightPx}px`,
@@ -89,13 +91,17 @@ export default function CalendarioVisual({ materias }: Props) {
                                     }}
                                     title={`${materia.materia} - ${materia.profesor}`}
                                 >
-                                    <p className="font-bold truncate text-[10px] sm:text-xs leading-tight">{materia.materia}</p>
+                                    {/* Contenedor superior para Título y Profe */}
+                                    <div>
+                                        <p className="font-bold truncate text-[10px] sm:text-xs leading-tight mb-0.5">{materia.materia}</p>
+                                        <p className="truncate text-[9px] font-medium opacity-90 leading-tight">{materia.profesor}</p>
+                                    </div>
 
-                                    {/* NUEVO: Nombre del Profesor */}
-                                    <p className="truncate text-[9px] font-medium opacity-90">{materia.profesor}</p>
-
-                                    <p className="truncate opacity-80 text-[9px]">{horario.salon}</p>
-                                    <p className="truncate text-[9px] print:hidden">{horario.inicio.slice(0, 5)} - {horario.fin.slice(0, 5)}</p>
+                                    {/* CAMBIO 3: Combinamos Salón y Hora en la misma línea inferior para ahorrar espacio */}
+                                    <div className="flex justify-between items-center mt-auto text-[9px] opacity-80 leading-none print:text-black">
+                                        <span className="truncate max-w-[40%] font-medium">{horario.salon}</span>
+                                        <span className="font-mono whitespace-nowrap print:hidden">{horario.inicio.slice(0, 5)} - {horario.fin.slice(0, 5)}</span>
+                                    </div>
                                 </div>
                             );
                         });

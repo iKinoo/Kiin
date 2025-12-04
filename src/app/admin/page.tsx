@@ -9,7 +9,7 @@ const modalidadesDisponibles = [
     'Acompañamiento', 'Regular/Acompañamiento',
     'Ordinario/Recursamiento', 'Recursamiento/Acompañamiento'
 ];
-const periodosDisponibles = ['Ene-Jun 2026', 'Ago-Dic 2025']; // Ajusta según tu BD
+const periodosDisponibles = ['Ene-Jun 2026', 'Ago-Dic 2025'];
 const diasSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const carrerasDisponibles = ['LIS', 'LCC', 'LIC', 'LA', 'LM', 'LEM'];
 const semestresDisponibles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -186,6 +186,18 @@ export default function AdminPage() {
         return 'bg-green-100 text-green-800 border-green-200';
     };
 
+    // NUEVO: Función para colorear el tipo de asignatura (ACTUALIZADA con datos del SQL)
+    const getTipoBadgeColor = (tipo: string) => {
+        if (!tipo) return 'bg-gray-100 text-gray-600';
+        const t = tipo.toLowerCase();
+        if (t.includes('obligatoria')) return 'bg-red-50 text-red-700 border-red-100';
+        if (t.includes('optativa')) return 'bg-amber-50 text-amber-700 border-amber-100';
+        if (t.includes('libre')) return 'bg-teal-50 text-teal-700 border-teal-100';
+        if (t.includes('pii')) return 'bg-indigo-50 text-indigo-700 border-indigo-100'; // Nuevo
+        if (t.includes('prope')) return 'bg-pink-50 text-pink-700 border-pink-100';   // Nuevo
+        return 'bg-gray-100 text-gray-700';
+    }
+
     return (
         <main className="min-h-screen bg-gray-100 font-sans pb-20">
 
@@ -275,6 +287,8 @@ export default function AdminPage() {
                                     <th className="px-6 py-4 w-10"><input type="checkbox" onChange={handleSelectAll} checked={grupos.length > 0 && selectedIds.length === grupos.length} className="cursor-pointer" /></th>
                                     <th className="px-6 py-4">ID</th>
                                     <th className="px-6 py-4">Asignatura</th>
+                                    {/* NUEVA COLUMNA */}
+                                    <th className="px-6 py-4">Tipo</th>
                                     <th className="px-6 py-4">Profesor</th>
                                     <th className="px-6 py-4">Modalidad</th>
                                     <th className="px-6 py-4">Periodo</th>
@@ -282,11 +296,24 @@ export default function AdminPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {loading ? <tr><td colSpan={7} className="text-center py-12 text-gray-400">Cargando...</td></tr> : grupos.map((g) => (
+                                {loading ? <tr><td colSpan={8} className="text-center py-12 text-gray-400">Cargando...</td></tr> : grupos.map((g) => (
                                     <tr key={g.ClvGrupo} className={`hover:bg-blue-50/50 transition ${selectedIds.includes(g.ClvGrupo) ? 'bg-blue-50' : ''}`}>
                                         <td className="px-6 py-4"><input type="checkbox" checked={selectedIds.includes(g.ClvGrupo)} onChange={() => handleSelectRow(g.ClvGrupo)} className="cursor-pointer" /></td>
                                         <td className="px-6 py-4 font-mono text-xs text-gray-400">{g.ClvGrupo}</td>
-                                        <td className="px-6 py-4 font-bold text-gray-800">{g.NomAsignatura}</td>
+
+                                        {/* Asignatura con ID abajo más discreto */}
+                                        <td className="px-6 py-4">
+                                            <div className="font-bold text-gray-800">{g.NomAsignatura}</div>
+                                            <div className="text-[10px] text-gray-400 font-mono">{g.ClvAsignatura}</div>
+                                        </td>
+
+                                        {/* NUEVO CAMPO: TIPO */}
+                                        <td className="px-6 py-4">
+                                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold border uppercase ${getTipoBadgeColor(g.TipoAsignatura)}`}>
+                                                {g.TipoAsignatura || 'N/A'}
+                                            </span>
+                                        </td>
+
                                         <td className="px-6 py-4 text-gray-600">{g.NomProfesor}</td>
                                         <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${getBadgeColor(g.Modalidad)}`}>{g.Modalidad}</span></td>
                                         <td className="px-6 py-4 text-gray-500 text-xs">{g.Periodo}</td>
