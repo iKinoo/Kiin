@@ -8,7 +8,7 @@ interface Props {
 
 const HORA_INICIO = 7;
 const HORA_FIN = 21;
-const ALTURA_HORA = 60;
+const ALTURA_HORA = 45;
 const DIAS = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const COLORES = [
     'bg-blue-200 border-blue-400 text-blue-800',
@@ -27,23 +27,22 @@ export default function CalendarioVisual({ materias }: Props) {
     };
 
     return (
-        // CAMBIO 1: print:shadow-none y estructura limpia
         <div className="flex flex-col h-full bg-white border rounded-lg shadow overflow-hidden print:shadow-none print:border-none print:h-auto print:overflow-visible">
 
             {/* 1. Encabezado */}
-            <div className="grid grid-cols-7 border-b bg-gray-50 print:bg-white print:border-b-2 print:border-black">
+            <div className="grid grid-cols-7 border-b bg-gray-50 print:bg-white print:border-b-2 print:border-black shrink-0 z-20 relative">
                 <div className="p-2 border-r text-center text-xs font-bold text-gray-400 print:text-black">Hora</div>
                 {DIAS.map((dia) => (
-                    <div key={dia} className="p-2 border-r text-center font-bold text-gray-700 uppercase text-sm print:text-black print:border-black">
-                        {dia.slice(0, 3)} {/* En móvil/print abreviado si quieres, o css truncate */}
+                    <div key={dia} className="p-2 border-r text-center font-bold text-gray-700 uppercase text-xs sm:text-sm print:text-black print:border-black">
+                        {dia.slice(0, 3)}
                     </div>
                 ))}
             </div>
 
-            {/* 2. Cuerpo con Scroll Horizontal para Móvil */}
-            {/* CAMBIO 2: overflow-x-auto para móviles y min-w para forzar scroll */}
-            <div className="flex-1 overflow-y-auto overflow-x-auto relative print:overflow-visible print:h-auto" style={{ height: '600px' }}>
-                <div className="relative min-w-[600px] print:min-w-0 print:w-full">
+            {/* 2. Cuerpo */}
+            <div className="flex-1 overflow-y-auto overflow-x-auto relative print:overflow-visible print:h-auto" style={{ height: '100%' }}>
+                {/* AGREGADO: 'mt-2' para separar el inicio del horario del encabezado */}
+                <div className="relative min-w-[600px] print:min-w-0 print:w-full mt-2 pb-4">
 
                     {/* Rejilla de fondo */}
                     {Array.from({ length: HORA_FIN - HORA_INICIO + 1 }).map((_, i) => {
@@ -54,7 +53,7 @@ export default function CalendarioVisual({ materias }: Props) {
                                 className="grid grid-cols-7 border-b border-gray-100 text-xs text-gray-400 print:border-gray-300 print:text-black"
                                 style={{ height: `${ALTURA_HORA}px` }}
                             >
-                                <div className="border-r px-2 py-1 text-right -mt-2 bg-white sticky left-0 z-10 print:static print:text-black">
+                                <div className="border-r px-2 py-1 text-right -mt-2 bg-white sticky left-0 z-10 print:static print:text-black font-mono">
                                     {hora}:00
                                 </div>
                                 {DIAS.map((d) => <div key={d} className="border-r border-gray-50 print:border-gray-300" />)}
@@ -81,8 +80,7 @@ export default function CalendarioVisual({ materias }: Props) {
                             return (
                                 <div
                                     key={`${materia.id}-${hIndex}`}
-                                    // CAMBIO 3: print:border-black para alto contraste al imprimir
-                                    className={`absolute rounded px-2 py-1 border-l-4 text-xs overflow-hidden hover:z-20 hover:shadow-lg transition-all cursor-pointer ${colorClase} print:bg-white print:border print:border-black print:text-black`}
+                                    className={`absolute rounded px-1.5 py-0.5 border-l-4 text-xs overflow-hidden hover:z-20 hover:shadow-lg transition-all cursor-pointer ${colorClase} print:bg-white print:border print:border-black print:text-black`}
                                     style={{
                                         top: `${topPx}px`,
                                         height: `${heightPx}px`,
@@ -90,11 +88,11 @@ export default function CalendarioVisual({ materias }: Props) {
                                         width: `${widthPercent - 0.5}%`,
                                         zIndex: 10
                                     }}
+                                    title={`${materia.materia} (${horario.salon})`}
                                 >
-                                    <p className="font-bold truncate">{materia.materia}</p>
-                                    <p className="truncate opacity-90">{horario.salon}</p>
-                                    {/* Ocultamos horas en print si queda muy chico */}
-                                    <p className="truncate text-[10px] print:hidden">{horario.inicio.slice(0, 5)} - {horario.fin.slice(0, 5)}</p>
+                                    <p className="font-bold truncate text-[10px] sm:text-xs leading-tight">{materia.materia}</p>
+                                    <p className="truncate opacity-90 text-[9px] sm:text-[10px]">{horario.salon}</p>
+                                    <p className="truncate text-[9px] print:hidden">{horario.inicio.slice(0, 5)} - {horario.fin.slice(0, 5)}</p>
                                 </div>
                             );
                         });

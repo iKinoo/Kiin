@@ -21,7 +21,6 @@ export default function Home() {
   const [indiceActual, setIndiceActual] = useState(0);
   const [ofertaCompleta, setOfertaCompleta] = useState<any[]>([]);
 
-  // --- INICIO ---
   useEffect(() => {
     const stored = localStorage.getItem('usuario_kiin');
 
@@ -29,27 +28,21 @@ export default function Home() {
       try {
         const u = JSON.parse(stored);
         setUsuario(u);
-
-        // Cargar oferta completa para poder filtrar en el frontend
         fetch('/api/oferta')
           .then(res => res.json())
           .then(data => setOfertaCompleta(data))
           .catch(err => console.error("Error cargando oferta", err));
-
       } catch (e) {
-        console.error("Error leyendo usuario", e);
         localStorage.removeItem('usuario_kiin');
       }
     }
   }, []);
 
-  // --- LOGOUT ---
   const handleLogout = () => {
     localStorage.removeItem('usuario_kiin');
     window.location.href = '/login';
   };
 
-  // --- MANEJO DE MATERIAS ---
   const handleToggleMateria = (clave: string, nombre: string) => {
     const existe = seleccion.find(s => s.clave === clave);
     if (existe) {
@@ -57,7 +50,7 @@ export default function Home() {
     } else {
       setSeleccion([...seleccion, { clave, nombre, grupoFijadoId: null }]);
     }
-    setHorariosGenerados([]); // Limpiar resultados previos
+    setHorariosGenerados([]);
   };
 
   const handleFijarGrupo = (claveMateria: string, idGrupo: string) => {
@@ -68,11 +61,10 @@ export default function Home() {
     setHorariosGenerados([]);
   };
 
-  // --- GENERADOR ---
   const generarHorario = async () => {
     if (seleccion.length === 0) return Swal.fire('Vacío', 'Selecciona materias del menú.', 'warning');
 
-    Swal.fire({ title: 'Generando combinaciones...', didOpen: () => Swal.showLoading() });
+    Swal.fire({ title: 'Generando...', didOpen: () => Swal.showLoading() });
 
     try {
       const fijados: Record<string, number> = {};
@@ -92,13 +84,11 @@ export default function Home() {
       const data = await res.json();
 
       if (data.length === 0) {
-        Swal.fire('Sin solución', 'No hay combinaciones posibles sin choques. Intenta liberar grupos fijados.', 'error');
+        Swal.fire('Sin solución', 'No hay combinaciones posibles.', 'error');
       } else {
         setHorariosGenerados(data);
         setIndiceActual(0);
         Swal.close();
-
-        // Scroll en móvil hacia resultados
         if (window.innerWidth < 1024) {
           document.getElementById('resultados-section')?.scrollIntoView({ behavior: 'smooth' });
         }
@@ -108,24 +98,15 @@ export default function Home() {
     }
   };
 
-  // --- HELPERS Y UTILIDADES ---
-
   const getGruposDeMateria = (clave: string) => {
     const materiaNombre = seleccion.find(s => s.clave === clave)?.nombre;
     if (!materiaNombre) return [];
-    // Ordenamos por ID para consistencia
     return ofertaCompleta.filter(g => g.materia === materiaNombre).sort((a, b) => a.id - b.id);
   };
 
-  // Genera nombre lógico "Grupo N - Profesor"
   const getNombreGrupo = (grupo: any, listaGrupos: any[]) => {
-    // Filtramos solo los grupos de ESTE profesor para esta materia
     const gruposDelProfe = listaGrupos.filter(g => g.profesor === grupo.profesor);
-
-    // Buscamos índice (base 1)
     const numeroGrupo = gruposDelProfe.findIndex(g => g.id === grupo.id) + 1;
-
-    // Si el profe solo tiene 1 grupo, podemos omitir el número o dejarlo "Grupo 1"
     return `Grupo ${numeroGrupo} - ${grupo.profesor}`;
   };
 
@@ -150,18 +131,14 @@ export default function Home() {
                 {usuario.carrera || "Sin carrera"}
               </span>
             </div>
-
-            {/* Botón Admin (Solo visible si rol es admin) */}
             {usuario.rol === 'admin' && (
               <a href="/admin" className="text-xs font-bold bg-gray-900 text-white px-3 py-1.5 rounded hover:bg-black transition flex items-center gap-1">
                 ⚙️ Admin
               </a>
             )}
-
             <a href="/perfil" className="text-sm font-medium text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">
               Mi Perfil
             </a>
-
             <button onClick={handleLogout} className="text-sm font-medium text-red-500 hover:bg-red-50 px-3 py-1.5 rounded border border-red-200 transition">
               Salir
             </button>
@@ -174,10 +151,8 @@ export default function Home() {
       {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 w-full max-w-[1920px] mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden h-[calc(100vh-64px)]">
 
-        {/* === BARRA LATERAL (Menú + Config) - 3 Columnas === */}
+        {/* BARRA LATERAL */}
         <aside className="lg:col-span-3 flex flex-col gap-4 h-full overflow-y-auto custom-scrollbar pr-2 pb-10 print:hidden">
-
-          {/* 1. SELECCIÓN DE MATERIAS (ACORDEÓN) */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col shrink-0">
             <div className="bg-gray-50 px-4 py-2 border-b font-bold text-gray-700 text-sm uppercase tracking-wide flex items-center gap-2">
               <span className="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">1</span>
@@ -185,25 +160,17 @@ export default function Home() {
             </div>
             <div className="p-0">
               {usuario?.carrera ? (
-                <MenuMalla
-                  carrera={usuario.carrera}
-                  seleccionadas={seleccion.map(s => s.clave)}
-                  onToggle={handleToggleMateria}
-                />
+                <MenuMalla carrera={usuario.carrera} seleccionadas={seleccion.map(s => s.clave)} onToggle={handleToggleMateria} />
               ) : (
                 <div className="p-6 text-center">
                   {usuario ? (
-                    <>
-                      <p className="text-red-500 font-bold mb-2 text-xs">⚠ Datos incompletos</p>
-                      <button onClick={handleLogout} className="bg-red-500 text-white px-3 py-1 rounded text-xs w-full">Reiniciar</button>
-                    </>
+                    <button onClick={handleLogout} className="bg-red-500 text-white px-3 py-1 rounded text-xs w-full">Reiniciar</button>
                   ) : <p className="text-gray-400 text-xs">Cargando...</p>}
                 </div>
               )}
             </div>
           </div>
 
-          {/* 2. CONFIGURACIÓN (FIJAR GRUPOS) */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col shrink-0">
             <div className="bg-gray-50 px-4 py-2 border-b font-bold text-gray-700 text-sm uppercase tracking-wide flex justify-between items-center">
               <div className="flex items-center gap-2">
@@ -227,8 +194,6 @@ export default function Home() {
                         <span className="font-bold text-sm text-blue-900 leading-tight">{item.nombre}</span>
                         <button onClick={() => handleToggleMateria(item.clave, item.nombre)} className="text-gray-300 hover:text-red-500 px-1">✕</button>
                       </div>
-
-                      {/* SELECTOR ESTILIZADO */}
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                           <span className="text-gray-400 text-xs">📌</span>
@@ -266,7 +231,7 @@ export default function Home() {
           </div>
         </aside>
 
-        {/* === CALENDARIO PRINCIPAL - 9 Columnas === */}
+        {/* === CALENDARIO PRINCIPAL === */}
         <section id="resultados-section" className="lg:col-span-9 flex flex-col gap-4 h-full overflow-hidden print:col-span-12 print:overflow-visible">
 
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center print:hidden shrink-0">
@@ -290,7 +255,6 @@ export default function Home() {
                     {totalCreditos(horariosGenerados[indiceActual])}
                   </span>
                 </div>
-
                 <div className="flex gap-1">
                   <button onClick={() => setIndiceActual(i => Math.max(0, i - 1))} disabled={indiceActual === 0} className="w-8 h-8 flex items-center justify-center bg-white hover:bg-gray-100 rounded border border-gray-300 disabled:opacity-50 transition">◀</button>
                   <button onClick={() => setIndiceActual(i => Math.min(horariosGenerados.length - 1, i + 1))} disabled={indiceActual === horariosGenerados.length - 1} className="w-8 h-8 flex items-center justify-center bg-white hover:bg-gray-100 rounded border border-gray-300 disabled:opacity-50 transition">▶</button>
@@ -299,8 +263,8 @@ export default function Home() {
             )}
           </div>
 
-          {/* Calendario */}
-          <div className="flex-1 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden min-h-[600px] relative print:shadow-none print:border-none print:h-auto">
+          {/* CAMBIO CRÍTICO: Eliminado min-h-[600px] para que se ajuste y deje ver botones */}
+          <div className="flex-1 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden relative min-h-0 print:shadow-none print:border-none print:h-auto">
             {horariosGenerados.length > 0 ? (
               <CalendarioVisual materias={horariosGenerados[indiceActual]} />
             ) : (
@@ -314,7 +278,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Botones de Acción */}
+          {/* Botones siempre visibles */}
           {horariosGenerados.length > 0 && (
             <div className="flex justify-end gap-3 print:hidden shrink-0 pb-2">
               <DownloadPDFButton materias={horariosGenerados[indiceActual]} />
