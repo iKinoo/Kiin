@@ -1,12 +1,14 @@
 import pool from '@/lib/db';
 import { NextResponse } from 'next/server';
 
-// 1. LEER (Con Horarios y Filtros)
+// 1. LEER (Con Filtros Avanzados)
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const periodo = searchParams.get('periodo');
     const modalidad = searchParams.get('modalidad');
     const busqueda = searchParams.get('busqueda');
+    const carrera = searchParams.get('carrera');   // Nuevo filtro
+    const semestre = searchParams.get('semestre'); // Nuevo filtro
 
     try {
         let sql = `
@@ -22,6 +24,7 @@ export async function GET(request: Request) {
 
         const params = [];
 
+        // Filtros existentes
         if (periodo && periodo !== 'todos') {
             sql += ' AND g.Periodo = ?';
             params.push(periodo);
@@ -33,6 +36,21 @@ export async function GET(request: Request) {
         if (busqueda) {
             sql += ' AND (a.NomAsignatura LIKE ? OR p.NomProfesor LIKE ?)';
             params.push(`%${busqueda}%`, `%${busqueda}%`);
+        }
+
+        // NUEVOS FILTROS (Usamos EXISTS para filtrar por Malla sin duplicar filas)
+        if (carrera && carrera !== 'todos' && semestre && semestre !== 'todos') {
+            // Si hay ambos, buscamos coincidencia exacta en la malla
+            sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.ClvCarrera = ? AND m.Semestre = ?)';
+            params.push(carrera, semestre);
+        } else if (carrera && carrera !== 'todos') {
+            // Solo carrera
+            sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.ClvCarrera = ?)';
+            params.push(carrera);
+        } else if (semestre && semestre !== 'todos') {
+            // Solo semestre (en cualquier carrera)
+            sql += ' AND EXISTS (SELECT 1 FROM MALLA_CURRICULAR m WHERE m.ClvAsignatura = g.ClvAsignatura AND m.Semestre = ?)';
+            params.push(semestre);
         }
 
         sql += ' ORDER BY g.ClvGrupo DESC LIMIT 100';
@@ -49,7 +67,6 @@ export async function GET(request: Request) {
                 ids
             );
 
-            // Unir horarios al grupo correspondiente
             rows.forEach((row: any) => {
                 row.horarios = horarios.filter((h: any) => h.ClvGrupo === row.ClvGrupo);
             });
@@ -95,7 +112,7 @@ export async function POST(request: Request) {
     }
 }
 
-// 3. EDITAR (PUT) - Con Horarios
+// 3. EDITAR (PUT)
 export async function PUT(request: Request) {
     const connection = await pool.getConnection();
     try {
@@ -105,13 +122,11 @@ export async function PUT(request: Request) {
 
         await connection.beginTransaction();
 
-        // 1. Actualizar Datos Generales
         await connection.query(
             'UPDATE GRUPOS SET ClvProfesor=?, ClvAsignatura=?, Modalidad=?, Periodo=? WHERE ClvGrupo=?',
             [profesor, asignatura, modalidad, periodo, id]
         );
 
-        // 2. Actualizar Horarios (Estrategia: Borrar todo y volver a insertar)
         await connection.query('DELETE FROM GRUPOS_HORARIOS WHERE ClvGrupo = ?', [id]);
 
         if (horarios && horarios.length > 0) {
@@ -126,7 +141,6 @@ export async function PUT(request: Request) {
         return NextResponse.json({ message: 'Grupo actualizado correctamente' });
     } catch (error) {
         await connection.rollback();
-        console.error(error);
         return NextResponse.json({ message: 'Error al actualizar' }, { status: 500 });
     } finally {
         connection.release();
@@ -141,13 +155,11 @@ export async function DELETE(request: Request) {
         let sql = '';
         let params: any[] = [];
 
-        // Lógica Masiva vs Individual
         if (ids && ids.length > 0) {
             const placeholders = ids.map(() => '?').join(',');
             sql = `DELETE FROM GRUPOS WHERE ClvGrupo IN (${placeholders})`;
             params = ids;
         }
-        // Lógica por Tipo
         else if (tipo === 'grupo') {
             sql = 'DELETE FROM GRUPOS WHERE ClvGrupo = ?';
             params = [id];
@@ -165,7 +177,6 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ message: `Registros eliminados: ${res.affectedRows}` });
 
     } catch (error) {
-        console.error(error);
         return NextResponse.json({ message: 'Error al eliminar' }, { status: 500 });
     }
 }

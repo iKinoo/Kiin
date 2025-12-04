@@ -41,7 +41,6 @@ export default function CalendarioVisual({ materias }: Props) {
 
             {/* 2. Cuerpo */}
             <div className="flex-1 overflow-y-auto overflow-x-auto relative print:overflow-visible print:h-auto" style={{ height: '100%' }}>
-                {/* AGREGADO: 'mt-2' para separar el inicio del horario del encabezado */}
                 <div className="relative min-w-[600px] print:min-w-0 print:w-full mt-2 pb-4">
 
                     {/* Rejilla de fondo */}
@@ -88,10 +87,14 @@ export default function CalendarioVisual({ materias }: Props) {
                                         width: `${widthPercent - 0.5}%`,
                                         zIndex: 10
                                     }}
-                                    title={`${materia.materia} (${horario.salon})`}
+                                    title={`${materia.materia} - ${materia.profesor}`}
                                 >
                                     <p className="font-bold truncate text-[10px] sm:text-xs leading-tight">{materia.materia}</p>
-                                    <p className="truncate opacity-90 text-[9px] sm:text-[10px]">{horario.salon}</p>
+
+                                    {/* NUEVO: Nombre del Profesor */}
+                                    <p className="truncate text-[9px] font-medium opacity-90">{materia.profesor}</p>
+
+                                    <p className="truncate opacity-80 text-[9px]">{horario.salon}</p>
                                     <p className="truncate text-[9px] print:hidden">{horario.inicio.slice(0, 5)} - {horario.fin.slice(0, 5)}</p>
                                 </div>
                             );

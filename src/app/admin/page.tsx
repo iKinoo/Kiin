@@ -3,17 +3,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
-// Catálogos estáticos
+// Catálogos
 const modalidadesDisponibles = [
     'Ordinario', 'Recursamiento', 'Regular',
     'Acompañamiento', 'Regular/Acompañamiento',
     'Ordinario/Recursamiento', 'Recursamiento/Acompañamiento'
 ];
-
-const periodosDisponibles = ['Ago-Dic 2025', 'Ene-Jun 2025', 'Verano 2025'];
+const periodosDisponibles = ['Ene-Jun 2026', 'Ago-Dic 2025']; // Ajusta según tu BD
 const diasSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+const carrerasDisponibles = ['LIS', 'LCC', 'LIC', 'LA', 'LM', 'LEM'];
+const semestresDisponibles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-// Estilos reutilizables (Estilo "Pretty" aplicado uniformemente)
+// Estilos
 const inputClass = "w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm";
 const labelClass = "block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide";
 
@@ -22,8 +23,10 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(true);
 
     // Filtros
-    const [periodo, setPeriodo] = useState('Ago-Dic 2025');
+    const [periodo, setPeriodo] = useState('Ene-Jun 2026');
     const [modalidad, setModalidad] = useState('todos');
+    const [carrera, setCarrera] = useState('todos');
+    const [semestre, setSemestre] = useState('todos');
     const [busqueda, setBusqueda] = useState('');
 
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -38,17 +41,18 @@ export default function AdminPage() {
         nombreProfesor: '',
         nombreAsignatura: '',
         modalidad: 'Regular',
-        periodo: 'Ago-Dic 2025',
+        periodo: 'Ene-Jun 2026',
         horarios: []
     });
 
-    // 1. CARGAR DATOS (Memorizado para usar en effects)
+    // 1. CARGAR DATOS
     const fetchGrupos = useCallback(async () => {
         setLoading(true);
-        // Limpiamos parámetros vacíos
         const params = new URLSearchParams();
         if (periodo) params.append('periodo', periodo);
         if (modalidad) params.append('modalidad', modalidad);
+        if (carrera) params.append('carrera', carrera);
+        if (semestre) params.append('semestre', semestre);
         if (busqueda) params.append('busqueda', busqueda);
 
         try {
@@ -62,19 +66,15 @@ export default function AdminPage() {
             setLoading(false);
             setSelectedIds([]);
         }
-    }, [periodo, modalidad, busqueda]); // Dependencias clave
+    }, [periodo, modalidad, carrera, semestre, busqueda]);
 
-    // 2. EFECTO DE BÚSQUEDA (DEBOUNCE)
-    // Esto hace que el buscador funcione "mientras escribes"
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchGrupos();
-        }, 500); // Espera 500ms después de que dejas de escribir
-
+        }, 500);
         return () => clearTimeout(timer);
     }, [fetchGrupos]);
 
-    // Validación de Rol al inicio
     useEffect(() => {
         const stored = localStorage.getItem('usuario_kiin');
         if (!stored || JSON.parse(stored).rol !== 'admin') {
@@ -82,7 +82,7 @@ export default function AdminPage() {
         }
     }, []);
 
-    // --- HANDLERS ---
+    // Handlers
     const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedIds(e.target.checked ? grupos.map(g => g.ClvGrupo) : []);
     };
@@ -111,12 +111,12 @@ export default function AdminPage() {
         }
     };
 
-    // --- MODAL ---
+    // Modals
     const openCreateModal = () => {
         setModalMode('create');
         setFormData({
             id: 0, profesor: '', asignatura: '', nombreProfesor: '', nombreAsignatura: '',
-            modalidad: 'Regular', periodo: periodo !== 'todos' ? periodo : 'Ago-Dic 2025',
+            modalidad: 'Regular', periodo: periodo !== 'todos' ? periodo : 'Ene-Jun 2026',
             horarios: [{ Dia: 'Lunes', Salon: '', HoraEntrada: '07:00:00', HoraSalida: '09:00:00' }]
         });
         setIsModalOpen(true);
@@ -144,7 +144,7 @@ export default function AdminPage() {
             const method = modalMode === 'create' ? 'POST' : 'PUT';
             const payload = {
                 id: formData.id,
-                profesor: formData.profesor || 1, // Fallback ID si no hay select real
+                profesor: formData.profesor || 1,
                 asignatura: formData.asignatura || 'MAT01',
                 modalidad: formData.modalidad,
                 periodo: formData.periodo,
@@ -159,7 +159,7 @@ export default function AdminPage() {
 
             if (res.ok) {
                 setIsModalOpen(false);
-                Swal.fire('Éxito', `Grupo ${modalMode === 'create' ? 'creado' : 'actualizado'}`, 'success');
+                Swal.fire('Éxito', 'Operación completada', 'success');
                 fetchGrupos();
             } else {
                 throw new Error();
@@ -169,20 +169,15 @@ export default function AdminPage() {
         }
     };
 
-    // --- HORARIOS ---
+    // Horarios
     const updateHorario = (index: number, field: string, value: string) => {
         const nuevos = [...formData.horarios];
         nuevos[index] = { ...nuevos[index], [field]: value };
         setFormData({ ...formData, horarios: nuevos });
     };
 
-    const addHorario = () => {
-        setFormData({ ...formData, horarios: [...formData.horarios, { Dia: 'Lunes', Salon: '', HoraEntrada: '07:00:00', HoraSalida: '09:00:00' }] });
-    };
-
-    const removeHorario = (index: number) => {
-        setFormData({ ...formData, horarios: formData.horarios.filter((_: any, i: number) => i !== index) });
-    };
+    const addHorario = () => setFormData({ ...formData, horarios: [...formData.horarios, { Dia: 'Lunes', Salon: '', HoraEntrada: '07:00:00', HoraSalida: '09:00:00' }] });
+    const removeHorario = (index: number) => setFormData({ ...formData, horarios: formData.horarios.filter((_: any, i: number) => i !== index) });
 
     const getBadgeColor = (mod: string) => {
         if (mod.includes('Recursamiento')) return 'bg-orange-100 text-orange-800 border-orange-200';
@@ -204,49 +199,61 @@ export default function AdminPage() {
 
             <div className="max-w-7xl mx-auto p-6 space-y-6">
 
-                {/* BARRA DE FILTROS REFINADA */}
-                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-5 items-end">
-                    <div className="w-full md:w-1/4">
-                        <label className={labelClass}>Periodo</label>
-                        <div className="relative">
+                {/* BARRA DE FILTROS AMPLIADA */}
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-4">
+
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label className={labelClass}>Periodo</label>
                             <select value={periodo} onChange={(e) => setPeriodo(e.target.value)} className={inputClass}>
                                 {periodosDisponibles.map(p => <option key={p} value={p}>{p}</option>)}
                                 <option value="todos">Todos</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="w-full md:w-1/4">
-                        <label className={labelClass}>Modalidad</label>
-                        <div className="relative">
+                        <div>
+                            <label className={labelClass}>Carrera</label>
+                            <select value={carrera} onChange={(e) => setCarrera(e.target.value)} className={inputClass}>
+                                <option value="todos">Todas</option>
+                                {carrerasDisponibles.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className={labelClass}>Semestre</label>
+                            <select value={semestre} onChange={(e) => setSemestre(e.target.value)} className={inputClass}>
+                                <option value="todos">Todos</option>
+                                {semestresDisponibles.map(s => <option key={s} value={s}>{s}º Semestre</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className={labelClass}>Modalidad</label>
                             <select value={modalidad} onChange={(e) => setModalidad(e.target.value)} className={inputClass}>
                                 <option value="todos">Todas</option>
                                 {modalidadesDisponibles.map(m => <option key={m} value={m}>{m}</option>)}
                             </select>
                         </div>
                     </div>
-                    <div className="flex-1 relative">
-                        <label className={labelClass}>Buscar (Profesor / Asignatura)</label>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Escribe para buscar..."
-                                className={`${inputClass} pl-9`} // Padding extra para el icono
-                                value={busqueda}
-                                onChange={(e) => setBusqueda(e.target.value)}
-                            />
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
-                            {busqueda && (
-                                <button onClick={() => setBusqueda('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">✕</button>
-                            )}
-                        </div>
+
+                    {/* Buscador Full Width */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Buscar por profesor, asignatura..."
+                            className={`${inputClass} pl-10`}
+                            value={busqueda}
+                            onChange={(e) => setBusqueda(e.target.value)}
+                        />
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+                        {busqueda && (
+                            <button onClick={() => setBusqueda('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">✕</button>
+                        )}
                     </div>
                 </div>
 
-                {/* TABLA */}
+                {/* TABLA DE RESULTADOS */}
                 <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                     <div className="p-5 border-b bg-gray-50 flex justify-between items-center">
                         <div className="flex items-center gap-4">
-                            <h2 className="font-bold text-gray-800 text-lg">Grupos</h2>
+                            <h2 className="font-bold text-gray-800 text-lg">Resultados</h2>
                             <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">{grupos.length}</span>
                         </div>
                         <div className="flex gap-2">
@@ -255,11 +262,7 @@ export default function AdminPage() {
                                     🗑 Eliminar ({selectedIds.length})
                                 </button>
                             )}
-                            {/* BOTÓN NUEVO CON ONCLICK */}
-                            <button
-                                onClick={openCreateModal}
-                                className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-green-700 flex items-center gap-2 transition transform active:scale-95"
-                            >
+                            <button onClick={openCreateModal} className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-green-700 flex items-center gap-2 transition transform active:scale-95">
                                 <span>+</span> Nuevo
                             </button>
                         </div>
@@ -275,7 +278,7 @@ export default function AdminPage() {
                                     <th className="px-6 py-4">Profesor</th>
                                     <th className="px-6 py-4">Modalidad</th>
                                     <th className="px-6 py-4">Periodo</th>
-                                    <th className="px-6 py-4 text-center">Editar</th>
+                                    <th className="px-6 py-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
@@ -285,7 +288,7 @@ export default function AdminPage() {
                                         <td className="px-6 py-4 font-mono text-xs text-gray-400">{g.ClvGrupo}</td>
                                         <td className="px-6 py-4 font-bold text-gray-800">{g.NomAsignatura}</td>
                                         <td className="px-6 py-4 text-gray-600">{g.NomProfesor}</td>
-                                        <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold border whitespace-nowrap ${getBadgeColor(g.Modalidad)}`}>{g.Modalidad}</span></td>
+                                        <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${getBadgeColor(g.Modalidad)}`}>{g.Modalidad}</span></td>
                                         <td className="px-6 py-4 text-gray-500 text-xs">{g.Periodo}</td>
                                         <td className="px-6 py-4 text-center">
                                             <button onClick={() => openEditModal(g)} className="text-blue-600 bg-blue-50 p-2 rounded hover:bg-blue-100">✎</button>
@@ -298,7 +301,7 @@ export default function AdminPage() {
                 </div>
             </div>
 
-            {/* MODAL UNIFICADO (Estilos arreglados) */}
+            {/* MODAL DE EDICIÓN / CREACIÓN */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
                     <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden animate-fade-in-up my-auto border border-gray-200">
@@ -347,7 +350,6 @@ export default function AdminPage() {
                                 </div>
                             </div>
 
-                            {/* Editor de Horarios ESTILIZADO */}
                             <div className="border-t pt-5 mt-2">
                                 <div className="flex justify-between items-center mb-4">
                                     <label className="text-sm font-bold text-gray-800 uppercase tracking-wide">Horarios y Salones</label>
@@ -355,7 +357,6 @@ export default function AdminPage() {
                                         <span>+</span> Agregar Sesión
                                     </button>
                                 </div>
-
                                 <div className="space-y-3">
                                     {formData.horarios.map((h: any, i: number) => (
                                         <div key={i} className="flex flex-wrap md:flex-nowrap gap-3 items-center bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors shadow-sm">
@@ -383,11 +384,6 @@ export default function AdminPage() {
                                             <button onClick={() => removeHorario(i)} className="text-gray-400 hover:text-red-500 p-2 mt-4 hover:bg-red-50 rounded transition" title="Quitar sesión">✕</button>
                                         </div>
                                     ))}
-                                    {formData.horarios.length === 0 && (
-                                        <div className="text-center py-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
-                                            <p className="text-sm text-gray-400">Este grupo no tiene horarios asignados.</p>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
