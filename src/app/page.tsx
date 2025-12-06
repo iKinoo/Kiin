@@ -15,7 +15,7 @@ interface SeleccionMateria {
 }
 
 export default function Home() {
-  const [usuario, setUsuario] = useState<{ nombre: string; carrera: string; rol?: string } | null>(null);
+  const [usuario, setUsuario] = useState<{ nombre: string; carrera: string; rol?: string; foto?: string; id?: number } | null>(null);
   const [seleccion, setSeleccion] = useState<SeleccionMateria[]>([]);
   const [horariosGenerados, setHorariosGenerados] = useState<GrupoOferta[][]>([]);
   const [indiceActual, setIndiceActual] = useState(0);
@@ -136,8 +136,19 @@ export default function Home() {
                 ⚙️ Admin
               </a>
             )}
-            <a href="/perfil" className="text-sm font-medium text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">
-              Mi Perfil
+            <a href="/perfil" className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-200">
+                <img 
+                  src={usuario.foto || '/img/default-avatar.svg'} 
+                  alt="Perfil" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/img/default-avatar.svg';
+                  }}
+                />
+              </div>
+              <span>Mi Perfil</span>
             </a>
             <button onClick={handleLogout} className="text-sm font-medium text-red-500 hover:bg-red-50 px-3 py-1.5 rounded border border-red-200 transition">
               Salir

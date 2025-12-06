@@ -28,7 +28,7 @@ export default function PerfilPage() {
     const [horariosGuardados, setHorariosGuardados] = useState<HorarioGuardado[]>([]);
     const [loadingHorarios, setLoadingHorarios] = useState(true);
     const [uploading, setUploading] = useState(false);
-    const [preview, setPreview] = useState('/img/default-avatar.png');
+    const [preview, setPreview] = useState('/img/default-avatar.svg');
 
     useEffect(() => {
         // 1. Cargar Usuario
