@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function middleware(request: NextRequest) {
   // 1. Obtener la cookie de sesión
   const cookie = request.cookies.get('kiin_session');
-  
+
   // Rutas que queremos proteger (puedes agregar más)
   // Si no hay cookie, redirigir al login
   if (!cookie) {
@@ -14,15 +14,15 @@ export async function middleware(request: NextRequest) {
 
   try {
     // 2. Verificar que el token sea válido y original
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'secret_key_temporal');
     const { payload } = await jwtVerify(cookie.value, secret);
 
     // 3. (Opcional) Verificar roles
     // Si intentan entrar a /admin y no son admin, mandarlos fuera
     if (request.nextUrl.pathname.startsWith('/admin')) {
-        if (payload.rol !== 'admin') {
-            return NextResponse.redirect(new URL('/', request.url)); // O a una página de "No autorizado"
-        }
+      if (payload.rol !== 'admin') {
+        return NextResponse.redirect(new URL('/', request.url)); // O a una página de "No autorizado"
+      }
     }
 
     // Si todo está bien, dejar pasar

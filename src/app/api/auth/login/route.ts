@@ -1,6 +1,6 @@
 import pool from '@/lib/db';
 import { serialize } from 'cookie';
-import jwt from 'jsonwebtoken';
+import { SignJWT } from 'jose';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -31,15 +31,16 @@ export async function POST(request: Request) {
 
         // 3. Crear el Token de Sesión (JWT)
         // Este token se guarda en la cookie httpOnly (seguridad)
-        const token = jwt.sign(
-            {
-                exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 24 horas
-                id: usuario.ClvUsuario,
-                email: usuario.Correo,
-                rol: usuario.Rol,
-            },
-            process.env.JWT_SECRET || 'secret_key_temporal', // Asegúrate de tener esto en tu .env
-        );
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'secret_key_temporal');
+        const token = await new SignJWT({
+            id: usuario.ClvUsuario,
+            email: usuario.Correo,
+            rol: usuario.Rol,
+        })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .setExpirationTime('24h')
+            .sign(secret);
 
         // 4. Serializar la Cookie
         const serialized = serialize('kiin_session', token, {
