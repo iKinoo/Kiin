@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": ["react", "react-dom"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "react",
+      "react-dom"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,7 +19,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -20,9 +27,20 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.test.ts", "**/*.test.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
