@@ -15,7 +15,7 @@ import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvData
 import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Pivot from "../../domain/entities/Pivot";
 import CurrentSchedule from "../widgets/CurrentSchedule";
 
@@ -32,11 +32,14 @@ const GeneratorPage = () => {
 
   const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
   const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
+  const [defaultSubjectsCount, setDefaultSubjectsCount] = useState<number>(0);
 
 
 
   const [pivots, setPivots] = useState<Pivot[]>([]);
   const [pinnedSubjects, setPinnedSubjects] = useState<number[]>([])
+  const [generationMessage, setGenerationMessage] = useState<string>("");
+  const [showMessage, setShowMessage] = useState<boolean>(false);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -45,9 +48,19 @@ const GeneratorPage = () => {
   useEffect(
     () => {
       if (typeof selectedSubjectsCount === "number" && selectedSubjectsCount > 0) {
-        setSchedulesToShow(generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount))
+        const filtered = generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount);
+        setSchedulesToShow(filtered);
+
+        // Mostrar mensaje de filtrado
+        if (generatedSchedules.length > 0) {
+          setGenerationMessage(`${filtered.length} Horarios con ${selectedSubjectsCount} materias`);
+          setShowMessage(true);
+          setTimeout(() => {
+            setShowMessage(false);
+          }, 2000);
+        }
       } else {
-        setSchedulesToShow(generatedSchedules)
+        setSchedulesToShow(generatedSchedules);
       }
       setPage(0)
     }, [generatedSchedules, selectedSubjectsCount]
@@ -65,8 +78,11 @@ const GeneratorPage = () => {
     ]);
   };
 
-  const filterCourses = async (categories: Category[]) => {
+  const filterCourses = useCallback(async (categories: Category[]) => {
     setPage(0)
+    setGenerationMessage("Generando horarios...");
+    setShowMessage(true);
+
     const data = new CoursesCsvDatasource();
     const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
     const courses = await data.getCoursesByFilter(filter)
@@ -74,6 +90,7 @@ const GeneratorPage = () => {
     if (courses.length === 0) {
       setGeneratedSchedules([]);
       setIsFilterCoursesEmpty(true);
+      setShowMessage(false);
       return;
     }
 
@@ -83,10 +100,19 @@ const GeneratorPage = () => {
     const withPivots = schedules.filter(schedule => withPinnedSubjects(schedule, pinnedSubjects)).filter(s => scheduleHasPivots(s, pivots))
 
     console.log(withPivots)
-    setGeneratedSchedules(
-      withPivots.sort((a, b) => a.courses.length - b.courses.length)
-    );
-  }
+    const sorted = withPivots.sort((a, b) => a.courses.length - b.courses.length);
+
+    // Calcular el número de materias del horario con más materias
+    const maxCoursesInSchedules = sorted.length > 0 ? Math.max(...sorted.map(s => s.courses.length)) : 0;
+    setDefaultSubjectsCount(maxCoursesInSchedules);
+
+    setGeneratedSchedules(sorted);
+    setGenerationMessage(`${sorted.length} Horarios Generados!`);
+
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 3000);
+  }, [pinnedSubjects, pivots]);
 
   const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
     return (
@@ -143,6 +169,18 @@ const GeneratorPage = () => {
     setMaxSubjectsCount(selectedSubjectsCount);
   }
 
+  // Generar horarios automáticamente cuando cambien las categorías, pivots o pinnedSubjects
+  useEffect(() => {
+    // Verificar que hay al menos una materia seleccionada
+    const hasSelectedSubjects = currentCategories
+      .filter(c => c instanceof SubjectCategory)
+      .some(c => c.selectedValues && c.selectedValues.length > 0);
+
+    if (currentCategories.length > 0 && hasSelectedSubjects) {
+      filterCourses(currentCategories);
+    }
+  }, [currentCategories, pivots, pinnedSubjects, filterCourses]);
+
   useEffect(() => {
     if (isFilterCoursesEmpty) {
       alert('No hay cursos disponibles con los filtros seleccionados')
@@ -190,7 +228,6 @@ const GeneratorPage = () => {
       isSideBarOpen={isSideBarOpen}
       currentCategories={currentCategories}
       handleClickFilter={handleClickFilter}
-      filterCourses={filterCourses}
       pinnedSubjects={pinnedSubjects}
       setPinnedSubjects={setPinnedSubjects}
     />
@@ -206,12 +243,18 @@ const GeneratorPage = () => {
       onChangeSchedulePage={onChangeSchedulePage}
       page={page}
       maxSubjectsCount={maxSubjectsCount}
+      defaultSubjectsCount={defaultSubjectsCount}
       handleSliderChange={handleSliderChange} />
   }
 
 
 
   return <div className="flex flex-1 flex-col  overflow-auto  ">
+    {showMessage && (
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+        {generationMessage}
+      </div>
+    )}
     <div className="flex flex-col flex-1 overflow-auto   relative">
 
       {dayFormat == "long" ?

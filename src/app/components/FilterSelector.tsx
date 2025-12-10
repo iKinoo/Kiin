@@ -1,9 +1,9 @@
 "use client"
-import Category from '@/domain/entities/Category'
-import React, { useState } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
+import Category from '@/domain/entities/Category';
 import DegreeCategory from '@/domain/entities/DegreeCategory';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
+import React, { useState } from 'react';
 
 
 interface FilterSelectorProps {
@@ -24,6 +24,16 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) 
     }
 
     const [isDegreeSelected, setIsDegreeSelected] = useState(false);
+    const [degreeTitle, setDegreeTitle] = useState<string>("");
+
+    const handleDegreeClick = (categoryIndex: number, valueId: number) => {
+        const degreeCategory = categories[categoryIndex];
+        const selectedValue = degreeCategory.values.find(v => v.id === valueId);
+        if (selectedValue) {
+            setDegreeTitle(selectedValue.label);
+        }
+        refreshCategories(categoryIndex, valueId);
+    };
 
     return (
         <div className="flex-1 overflow-y-auto p-1 h-full pb-32">
@@ -31,7 +41,15 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) 
             <ul className="space-y-2 ">
                 {
                     categories.filter(c => c instanceof DegreeCategory).map((category, index) => (
-                        <CategorySelector isDegreeSelected={isDegreeSelected} setIsDegreeSelected={setIsDegreeSelected} key={index} category={category} onClick={(valueId) => refreshCategories(index, valueId)} />
+                        <CategorySelector 
+                            isDegreeSelected={isDegreeSelected} 
+                            setIsDegreeSelected={setIsDegreeSelected} 
+                            key={index} 
+                            category={category} 
+                            onClick={(valueId) => handleDegreeClick(index, valueId)}
+                            isDegreeCategory={true}
+                            degreeTitle={degreeTitle}
+                        />
                     ))
                 }
             </ul>

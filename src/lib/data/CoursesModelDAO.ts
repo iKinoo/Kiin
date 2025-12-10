@@ -77,6 +77,9 @@ const fromRawToCourseCSV = (raw: any): CourseCSV => {
   const viernesKey = Object.keys(raw).find(
     key => key.trim().toLowerCase().replace(/[^a-z]/g, '') === 'viernes'
   );
+  const creditosKey = Object.keys(raw).find(
+    key => key.trim().toLowerCase().replace(/[^\wáéíóúüñ]/g, '').replace(/[éè]/g, 'e') === 'creditos'
+  );
 
   const aulaKeys = Object.keys(raw).filter(
     key => key.trim().toLowerCase().startsWith('aula')
@@ -117,7 +120,7 @@ const fromRawToCourseCSV = (raw: any): CourseCSV => {
     Hr_Pres: "",
     Hr_Pres2: "",
     Hr_N_P: "",
-    Creditos: "",
+    Creditos: raw[creditosKey as keyof typeof raw] || '',
 
     Cupo: "",
     LIC_MEFI: "",

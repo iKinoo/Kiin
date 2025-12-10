@@ -11,17 +11,26 @@ export class Subject {
     private _type: string;
     private _model: string;
     private _degreeResume: string;
+    private _credits: number;
     
-    constructor(id: number, name: string, degreeResume : string, model: string, type: string, semesters: number[]) {
+    constructor(id: number, name: string, degreeResume : string, model: string, type: string, semesters: number[], credits: number) {
         this._degreeResume = degreeResume;
         this._id = id;
         this._name = name;
         this._semesters = semesters;
         this._model = model;
         this._type = type;
+        this._credits = credits;
     }
     public get degreeResume(): string {
         return this._degreeResume;
+    }
+    public get credits(): number {
+        return this._credits;
+    }
+
+    set credits(credits: number) {
+        this._credits = credits;
     }
 
     get type(): string {
