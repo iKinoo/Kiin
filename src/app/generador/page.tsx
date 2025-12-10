@@ -38,6 +38,8 @@ const GeneratorPage = () => {
 
   const [pivots, setPivots] = useState<Pivot[]>([]);
   const [pinnedSubjects, setPinnedSubjects] = useState<number[]>([])
+  const [generationMessage, setGenerationMessage] = useState<string>("");
+  const [showMessage, setShowMessage] = useState<boolean>(false);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -46,9 +48,19 @@ const GeneratorPage = () => {
   useEffect(
     () => {
       if (typeof selectedSubjectsCount === "number" && selectedSubjectsCount > 0) {
-        setSchedulesToShow(generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount))
+        const filtered = generatedSchedules.filter(gs => gs.courses.length === selectedSubjectsCount);
+        setSchedulesToShow(filtered);
+
+        // Mostrar mensaje de filtrado
+        if (generatedSchedules.length > 0) {
+          setGenerationMessage(`${filtered.length} Horarios con ${selectedSubjectsCount} materias`);
+          setShowMessage(true);
+          setTimeout(() => {
+            setShowMessage(false);
+          }, 2000);
+        }
       } else {
-        setSchedulesToShow(generatedSchedules)
+        setSchedulesToShow(generatedSchedules);
       }
       setPage(0)
     }, [generatedSchedules, selectedSubjectsCount]
@@ -68,6 +80,9 @@ const GeneratorPage = () => {
 
   const filterCourses = useCallback(async (categories: Category[]) => {
     setPage(0)
+    setGenerationMessage("Generando horarios...");
+    setShowMessage(true);
+
     const data = new CoursesCsvDatasource();
     const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
     const courses = await data.getCoursesByFilter(filter)
@@ -75,6 +90,7 @@ const GeneratorPage = () => {
     if (courses.length === 0) {
       setGeneratedSchedules([]);
       setIsFilterCoursesEmpty(true);
+      setShowMessage(false);
       return;
     }
 
@@ -91,6 +107,11 @@ const GeneratorPage = () => {
     setDefaultSubjectsCount(maxCoursesInSchedules);
 
     setGeneratedSchedules(sorted);
+    setGenerationMessage(`${sorted.length} Horarios Generados!`);
+
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 3000);
   }, [pinnedSubjects, pivots]);
 
   const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
@@ -229,6 +250,11 @@ const GeneratorPage = () => {
 
 
   return <div className="flex flex-1 flex-col  overflow-auto  ">
+    {showMessage && (
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+        {generationMessage}
+      </div>
+    )}
     <div className="flex flex-col flex-1 overflow-auto   relative">
 
       {dayFormat == "long" ?
