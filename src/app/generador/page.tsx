@@ -15,7 +15,7 @@ import { CoursesCsvDatasource } from '@/infrastructure/datasource/CoursesCsvData
 import { DegreesCsvDataSource } from '@/infrastructure/datasource/DegreesCsvDataSource';
 import { FilterImpl } from '@/infrastructure/datasource/FilterImpl';
 import { SubjectsCsvDataSource } from '@/infrastructure/datasource/SubjectsCSvDataSource';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Pivot from "../../domain/entities/Pivot";
 import CurrentSchedule from "../widgets/CurrentSchedule";
 
@@ -66,7 +66,7 @@ const GeneratorPage = () => {
     ]);
   };
 
-  const filterCourses = async (categories: Category[]) => {
+  const filterCourses = useCallback(async (categories: Category[]) => {
     setPage(0)
     const data = new CoursesCsvDatasource();
     const filter = new FilterImpl(categories.map((category) => category.toCourseFilter()));
@@ -91,7 +91,7 @@ const GeneratorPage = () => {
     setDefaultSubjectsCount(maxCoursesInSchedules);
 
     setGeneratedSchedules(sorted);
-  }
+  }, [pinnedSubjects, pivots]);
 
   const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
     return (
@@ -148,6 +148,18 @@ const GeneratorPage = () => {
     setMaxSubjectsCount(selectedSubjectsCount);
   }
 
+  // Generar horarios automáticamente cuando cambien las categorías, pivots o pinnedSubjects
+  useEffect(() => {
+    // Verificar que hay al menos una materia seleccionada
+    const hasSelectedSubjects = currentCategories
+      .filter(c => c instanceof SubjectCategory)
+      .some(c => c.selectedValues && c.selectedValues.length > 0);
+
+    if (currentCategories.length > 0 && hasSelectedSubjects) {
+      filterCourses(currentCategories);
+    }
+  }, [currentCategories, pivots, pinnedSubjects, filterCourses]);
+
   useEffect(() => {
     if (isFilterCoursesEmpty) {
       alert('No hay cursos disponibles con los filtros seleccionados')
@@ -195,7 +207,6 @@ const GeneratorPage = () => {
       isSideBarOpen={isSideBarOpen}
       currentCategories={currentCategories}
       handleClickFilter={handleClickFilter}
-      filterCourses={filterCourses}
       pinnedSubjects={pinnedSubjects}
       setPinnedSubjects={setPinnedSubjects}
     />

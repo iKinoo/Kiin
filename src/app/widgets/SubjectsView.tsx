@@ -13,7 +13,6 @@ interface SubjctsViewProps {
     isSideBarOpen: boolean;
     currentCategories: Category[];
     handleClickFilter: (category: Category[]) => void;
-    filterCourses: (categories: Category[]) => Promise<void>;
     setPivots: (ids: Pivot[]) => void,
     pivots: Pivot[];
     pinnedSubjects: number[],
@@ -28,7 +27,6 @@ function SubjectsView({
     isSideBarOpen,
     currentCategories,
     handleClickFilter,
-    filterCourses,
     pivots,
     setPivots,
     pinnedSubjects,
@@ -79,13 +77,10 @@ function SubjectsView({
                             d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                     </svg>
                 </button>
-                <button onClick={() => { filterCourses(currentCategories) }} className="px-3 py-3  bg-purple-500 hover:bg-purple-800 text-white font-bold rounded">
-                    Generar Horarios
-                </button>
             </div>
             <div className=' flex-1 overflow-auto flex flex-col gap-2 p-4 pb-24 pt-16'>
 
-                <span className='text-gray-500'>Recuerda generar horarios nuevamente después de realizar cambios para actualizar los resultados</span>
+                <span className='text-gray-500'>Los horarios se generan automáticamente al seleccionar materias, profesores o fijar opciones</span>
 
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
                     (sb) => (
@@ -159,7 +154,7 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects
                 onClick={() => {
                     if (!isSelected) {
                         setPinnedSubjects([...pinnedSubjects, subject.id])
-                    }else{
+                    } else {
                         setPinnedSubjects(pinnedSubjects.filter(ps => (ps !== subject.id)))
                     }
                 }}
