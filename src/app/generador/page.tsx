@@ -237,7 +237,6 @@ const GeneratorPage = () => {
     return <SchedulesView
 
       key={1}
-      isSideBarOpen={isSideBarOpen}
       schedulesToShow={schedulesToShow}
       dayFormat={dayFormat}
       onChangeSchedulePage={onChangeSchedulePage}

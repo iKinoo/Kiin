@@ -60,7 +60,7 @@ function SubjectsView({
             <div className='flex flex-row gap-5 justify-center absolute self-center mt-2.5 backdrop-blur-sm  w-[93%]'>
                 <button
                     onClick={toggleSideBar}
-                    className="border-2 border-gray-500 bg-gray-800 text-gray-100 flex flex-row gap-2 rounded-md items-center p-2"
+                    className=" bg-purple-500 text-gray-100 flex flex-row gap-2 rounded-md items-center p-2"
                     type="button"
                 >
                     Selecciona tus Materias

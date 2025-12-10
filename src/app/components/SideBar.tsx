@@ -6,7 +6,7 @@ interface HeadSideBarProps {
 
 const HeadSideBar: React.FC<HeadSideBarProps> = ({ toggleSideBar }) => {
   return (
-    <button className="flex justify-center  ml-auto mt-2  w-full items-center p-2 bg-gray-300  rounded-lg border-2 border-gray-500 dark:text-white bg-transparent" onClick={toggleSideBar}>
+    <button className="flex justify-center  ml-auto mt-2  w-full items-center p-2 bg-purple-500  rounded-lg  dark:text-white" onClick={toggleSideBar}>
         
         <svg  className='inline mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
         Fijar Materias y Profesores

@@ -8,9 +8,6 @@ import LiveIndicator from '../components/UpdateIndicator';
 
 interface SchedulesViewProps {
 
-  isSideBarOpen: boolean;
-
-
   schedulesToShow: Schedule[];
   dayFormat: "short" | "long";
   onChangeSchedulePage: (page: number) => void;
@@ -21,7 +18,6 @@ interface SchedulesViewProps {
 }
 
 function SchedulesView({
-  isSideBarOpen,
   schedulesToShow,
   dayFormat,
   onChangeSchedulePage,
@@ -53,7 +49,7 @@ function SchedulesView({
           </div>
 
 
-          <div className={` transition-all duration-500 ${isSideBarOpen && dayFormat === "short" ? "opacity-0" : "flex justify-center items-center col-start-6  justify-self-end md:row-start-2"}`}>
+          <div className={`flex justify-center items-center col-start-6 justify-self-end md:row-start-2`}>
             <Pagination
               onNext={() => onChangeSchedulePage(page + 1)}
               onPrevious={() => onChangeSchedulePage(page - 1)}
