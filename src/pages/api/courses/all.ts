@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { CoursesModelDao } from "../data/CoursesModelDAO";
 import { Course } from "@/domain/entities/Course";
-import { globalInitialLoad } from "../data/initialLoad";
-import { CourseMapper } from "../data/CourseMapper";
+import { CourseMapper } from "@/lib/data/CourseMapper";
+import { CoursesModelDao } from "@/lib/data/CoursesModelDAO";
+import { globalInitialLoad } from "@/lib/data/initialLoad";
+import { NextApiRequest, NextApiResponse } from "next";
 
 
 export class Courses {
@@ -28,7 +28,7 @@ export class Courses {
             if (!courseAlreadyExist) {
                 this.courses.push(currentCourse);
                 count++;
-            }else{
+            } else {
                 courseAlreadyExist.addSession(currentCourse.sessions[0]);
             }
         }

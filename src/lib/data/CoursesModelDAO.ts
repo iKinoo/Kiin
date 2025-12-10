@@ -5,13 +5,6 @@ import path from "path";
 import { Readable } from "stream";
 import { CourseCSV } from "./CourseModel";
 
-// Tell Next.js this is not an API route
-export const config = {
-  api: {
-    externalResolver: true,
-  },
-};
-
 export class CoursesModelDao {
   private static _results: CourseCSV[] = [];
 

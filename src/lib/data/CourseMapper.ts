@@ -1,16 +1,9 @@
 import { Course } from "@/domain/entities/Course";
 import { Session } from "@/domain/entities/Session";
+import { Professors } from "@/pages/api/professors/all";
+import { Subjects } from "@/pages/api/subjects/all";
 import moment from "moment";
-import { Professors } from "../professors/all";
-import { Subjects } from "../subjects/all";
 import { CourseCSV } from "./CourseModel";
-
-// Tell Next.js this is not an API route
-export const config = {
-    api: {
-        externalResolver: true,
-    },
-};
 
 export class CourseMapper {
 

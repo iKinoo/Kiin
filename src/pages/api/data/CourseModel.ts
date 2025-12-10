@@ -1,3 +1,10 @@
+// Tell Next.js this is not an API route
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+};
+
 export interface CourseCSV {
     Periodo: string,
     Tipo: string,

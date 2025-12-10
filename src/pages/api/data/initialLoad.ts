@@ -3,6 +3,13 @@ import { Degrees } from "../degrees/all";
 import { Professors } from "../professors/all";
 import { Subjects } from "../subjects/all";
 
+// Tell Next.js this is not an API route
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+};
+
 export async function globalInitialLoad() {
 
 

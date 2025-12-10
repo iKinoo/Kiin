@@ -1,4 +1,4 @@
-import { CoursesModelDao } from './src/pages/api/data/CoursesModelDAO';
+import { CoursesModelDao } from './src/lib/data/CoursesModelDAO';
 
 async function testTimeSelection() {
     try {
