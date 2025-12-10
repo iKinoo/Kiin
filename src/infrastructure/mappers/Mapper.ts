@@ -16,8 +16,12 @@ export class Mapper {
             json._degreeResume,
             json._model,
             json._type,
-            json._semesters
+            json._semesters,
+            json._credits
         );
+
+
+        console.log(json)
         subject.courses = json._coursesIds
         subject.degrees = json._degreesIds
         subject.professors = json._professorsIds

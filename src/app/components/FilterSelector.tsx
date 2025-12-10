@@ -1,9 +1,9 @@
 "use client"
-import Category from '@/domain/entities/Category'
-import React, { useState } from 'react'
 import CategorySelector from '@/app/components/CategorySelector';
+import Category from '@/domain/entities/Category';
 import DegreeCategory from '@/domain/entities/DegreeCategory';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
+import React, { useState } from 'react';
 
 
 interface FilterSelectorProps {
