@@ -9,8 +9,8 @@ interface ICSButtonProps {
 }
 
 function ICSButton({ schedule, semesterStart, semesterEnd }: ICSButtonProps) {
-    const defaultStart = new Date('2025-08-13');
-    const defaultEnd = new Date('2025-12-06');
+    const defaultStart = new Date('2025-01-12');
+    const defaultEnd = new Date('2025-30-05');
 
     const start = semesterStart || defaultStart;
     const end = semesterEnd || defaultEnd;

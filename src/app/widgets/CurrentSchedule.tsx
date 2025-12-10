@@ -18,8 +18,8 @@ type Props = {
 function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
 
     //Prueba de google
-    const [start] = useState(new Date('2025-08-13T08:00:00'));
-    const [end] = useState(new Date('2025-12-06T09:00:00'));
+    const [start] = useState(new Date('2025-01-12T08:00:00')); // new Date('2025-01-12');
+    const [end] = useState(new Date('2025-30-05T09:00:00')); // new Date('2025-30-05');
     const session = useSession();
     const supabase = useSupabaseClient();
 
