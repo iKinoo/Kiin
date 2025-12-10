@@ -1,10 +1,9 @@
 import csvParser from "csv-parser";
+import ExcelJS from "exceljs";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
-import * as XLSX from "xlsx";
 import { CourseCSV } from "./CourseModel";
-
 
 export class CoursesModelDao {
   private static _results: CourseCSV[] = [];
@@ -199,15 +198,15 @@ const readLatestExcelFile = async (): Promise<CourseCSV[]> => {
     console.log(`  - Date: ${latestFile.date.toISOString()}`);
     console.log(`  - Version: ${latestFile.version}`);
 
-    // Leer el contenido del archivo Excel más reciente
-    const workbook = XLSX.readFile(latestFile.fullPath);
+    // Leer el contenido del archivo Excel más reciente usando exceljs
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(latestFile.fullPath);
 
     // Obtener la primera hoja del Excel
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
+    const worksheet = workbook.worksheets[0];
 
-    // Convertir a CSV y procesar como antes
-    const csvData = XLSX.utils.sheet_to_csv(worksheet);
+    // Convertir a CSV manualmente
+    const csvData = worksheetToCSV(worksheet);
 
     // Procesar el CSV usando la lógica existente
     return await processCSVData(csvData);
@@ -216,6 +215,38 @@ const readLatestExcelFile = async (): Promise<CourseCSV[]> => {
     console.error('Error reading latest Excel file:', error);
     throw error;
   }
+};
+
+/**
+ * Convierte una hoja de Excel (exceljs worksheet) a formato CSV
+ */
+const worksheetToCSV = (worksheet: ExcelJS.Worksheet): string => {
+  const rows: string[] = [];
+
+  worksheet.eachRow((row) => {
+    const values: string[] = [];
+    row.eachCell({ includeEmpty: true }, (cell) => {
+      let value = '';
+      if (cell.value !== null && cell.value !== undefined) {
+        // Handle different cell types
+        if (typeof cell.value === 'object' && 'text' in cell.value) {
+          value = cell.value.text;
+        } else if (cell.value instanceof Date) {
+          value = cell.value.toISOString();
+        } else {
+          value = String(cell.value);
+        }
+      }
+      // Escape quotes and wrap in quotes if necessary
+      if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+        value = '"' + value.replace(/"/g, '""') + '"';
+      }
+      values.push(value);
+    });
+    rows.push(values.join(','));
+  });
+
+  return rows.join('\n');
 };
 
 /**

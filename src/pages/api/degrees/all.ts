@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { CoursesModelDao } from "../data/CoursesModelDAO";
 import { Degree } from "@/domain/entities/Degree";
-import { globalInitialLoad } from "../data/initialLoad";
+import { CoursesModelDao } from "@/lib/data/CoursesModelDAO";
+import { globalInitialLoad } from "@/lib/data/initialLoad";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export class Degrees {
     private static _degrees: Degree[] = [];
@@ -19,7 +19,7 @@ export class Degrees {
         let count = 0;
 
         for (const result of results) {
-            
+
             const degreesResultCsv = result.PE.split("-");
 
             degreesResultCsv.forEach((degreeString) => {

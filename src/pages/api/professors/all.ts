@@ -1,8 +1,8 @@
 import { Professor } from "@/domain/entities/Professor";
+import { CourseCSV } from "@/lib/data/CourseModel";
+import { CoursesModelDao } from "@/lib/data/CoursesModelDAO";
+import { globalInitialLoad } from "@/lib/data/initialLoad";
 import { NextApiRequest, NextApiResponse } from "next";
-import { CoursesModelDao } from "../data/CoursesModelDAO";
-import { CourseCSV } from "../data/CourseModel" ;
-import { globalInitialLoad } from "../data/initialLoad";
 
 
 

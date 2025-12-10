@@ -1,10 +1,9 @@
 import { Course } from "@/domain/entities/Course";
-import { Subjects } from "../subjects/all";
-import { Professors } from "../professors/all";
-import moment from "moment";
 import { Session } from "@/domain/entities/Session";
+import { Professors } from "@/pages/api/professors/all";
+import { Subjects } from "@/pages/api/subjects/all";
+import moment from "moment";
 import { CourseCSV } from "./CourseModel";
-
 
 export class CourseMapper {
 
@@ -47,10 +46,10 @@ export class CourseMapper {
             if (!result[day[0]]) {
                 continue;
             }
-            
+
             const timeSlots = result[day[0]].split('\r\n');
             const classrooms = result[day[1]].split('\r\n');
-            
+
             for (let i = 0; i < timeSlots.length; i++) {
                 const hours = this.getHours(timeSlots[i]);
                 const classroom = classrooms[i] || classrooms[0]; // Use first classroom if not enough classrooms
@@ -63,7 +62,7 @@ export class CourseMapper {
     }
     private static getHours(time: string): moment.Moment[] {
         const hours = time.split('-');
-    
+
         if (hours.length === 2) {
             return [
                 moment.utc(hours[0], 'HH:mm'),
@@ -72,5 +71,5 @@ export class CourseMapper {
         }
         return [moment.utc(), moment.utc()];
     }
-    
+
 }
