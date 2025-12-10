@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { Slider } from "@heroui/slider";
+import { useEffect, useState } from "react";
 
 interface SliderFilterProps {
   label: string;
   maxValue: number;
+  defaultValue?: number;
   getValue?: (value: number) => string;
   size?: "sm" | "md" | "lg";
   className?: string;
@@ -13,18 +14,20 @@ interface SliderFilterProps {
 
 export function SliderFilter({
   maxValue,
+  defaultValue,
   label,
   objectNameCounting,
   onValueChange,
 }: SliderFilterProps) {
-  const [selectedValue, setSelectedValue] = useState<number>(maxValue);
+  const [selectedValue, setSelectedValue] = useState<number>(defaultValue ?? maxValue);
 
-  // // Solo actualiza el valor por defecto cuando maxValue cambia
-  // useEffect(() => {
-  //   setSelectedValue(maxValue);
-  //   onValueChange(maxValue);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [maxValue]);
+  // Actualiza el valor cuando defaultValue cambia
+  useEffect(() => {
+    const newValue = defaultValue ?? maxValue;
+    setSelectedValue(newValue);
+    onValueChange(newValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValue, maxValue]);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedValue(value as number);

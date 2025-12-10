@@ -32,6 +32,7 @@ const GeneratorPage = () => {
 
   const [selectedSubjectsCount, setSelectedSubjectsCount] = useState<number | number[]>(0);
   const [maxSubjectsCount, setMaxSubjectsCount] = useState<number>(0);
+  const [defaultSubjectsCount, setDefaultSubjectsCount] = useState<number>(0);
 
 
 
@@ -83,9 +84,13 @@ const GeneratorPage = () => {
     const withPivots = schedules.filter(schedule => withPinnedSubjects(schedule, pinnedSubjects)).filter(s => scheduleHasPivots(s, pivots))
 
     console.log(withPivots)
-    setGeneratedSchedules(
-      withPivots.sort((a, b) => a.courses.length - b.courses.length)
-    );
+    const sorted = withPivots.sort((a, b) => a.courses.length - b.courses.length);
+
+    // Calcular el número de materias del horario con más materias
+    const maxCoursesInSchedules = sorted.length > 0 ? Math.max(...sorted.map(s => s.courses.length)) : 0;
+    setDefaultSubjectsCount(maxCoursesInSchedules);
+
+    setGeneratedSchedules(sorted);
   }
 
   const withPinnedSubjects = (schedule: Schedule, pinnedSubjects: number[]) => {
@@ -206,6 +211,7 @@ const GeneratorPage = () => {
       onChangeSchedulePage={onChangeSchedulePage}
       page={page}
       maxSubjectsCount={maxSubjectsCount}
+      defaultSubjectsCount={defaultSubjectsCount}
       handleSliderChange={handleSliderChange} />
   }
 
