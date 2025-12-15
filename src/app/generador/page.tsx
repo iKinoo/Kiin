@@ -170,6 +170,15 @@ const GeneratorPage = () => {
     setMaxSubjectsCount(selectedSubjectsCount);
   }
 
+  const handleRemoveSubject = (categoryIndex: number, subjectId: number) => {
+    const newCategories = [...currentCategories];
+    const category = newCategories[categoryIndex];
+    category.onClick(subjectId);
+    newCategories[categoryIndex] = category;
+    currentCategories.forEach((cat) => cat.filterWithCategories(newCategories));
+    handleClickFilter(newCategories);
+  }
+
   // Generar horarios automáticamente cuando cambien las categorías, pivots o pinnedSubjects
   useEffect(() => {
     // Verificar que hay al menos una materia seleccionada
@@ -231,6 +240,7 @@ const GeneratorPage = () => {
       handleClickFilter={handleClickFilter}
       pinnedSubjects={pinnedSubjects}
       setPinnedSubjects={setPinnedSubjects}
+      onRemoveSubject={handleRemoveSubject}
     />
   }
 
