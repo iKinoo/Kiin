@@ -24,7 +24,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
     const [end] = useState(new Date('2025-30-05T09:00:00')); // new Date('2025-30-05');
     const session = useSession();
     const supabase = useSupabaseClient();
-    
+
 
     // Referencia para el popup
     const popupRef = useRef<Window | null>(null);
@@ -174,7 +174,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                 </div>
             </div>
 
-            {schedule.incompatibleCourses && schedule.incompatibleCourses.length > 0 && (
+            {schedule.incompatibleCourses && schedule.incompatibleCourses.length > 0 ? (
                 <div className="my-6">
                     <button
                         onClick={() => setShowConflicts(!showConflicts)}
@@ -212,7 +212,15 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                         </div>
                     )}
                 </div>
-            )}
+            ) :
+                <button
+                    onClick={() => setShowConflicts(!showConflicts)}
+                    className={`w-full  text-green-500 font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors`}
+                >
+                    <svg className='fill-green-500' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                    Sin conflictos
+                </button>
+            }
 
             <div className=''>
                 {schedule.courses.map((course, index) => (
