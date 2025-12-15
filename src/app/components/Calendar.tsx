@@ -138,6 +138,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat, conflictCourses
         <>
             <div className='h-full'>
                 <FullCalendar
+                
                     now={'2025-01-13'}
                     dayHeaderClassNames={
                         ['bg-gray-800', 'text-white', '!border-0']// Usar clases de Tailwind
@@ -157,6 +158,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat, conflictCourses
                     slotLabelFormat={
                         { hour: '2-digit', minute: '2-digit', hour12: false }
                     }
+                    eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
                     height={"auto"}
                     headerToolbar={false}
                     dayHeaderFormat={{ weekday: "long" }}
