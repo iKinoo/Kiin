@@ -1,6 +1,7 @@
 import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Pivot from '../../domain/entities/Pivot';
 import GoogleCalendarButton from '../components/GoogleCalendarButton';
@@ -10,21 +11,30 @@ type Props = {
     schedule: Schedule;
     pivots?: Pivot[];
     pinnedSubjects?: number[];
-    label: string
+    label: string;
+    showConflicts?: boolean;
+    setShowConflicts?: (show: boolean) => void;
 }
 
 
 
-function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
+function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflicts: externalShowConflicts, setShowConflicts: externalSetShowConflicts }: Props) {
 
     //Prueba de google
     const [start] = useState(new Date('2025-01-12T08:00:00')); // new Date('2025-01-12');
     const [end] = useState(new Date('2025-30-05T09:00:00')); // new Date('2025-30-05');
     const session = useSession();
     const supabase = useSupabaseClient();
+    const router = useRouter();
 
     // Referencia para el popup
     const popupRef = useRef<Window | null>(null);
+
+    const [internalShowConflicts, setInternalShowConflicts] = useState(false);
+
+    // Usar el estado externo si está disponible, de lo contrario usar el interno
+    const showConflicts = externalShowConflicts !== undefined ? externalShowConflicts : internalShowConflicts;
+    const setShowConflicts = externalSetShowConflicts || setInternalShowConflicts;
 
     async function GoogleSignIn() {
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -87,7 +97,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                 <h2 className="text-center text-lg p-2 font-bold  bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                 <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
-                
+
                 {
                     session ? (
                         <>
@@ -165,6 +175,46 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                 </div>
             </div>
 
+            {schedule.incompatibleCourses && schedule.incompatibleCourses.length > 0 && (
+                <div className="my-6">
+                    <button
+                        onClick={() => setShowConflicts(!showConflicts)}
+                        className={`w-full ${showConflicts ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700'} text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors`}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                            {showConflicts ? (
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            ) : (
+                                <path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm302-40q17 0 28.5-11.5T520-280q0-17-11.5-28.5T480-320q-17 0-28.5 11.5T440-280q0 17 11.5 28.5T480-240Zm-40-120h80v-200h-80v200Zm40-100Z" />
+                            )}
+                        </svg>
+                        {showConflicts ? 'Ocultar conflictos' : `Ver conflictos (${schedule.incompatibleCourses.length})`}
+                    </button>
+
+                    {showConflicts && (
+                        <div className="mt-4 border-2 border-red-500 rounded-lg p-4">
+                            <h3 className="font-bold text-lg mb-3 text-red-600 dark:text-red-400">Cursos en conflicto:</h3>
+                            <div className="space-y-2">
+                                {schedule.incompatibleCourses.map((course, index) => (
+                                    <div key={index} className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700">
+                                        <div className="font-semibold">{course.subject.name}</div>
+                                        <div className="text-sm flex items-center gap-2 mt-1">
+                                            <svg className='dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px">
+                                                <path d="M480-240q-56 0-107 17.5T280-170v10h400v-10q-42-35-93-52.5T480-240Zm0-80q69 0 129 21t111 59v-560H240v560q51-38 111-59t129-21Zm0-160q-25 0-42.5-17.5T420-540q0-25 17.5-42.5T480-600q25 0 42.5 17.5T540-540q0 25-17.5 42.5T480-480ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Zm240-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z" />
+                                            </svg>
+                                            {course.professor.fullName}
+                                        </div>
+                                        <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                            Grupo {course.group} • {course.modality}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
             <div className=''>
                 {schedule.courses.map((course, index) => (
                     <div key={index} >
@@ -172,6 +222,8 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects }: Props) {
                     </div>
                 ))}
             </div>
+
+
         </div>
         :
         <div className="px-10">
@@ -213,10 +265,10 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[], pinnedSub
 
                 <div className='flex-1'>
                     {course.subject.name}
-                    
+
                 </div>
-                
-                
+
+
                 {isSubjectPinned ? <div className='rounded-large bg-purple-900 inline h-max ml-2 my-1'>
                     <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
                 </div>
@@ -237,7 +289,7 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[], pinnedSub
 
                 <div className='h-2 w-2 bg-dark dark:bg-white rounded-full mx-2'></div>
 
-                {course.subject.credits} Créditos 
+                {course.subject.credits} Créditos
             </div>
 
 
