@@ -61,7 +61,7 @@ function SchedulesView({
 
 
         </div>
-        <div className=' flex-1 overflow-auto  relative border border-blue-500'>
+        <div className=' flex-1 overflow-auto  relative'>
           <Calendar
             dayFormat={dayFormat}
             courses={schedulesToShow[page]?.courses}
