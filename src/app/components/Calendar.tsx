@@ -195,10 +195,20 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat, conflictCourses
                         left: tooltip.x + 10,
                     }}
                 >
-
+                    {tooltip.eventArgs?.event.extendedProps.isConflict && (
+                        <>
+                            <strong className='text-red-500'>Conflicto</strong><br />
+                        </>
+                        
+                    )}
+                    
+                     {tooltip.eventArgs?.event.title}
+                    <br />
                     <strong>Profesor:</strong> {tooltip.eventArgs?.event.extendedProps.professor}
                     <br />
                     <strong>Aula:</strong> {tooltip.eventArgs?.event.extendedProps.room}
+
+
                 </div>
             )}
         </>
