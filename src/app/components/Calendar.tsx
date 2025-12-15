@@ -60,7 +60,8 @@ function mapEvents(course: Course, isConflict: boolean = false) {
             extendedProps: {
                 room: sessionI.room,
                 professor: course.professor.fullName,
-                isConflict: isConflict
+                isConflict: isConflict,
+                group: course.group,
             },
         };
     });
@@ -205,6 +206,8 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat, conflictCourses
                      {tooltip.eventArgs?.event.title}
                     <br />
                     <strong>Profesor:</strong> {tooltip.eventArgs?.event.extendedProps.professor}
+                    <br />
+                    <strong>Grupo:</strong> {tooltip.eventArgs?.event.extendedProps.group}
                     <br />
                     <strong>Aula:</strong> {tooltip.eventArgs?.event.extendedProps.room}
 

@@ -91,85 +91,103 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
         <div className='md:h-full  overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
 
 
-            <div className='relative flex flex-row mb-5 gap-2  items-center md:sticky md:top-0'>
-                <div className='absolute h-full w-full  -z-20 backdrop-blur-sm'></div>
-                <h2 className="text-center text-lg p-2 font-bold  bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
+            <div className='relative flex flex-col gap-2 mb-5 lg:sticky lg:top-0'>
+                <div className='absolute h-full w-full -z-20 backdrop-blur-sm'></div>
+                
+                <div className='flex flex-row gap-2 items-center'>
+                    <h2 className="text-center text-lg p-2 font-bold bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
-                <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
+                    <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
 
-                {
-                    session ? (
-                        <>
-                            {/*<button onClick={GoogleSignOut}>Sign Out</button>*/}
-                            {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
-                                <div className="mb-4">
-                                    <button
-                                        onClick={async () => {
-                                            const Swal = (await import('sweetalert2')).default;
-                                            const result = await Swal.fire({
-                                                icon: 'info',
-                                                title: 'Sesión expirada',
-                                                text: 'Tu sesión de Google ha expirado. Por favor, inicia sesión nuevamente para exportar tu horario.',
-                                                confirmButtonText: 'Iniciar sesión',
-                                                showCancelButton: true,
-                                                cancelButtonText: 'Cancelar'
-                                            });
+                    {
+                        session ? (
+                            <>
+                                {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
+                                    <div className="mb-4">
+                                        <button
+                                            onClick={async () => {
+                                                const Swal = (await import('sweetalert2')).default;
+                                                const result = await Swal.fire({
+                                                    icon: 'info',
+                                                    title: 'Sesión expirada',
+                                                    text: 'Tu sesión de Google ha expirado. Por favor, inicia sesión nuevamente para exportar tu horario.',
+                                                    confirmButtonText: 'Iniciar sesión',
+                                                    showCancelButton: true,
+                                                    cancelButtonText: 'Cancelar'
+                                                });
 
-                                            if (result.isConfirmed) {
-                                                await GoogleSignIn();
-                                            }
-                                        }}
-                                        className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
-                                    >
-                                        Iniciar sesión con Google
-                                    </button>
-                                </div>
-                            ) : (
-                                <GoogleCalendarButton
-                                    schedule={schedule}
-                                    recurrenceStart={start}
-                                    recurrenceEnd={end}
-                                />
-                            )}</>
+                                                if (result.isConfirmed) {
+                                                    await GoogleSignIn();
+                                                }
+                                            }}
+                                            className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+                                        >
+                                            Iniciar sesión con Google
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <GoogleCalendarButton
+                                        schedule={schedule}
+                                        recurrenceStart={start}
+                                        recurrenceEnd={end}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <button
+                                onClick={async () => {
+                                    const Swal = (await import('sweetalert2')).default;
+                                    const result = await Swal.fire({
+                                        title: 'Acceso Requerido',
+                                        text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
+                                        imageUrl: '/img/google_export.jpg',
+                                        imageHeight: 400,
+                                        confirmButtonText: 'Iniciar sesión',
+                                        showCancelButton: true,
+                                        cancelButtonText: 'Cancelar'
+                                    });
 
-                    ) : (
-                        <button
-                            onClick={async () => {
-                                const Swal = (await import('sweetalert2')).default;
-                                const result = await Swal.fire({
-                                    title: 'Acceso Requerido',
-                                    text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
-                                    imageUrl: '/img/google_export.jpg',
-                                    imageHeight: 400,
-                                    confirmButtonText: 'Iniciar sesión',
-                                    showCancelButton: true,
-                                    cancelButtonText: 'Cancelar'
-                                });
-
-                                if (result.isConfirmed) {
-                                    await GoogleSignIn();
-                                }
-                            }}
-                            className=" bg-blue-700 hidden p-2 rounded-full items-center justify-center"
-                        >
-                            <svg className='-m-1' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="34" height="34" viewBox="0 0 48 48">
-                                <rect width="22" height="22" x="13" y="13" fill="#fff"></rect><polygon fill="#1e88e5" points="25.68,20.92 26.688,22.36 28.272,21.208 28.272,29.56 30,29.56 30,18.616 28.56,18.616"></polygon><path fill="#1e88e5" d="M22.943,23.745c0.625-0.574,1.013-1.37,1.013-2.249c0-1.747-1.533-3.168-3.417-3.168 c-1.602,0-2.972,1.009-3.33,2.453l1.657,0.421c0.165-0.664,0.868-1.146,1.673-1.146c0.942,0,1.709,0.646,1.709,1.44 c0,0.794-0.767,1.44-1.709,1.44h-0.997v1.728h0.997c1.081,0,1.993,0.751,1.993,1.64c0,0.904-0.866,1.64-1.931,1.64 c-0.962,0-1.784-0.61-1.914-1.418L17,26.802c0.262,1.636,1.81,2.87,3.6,2.87c2.007,0,3.64-1.511,3.64-3.368 C24.24,25.281,23.736,24.363,22.943,23.745z"></path><polygon fill="#fbc02d" points="34,42 14,42 13,38 14,34 34,34 35,38"></polygon><polygon fill="#4caf50" points="38,35 42,34 42,14 38,13 34,14 34,34"></polygon><path fill="#1e88e5" d="M34,14l1-4l-1-4H9C7.343,6,6,7.343,6,9v25l4,1l4-1V14H34z"></path><polygon fill="#e53935" points="34,34 34,42 42,34"></polygon><path fill="#1565c0" d="M39,6h-5v8h8V9C42,7.343,40.657,6,39,6z"></path><path fill="#1565c0" d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
-                            </svg>
-
-
-
-
-                        </button>
-                    )
-                }
-                <div className={`flex flex-col items-center`}>
-                    Materias
-                    <div className=' text-white  bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                        {schedule?.subjects.length ?? 0}
+                                    if (result.isConfirmed) {
+                                        await GoogleSignIn();
+                                    }
+                                }}
+                                className="bg-blue-700 hidden p-2 rounded-full items-center justify-center"
+                            >
+                                <svg className='-m-1' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="34" height="34" viewBox="0 0 48 48">
+                                    <rect width="22" height="22" x="13" y="13" fill="#fff"></rect><polygon fill="#1e88e5" points="25.68,20.92 26.688,22.36 28.272,21.208 28.272,29.56 30,29.56 30,18.616 28.56,18.616"></polygon><path fill="#1e88e5" d="M22.943,23.745c0.625-0.574,1.013-1.37,1.013-2.249c0-1.747-1.533-3.168-3.417-3.168 c-1.602,0-2.972,1.009-3.33,2.453l1.657,0.421c0.165-0.664,0.868-1.146,1.673-1.146c0.942,0,1.709,0.646,1.709,1.44 c0,0.794-0.767,1.44-1.709,1.44h-0.997v1.728h0.997c1.081,0,1.993,0.751,1.993,1.64c0,0.904-0.866,1.64-1.931,1.64 c-0.962,0-1.784-0.61-1.914-1.418L17,26.802c0.262,1.636,1.81,2.87,3.6,2.87c2.007,0,3.64-1.511,3.64-3.368 C24.24,25.281,23.736,24.363,22.943,23.745z"></path><polygon fill="#fbc02d" points="34,42 14,42 13,38 14,34 34,34 35,38"></polygon><polygon fill="#4caf50" points="38,35 42,34 42,14 38,13 34,14 34,34"></polygon><path fill="#1e88e5" d="M34,14l1-4l-1-4H9C7.343,6,6,7.343,6,9v25l4,1l4-1V14H34z"></path><polygon fill="#e53935" points="34,34 34,42 42,34"></polygon><path fill="#1565c0" d="M39,6h-5v8h8V9C42,7.343,40.657,6,39,6z"></path><path fill="#1565c0" d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
+                                </svg>
+                            </button>
+                        )
+                    }
+                    
+                    <div className='hidden lg:grid grid-cols-2 gap-2 ml-auto'>
+                        <div className='flex flex-col items-center'>
+                            <span className=''>Materias</span>
+                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
+                                {schedule?.subjects.length ?? 0}
+                            </div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <span className=''>Créditos</span>
+                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
+                                {totalCredits}
+                            </div>
+                        </div>
                     </div>
-                    Créditos
-                    <div className=' text-white  bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                        {totalCredits}
+                </div>
+
+                <div className='grid grid-cols-2 gap-2 lg:hidden'>
+                    <div className='flex flex-col items-center'>
+                        <span className=''>Materias</span>
+                        <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
+                            {schedule?.subjects.length ?? 0}
+                        </div>
+                    </div>
+                    <div className='flex flex-col items-center'>
+                        <span className=''>Créditos</span>
+                        <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
+                            {totalCredits}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,11 +210,11 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
 
                     {showConflicts && (
                         <div className="mt-4 border-2 border-red-500 rounded-lg p-4">
-                            <h3 className="font-bold text-lg mb-3 text-red-600 dark:text-red-400">Cursos en conflicto:</h3>
+                            <h3 className="font-bold  mb-3 text-red-600 dark:text-red-400">Cursos en conflicto:</h3>
                             <div className="space-y-2">
                                 {schedule.incompatibleCourses.map((course, index) => (
                                     <div key={index} className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700">
-                                        <div className="font-semibold">{course.subject.name}</div>
+                                        <div className="text-sm font-semibold">{course.subject.name}</div>
                                         <div className="text-sm flex items-center gap-2 mt-1">
                                             <svg className='dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px">
                                                 <path d="M480-240q-56 0-107 17.5T280-170v10h400v-10q-42-35-93-52.5T480-240Zm0-80q69 0 129 21t111 59v-560H240v560q51-38 111-59t129-21Zm0-160q-25 0-42.5-17.5T420-540q0-25 17.5-42.5T480-600q25 0 42.5 17.5T540-540q0 25-17.5 42.5T480-480ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Zm240-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Zm0-140Z" />
@@ -204,7 +222,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                                             {course.professor.fullName}
                                         </div>
                                         <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                            Grupo {course.group} • {course.modality}
+                                            {course.subject.type} • Grupo {course.group} • {course.modality}
                                         </div>
                                     </div>
                                 ))}
@@ -217,7 +235,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                     onClick={() => setShowConflicts(!showConflicts)}
                     className={`w-full  text-green-500 font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors`}
                 >
-                    <svg className='fill-green-500' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                    <svg className='fill-green-500' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" /></svg>
                     Sin conflictos
                 </button>
             }
