@@ -1,7 +1,6 @@
 import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Pivot from '../../domain/entities/Pivot';
 import GoogleCalendarButton from '../components/GoogleCalendarButton';
@@ -25,7 +24,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
     const [end] = useState(new Date('2025-30-05T09:00:00')); // new Date('2025-30-05');
     const session = useSession();
     const supabase = useSupabaseClient();
-    const router = useRouter();
+    
 
     // Referencia para el popup
     const popupRef = useRef<Window | null>(null);
