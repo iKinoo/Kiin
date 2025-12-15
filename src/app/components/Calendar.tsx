@@ -11,9 +11,10 @@ import './calendar.css';
 interface CalendarProps {
     courses: Course[]
     dayFormat: 'long' | 'short';
+    conflictCourses?: Course[]
 }
 
-function mapEvents(course: Course) {
+function mapEvents(course: Course, isConflict: boolean = false) {
     const days = {
         "Lunes": "13",
         "Martes": "14",
@@ -50,20 +51,23 @@ function mapEvents(course: Course) {
         const end = new Date(endDateTimeString);
 
         return {
-            color: color,
+            color: isConflict ? '#DC2626' : color,
             title: course.subject.name,
             start: start.toISOString(),
             end: end.toISOString(),
-            borderColor: color,
+            borderColor: isConflict ? '#ff4f4f' : color,
+            textColor: isConflict ? 'white' : 'black',
             extendedProps: {
                 room: sessionI.room,
-                professor: course.professor.fullName
+                professor: course.professor.fullName,
+                isConflict: isConflict,
+                group: course.group,
             },
         };
     });
 }
 
-const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
+const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat, conflictCourses }) => {
     interface Tooltip {
         visible: boolean;
         x: number;
@@ -74,8 +78,10 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
     const [tooltip, setTooltip] = useState<Tooltip>({ visible: false, x: 0, y: 0, eventArgs: undefined });
 
     const events = useMemo(() => {
-        return courses?.flatMap((course) => mapEvents(course)) ?? [];
-    }, [courses]);
+        const regularEvents = courses?.flatMap((course) => mapEvents(course, false)) ?? [];
+        const conflictEvents = conflictCourses?.flatMap((course) => mapEvents(course, true)) ?? [];
+        return [...regularEvents, ...conflictEvents];
+    }, [courses, conflictCourses]);
 
     // Referencia para limpiar el event listener
     const mouseMoveHandlerRef = useRef<(e: MouseEvent) => void>();
@@ -132,6 +138,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
         <>
             <div className='h-full'>
                 <FullCalendar
+                
                     now={'2025-01-13'}
                     dayHeaderClassNames={
                         ['bg-gray-800', 'text-white', '!border-0']// Usar clases de Tailwind
@@ -151,6 +158,7 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                     slotLabelFormat={
                         { hour: '2-digit', minute: '2-digit', hour12: false }
                     }
+                    eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
                     height={"auto"}
                     headerToolbar={false}
                     dayHeaderFormat={{ weekday: "long" }}
@@ -190,10 +198,22 @@ const Calendar: React.FC<CalendarProps> = ({ courses, dayFormat }) => {
                         left: tooltip.x + 10,
                     }}
                 >
-
+                    {tooltip.eventArgs?.event.extendedProps.isConflict && (
+                        <>
+                            <strong className='text-red-500'>Conflicto</strong><br />
+                        </>
+                        
+                    )}
+                    
+                     {tooltip.eventArgs?.event.title}
+                    <br />
                     <strong>Profesor:</strong> {tooltip.eventArgs?.event.extendedProps.professor}
                     <br />
+                    <strong>Grupo:</strong> {tooltip.eventArgs?.event.extendedProps.group}
+                    <br />
                     <strong>Aula:</strong> {tooltip.eventArgs?.event.extendedProps.room}
+
+
                 </div>
             )}
         </>

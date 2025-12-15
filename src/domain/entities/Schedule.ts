@@ -9,7 +9,20 @@ export class Schedule {
     private _subjects: Subject[] = [];
     private _professors: Set<Professor> = new Set();
     private _courses: Course[] = [];
+    private _incompatibleCourses: Course[] = [];
 
+    public get incompatibleCourses(): Course[] {
+        return this._incompatibleCourses;
+    }
+
+    public set incompatibleCourses(value: Course[]) {
+        this._incompatibleCourses = value;
+    }
+
+    public addIncompatibleCourse(course: Course): void {
+        this._incompatibleCourses.push(course);
+    }
+    
     constructor(id: number) {
         this._id = id;
     }

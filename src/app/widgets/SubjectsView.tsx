@@ -16,8 +16,8 @@ interface SubjctsViewProps {
     setPivots: (ids: Pivot[]) => void,
     pivots: Pivot[];
     pinnedSubjects: number[],
-    setPinnedSubjects: (pinnedSubjects: number[]) => void
-
+    setPinnedSubjects: (pinnedSubjects: number[]) => void;
+    onRemoveSubject: (categoryIndex: number, subjectId: number) => void;
 }
 
 
@@ -30,8 +30,8 @@ function SubjectsView({
     pivots,
     setPivots,
     pinnedSubjects,
-    setPinnedSubjects
-
+    setPinnedSubjects,
+    onRemoveSubject
 
 }: SubjctsViewProps) {
 
@@ -83,11 +83,21 @@ function SubjectsView({
                 <span className='text-gray-500'>Los horarios se generan automáticamente al seleccionar materias, profesores o fijar opciones</span>
 
                 {currentCategories?.filter(c => c instanceof SubjectCategory).map(
-                    (sb) => (
+                    (sb, categoryIndex) => (
                         (
                             sb.selectedValues?.map(
                                 (sbv) => (
-                                    <SubjectCard setPinnedSubjects={setPinnedSubjects} pinnedSubjects={pinnedSubjects} category={sb} pivots={pivots} setPivots={setPivots} key={sbv.id} subject={sbv} allProfessors={professorsData} />
+                                    <SubjectCard
+                                        setPinnedSubjects={setPinnedSubjects}
+                                        pinnedSubjects={pinnedSubjects}
+                                        category={sb}
+                                        pivots={pivots}
+                                        setPivots={setPivots}
+                                        key={sbv.id}
+                                        subject={sbv}
+                                        allProfessors={professorsData}
+                                        onRemoveSubject={(subjectId) => onRemoveSubject(categoryIndex + 1, subjectId)}
+                                    />
                                 )
                             )
                         )
@@ -118,7 +128,8 @@ interface SubjectCardProps {
     pivots: Pivot[];
     category: Category;
     pinnedSubjects: number[],
-    setPinnedSubjects: (pinnedSubjects: number[]) => void
+    setPinnedSubjects: (pinnedSubjects: number[]) => void;
+    onRemoveSubject: (subjectId: number) => void;
 }
 
 const colors = [
@@ -136,7 +147,7 @@ const colors = [
 
 
 
-function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects, setPinnedSubjects }: SubjectCardProps) {
+function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects, setPinnedSubjects, onRemoveSubject }: SubjectCardProps) {
 
     const [showProfessors, setShowProfessors] = useState(true);
 
@@ -159,7 +170,7 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects
                     }
                 }}
 
-                className={`border-2 border-purple-900 ${isSelected ? "bg-purple-900 text-white" : ""}  rounded-large h-max p-1 flex flex-row`}>
+                className={`border-2 border-purple-900 ${isSelected ? "bg-purple-900 text-white" : ""}  rounded-large h-max p-1 flex flex-row mr-2`}>
 
                 {isSelected ? <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M680-840v80h-40v327l-80-80v-247H400v87l-87-87-33-33v-47h400ZM480-40l-40-40v-240H240v-80l80-80v-46L56-792l56-56 736 736-58 56-264-264h-6v240l-40 40ZM354-400h92l-44-44-2-2-46 46Zm126-193Zm-78 149Z" /></svg>
                     : <svg className='fill-black dark:fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
@@ -171,13 +182,13 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects
 
 
             </button>
-            {/* <button className='border border-green-500 flex'
-                onClick={() => (category.onClick(subject.id))}
+            <button
+                className='border-2 border-red-600 rounded-large h-max p-1 flex flex-row items-center justify-center md:hover:bg-red-600 md:hover:text-white transition'
+                onClick={() => onRemoveSubject(subject.id)}
+                title="Eliminar materia"
             >
-
-                <svg className=' fill-red-500 ' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg>
-            </button> */}
-
+                <svg className='fill-red-600 md:hover:fill-white transition' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg>
+            </button>
         </div>
         <div className='h-1 rounded-large  mb-1 mt-1 w-full' style={{ backgroundColor: colors[subject.id % colors.length] }}></div>
 
@@ -196,8 +207,8 @@ function SubjectCard({ subject, allProfessors, pivots, setPivots, pinnedSubjects
                 <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" /></svg>
                 {subject.degreeResume.split("-").join(", ")}
             </div>
-            
-            
+
+
             <div className='flex flex-row justify-end'>
                 <button
                     onClick={

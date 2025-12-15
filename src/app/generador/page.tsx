@@ -40,6 +40,7 @@ const GeneratorPage = () => {
   const [pinnedSubjects, setPinnedSubjects] = useState<number[]>([])
   const [generationMessage, setGenerationMessage] = useState<string>("");
   const [showMessage, setShowMessage] = useState<boolean>(false);
+  const [showConflicts, setShowConflicts] = useState<boolean>(false);
 
   const handleSliderChange = (value: number | number[]) => {
     setSelectedSubjectsCount(value);
@@ -169,6 +170,15 @@ const GeneratorPage = () => {
     setMaxSubjectsCount(selectedSubjectsCount);
   }
 
+  const handleRemoveSubject = (categoryIndex: number, subjectId: number) => {
+    const newCategories = [...currentCategories];
+    const category = newCategories[categoryIndex];
+    category.onClick(subjectId);
+    newCategories[categoryIndex] = category;
+    currentCategories.forEach((cat) => cat.filterWithCategories(newCategories));
+    handleClickFilter(newCategories);
+  }
+
   // Generar horarios automáticamente cuando cambien las categorías, pivots o pinnedSubjects
   useEffect(() => {
     // Verificar que hay al menos una materia seleccionada
@@ -230,6 +240,7 @@ const GeneratorPage = () => {
       handleClickFilter={handleClickFilter}
       pinnedSubjects={pinnedSubjects}
       setPinnedSubjects={setPinnedSubjects}
+      onRemoveSubject={handleRemoveSubject}
     />
   }
 
@@ -243,7 +254,8 @@ const GeneratorPage = () => {
       page={page}
       maxSubjectsCount={maxSubjectsCount}
       defaultSubjectsCount={defaultSubjectsCount}
-      handleSliderChange={handleSliderChange} />
+      handleSliderChange={handleSliderChange}
+      showConflicts={showConflicts} />
   }
 
 
@@ -266,7 +278,14 @@ const GeneratorPage = () => {
             {schedulesView()}
           </div>
           <div className="w-[25%] ">
-            <CurrentSchedule schedule={schedulesToShow[page]} pinnedSubjects={pinnedSubjects} pivots={pivots} label={`Horario ${page + 1}/${schedulesToShow.length}`} />
+            <CurrentSchedule
+              schedule={schedulesToShow[page]}
+              pinnedSubjects={pinnedSubjects}
+              pivots={pivots}
+              label={`Horario ${page + 1}/${schedulesToShow.length}`}
+              showConflicts={showConflicts}
+              setShowConflicts={setShowConflicts}
+            />
           </div>
 
         </div>
@@ -283,6 +302,8 @@ const GeneratorPage = () => {
                 pinnedSubjects={pinnedSubjects}
                 pivots={pivots}
                 label={`Horario ${page + 1}/${schedulesToShow.length}`}
+                showConflicts={showConflicts}
+                setShowConflicts={setShowConflicts}
               />
             </div>
 
