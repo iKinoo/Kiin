@@ -1,3 +1,4 @@
+import { isDevMode } from '@/utils/supabaseClient';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
@@ -63,6 +64,28 @@ export default function GoogleCalendarButton({ schedule, recurrenceStart, recurr
 
   async function handleClick() {
     if (isExporting) return; // Prevenir múltiples clics
+
+    // Verificar si estamos en modo desarrollo sin credenciales
+    if (isDevMode) {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Funcionalidad no disponible',
+        html: `
+          <div class="text-left">
+            <p>Esta funcionalidad requiere credenciales de Supabase que no están configuradas.</p>
+            <p class="mt-2"><strong>Para contribuidores:</strong></p>
+            <ul class="list-disc list-inside mt-2 space-y-1">
+              <li>Esta es una limitación solo en modo desarrollo</li>
+              <li>El resto de la aplicación funciona completamente</li>
+              <li>Contacta al equipo si necesitas acceso a estas credenciales</li>
+            </ul>
+          </div>
+        `,
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#1e40af'
+      });
+      return;
+    }
 
     // Mostrar disclaimer antes de proceder
     const disclaimerResult = await Swal.fire({
