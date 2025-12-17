@@ -1,96 +1,121 @@
 # Kiin
 
-![alt](./assets/app.jpeg)
+![alt text](image-1.png)
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Kiin es una **herramienta web para estudiantes** que permite **armar, comparar y encontrar el mejor horario posible** considerando todas las combinaciones entre **asignaturas, grupos y profesores**.
 
-## Getting Started
+Nació como un proyecto escolar dentro de la **Facultad de Matemáticas**, pero evolucionó hasta convertirse en una **herramienta de uso real**, utilizada por estudiantes para tomar mejores decisiones al momento de inscribirse.
 
-### Prerequisites
+---
 
-- Node.js 18+
-- npm, yarn, pnpm, or bun
+## ✨ Características principales
 
-### Installation
+* 📚 **Construcción de horarios inteligentes**
 
-1. Clone the repository:
+  * Genera todas las combinaciones válidas posibles.
+  * Evita choques de horario automáticamente.
 
-```bash
-git clone https://github.com/KiinMx/Kiin.git
-cd Kiin
-```
+* 👨‍🏫 **Comparación por profesores y grupos**
 
-2. Install dependencies:
+  * Permite evaluar distintas opciones antes de inscribirse.
+  * Facilita encontrar el balance entre horarios cómodos y buenos docentes.
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-```
+* ⚡ **Exploración rápida y visual**
 
-3. **(Optional)** Configure environment variables:
-   - Copy `.env.example` to `.env.local`
-   - **Note for contributors**: The project will run without environment variables!
-   - Only Google Calendar export functionality requires credentials
-   - All other features (schedule generation, filters, etc.) work perfectly without them
+  * Pensado para ser rápido, claro y fácil de usar.
+  * Ideal para periodos de inscripción con poco tiempo para decidir.
+* 📅 Exportación a Google Calendar
+  * Integra tu horario directamente con Google Calendar.
+  * Recibe notificaciones y recordatorios automáticos.
 
-```bash
-cp .env.example .env.local
-```
+* 🌐 **100% web**
 
-4. Run the development server:
+  * No requiere instalación.
+  * Accesible desde cualquier dispositivo moderno.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Motivación
 
-### Development Mode
+Elegir un horario suele ser un proceso frustrante:
 
-When running without Supabase credentials, you'll see a warning message indicating that Google Calendar export is unavailable. This is expected and won't affect any other functionality.
+* Información dispersa.
+* Demasiadas combinaciones posibles.
+* Decisiones apresuradas que afectan todo el semestre.
 
-## Contributing
+**Kiin existe para resolver ese problema**: reducir la fricción, devolverle control al estudiante y permitir decisiones informadas, no al azar.
 
-We welcome contributions! The project is designed to work out-of-the-box for contributors:
+---
 
-- ✅ All core features work without credentials
-- ⚠️ Only Google Calendar export requires Supabase configuration
-- 📝 Fork, make changes, and submit a PR
+## 🧠 Enfoque del proyecto
 
-If you need access to Google Calendar integration for testing, please contact the team.
+Kiin está diseñado con los siguientes principios:
 
-## Project Structure
+* **Pensado para estudiantes, no para sistemas administrativos**.
+* **Exploración antes que imposición**: el usuario decide, la herramienta sugiere.
+* **Transparencia**: el sistema muestra combinaciones reales, no resultados mágicos.
+* **Escalabilidad conceptual**: aunque nace en la facultad de Matemáticas, la idea es adaptable a otras de la misma UADY, o incluso otras escuelas.
 
-```
-src/
-├── app/              # Next.js app directory
-├── domain/           # Domain entities and use cases
-├── infrastructure/   # Data sources and repositories
-└── utils/            # Utility functions
-```
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Estado del proyecto
 
-## Learn More
+* 🚧 En desarrollo activo.
+* 🧪 Iterando constantemente en UI/UX y lógica de generación de horarios.
+* 🔄 Se están explorando mejoras de rendimiento y organización del código.
+* Próximamente soporte para vistas de profesores y expansión a otras facultades: Architectura, Psicología, etc.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contribuciones
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+¡Las contribuciones son bienvenidas!
+
+Si deseas aportar:
+
+* Reportar bugs
+* Proponer mejoras
+* Mejorar la experiencia de usuario
+* Optimizar la lógica de generación de horarios
+
+Por favor revisa el archivo 👉 **[CONTRIBUTING.md](./CONTRIBUTING.md)** para conocer el flujo, lineamientos y buenas prácticas antes de enviar un cambio.
+
+### 💬 Comunidad de WhatsApp
+O si prefieres ayudar de otro modo, o simplemente quieres saber más sobre el proceso de desarrollo y evolución del proyecto, tenemos una comunidad de WhatsApp donde puedes unirte y participar:
+
+[Únete a la comunidad de Kiin en WhatsApp](https://chat.whatsapp.com/EAGpgELClp5LodalNNOvqq)
+
+---
+
+## 🧩 Filosofía Open Source
+
+Kiin se construye con la idea de que **pequeñas contribuciones también importan**.
+
+No todos los aportes son grandes features:
+
+* Un comentario claro
+* Un ajuste de UI
+* Una corrección mínima
+
+Todo suma.
+
+---
+
+## 📌 Disclaimer
+
+Kiin **no es un sistema oficial de inscripción**. Es una herramienta de apoyo para la toma de decisiones.
+
+La información mostrada depende de los datos disponibles y debe verificarse con las fuentes oficiales de cada institución.
+
+---
+
+## 📄 Licencia
+
+Este proyecto es open source. La licencia específica se definirá / encuentra en el archivo correspondiente del repositorio.
+
+---
+
+Hecho con intención genuina de ayudar a estudiantes que solo quieren un buen horario. 💙
