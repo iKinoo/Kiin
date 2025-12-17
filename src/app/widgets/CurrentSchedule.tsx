@@ -103,7 +103,7 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                         session ? (
                             <>
                                 {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
-                                    <div className="mb-4">
+                                    <div className="mb-4 hidden">
                                         <button
                                             onClick={async () => {
                                                 const Swal = (await import('sweetalert2')).default;
@@ -126,11 +126,13 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                                         </button>
                                     </div>
                                 ) : (
-                                    <GoogleCalendarButton
+                                    <div className='hidden'>
+                                        <GoogleCalendarButton
                                         schedule={schedule}
                                         recurrenceStart={start}
                                         recurrenceEnd={end}
                                     />
+                                    </div>
                                 )}
                             </>
                         ) : (
