@@ -2,18 +2,46 @@
 import CategorySelector from '@/app/components/CategorySelector';
 import Category from '@/domain/entities/Category';
 import DegreeCategory from '@/domain/entities/DegreeCategory';
+import Pivot from '@/domain/entities/Pivot';
+import { Professor } from '@/domain/entities/Professor';
 import SubjectCategory from '@/domain/entities/SubjectCategory';
-import React, { useState } from 'react';
+import { ProfessorsCsvDataSource } from '@/infrastructure/datasource/ProfessorsCsvDataSource';
+import React, { useEffect, useState } from 'react';
 
 
 interface FilterSelectorProps {
     categories: Category[]
     onClick: (newCategories: Category[]) => void
-
+    onProfessorSelect?: (pivots: Pivot[]) => void;
+    pivots?: Pivot[];
 }
 
 
-const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) => {
+const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick, onProfessorSelect, pivots = [] }) => {
+    const [allProfessors, setAllProfessors] = useState<Professor[]>([]);
+    const [selectedProfessors, setSelectedProfessors] = useState<Map<number, number[]>>(new Map());
+
+    useEffect(() => {
+        const loadProfessors = async () => {
+            const professorsDataSource = new ProfessorsCsvDataSource();
+            const professors = await professorsDataSource.getAll();
+            setAllProfessors(professors);
+        };
+        loadProfessors();
+    }, []);
+
+    useEffect(() => {
+        // Sincronizar pivots con selectedProfessors
+        const newMap = new Map<number, number[]>();
+        pivots.forEach(pivot => {
+            const existing = newMap.get(pivot.idSubject) || [];
+            if (!existing.includes(pivot.idProfessor)) {
+                newMap.set(pivot.idSubject, [...existing, pivot.idProfessor]);
+            }
+        });
+        setSelectedProfessors(newMap);
+    }, [pivots]);
+
     const refreshCategories = (categoryIndex: number, valueId: number) => {
         const newCategories = [...categories];
         const category = newCategories[categoryIndex]
@@ -33,6 +61,40 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) 
             setDegreeTitle(selectedValue.label);
         }
         refreshCategories(categoryIndex, valueId);
+    };
+
+    const handleProfessorSelect = (subjectId: number, professorId: number) => {
+        const newMap = new Map(selectedProfessors);
+        const currentProfessors = newMap.get(subjectId) || [];
+        
+        // Toggle: si ya está seleccionado, lo quitamos del array
+        if (currentProfessors.includes(professorId)) {
+            const updated = currentProfessors.filter(id => id !== professorId);
+            if (updated.length === 0) {
+                newMap.delete(subjectId);
+            } else {
+                newMap.set(subjectId, updated);
+            }
+        } else {
+            // Si no está, lo agregamos al array
+            newMap.set(subjectId, [...currentProfessors, professorId]);
+        }
+        
+        setSelectedProfessors(newMap);
+
+        // Convertir a Pivots y notificar al padre
+        if (onProfessorSelect) {
+            const newPivots: Pivot[] = [];
+            newMap.forEach((professorIds, subjectId) => {
+                professorIds.forEach(professorId => {
+                    newPivots.push({
+                        idSubject: subjectId,
+                        idProfessor: professorId
+                    });
+                });
+            });
+            onProfessorSelect(newPivots);
+        }
     };
 
     return (
@@ -58,7 +120,16 @@ const FilterSelector: React.FC<FilterSelectorProps> = ({ categories, onClick }) 
             {isDegreeSelected ? <ul className="space-y-2 ">
                 {
                     categories.filter(c => c instanceof SubjectCategory).map((category, index) => (
-                        <CategorySelector isDegreeSelected={isDegreeSelected} setIsDegreeSelected={setIsDegreeSelected} key={index + 1} category={category} onClick={(valueId) => refreshCategories(index + 1, valueId)} />
+                        <CategorySelector 
+                            isDegreeSelected={isDegreeSelected} 
+                            setIsDegreeSelected={setIsDegreeSelected} 
+                            key={index + 1} 
+                            category={category} 
+                            onClick={(valueId) => refreshCategories(index + 1, valueId)}
+                            allProfessors={allProfessors}
+                            onProfessorSelect={handleProfessorSelect}
+                            selectedProfessors={selectedProfessors}
+                        />
                     ))
                 }
             </ul> : <span className='text-gray-500'>

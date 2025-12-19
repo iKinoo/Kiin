@@ -1,8 +1,7 @@
 "use client";
 
+import FilterSelector from "../components/FilterSelector";
 import SchedulesView from "../widgets/SchedulesView";
-import SubjectsView from "../widgets/SubjectsView";
-
 
 import Category from '@/domain/entities/Category';
 import { Degree } from '@/domain/entities/Degree';
@@ -170,13 +169,8 @@ const GeneratorPage = () => {
     setMaxSubjectsCount(selectedSubjectsCount);
   }
 
-  const handleRemoveSubject = (categoryIndex: number, subjectId: number) => {
-    const newCategories = [...currentCategories];
-    const category = newCategories[categoryIndex];
-    category.onClick(subjectId);
-    newCategories[categoryIndex] = category;
-    currentCategories.forEach((cat) => cat.filterWithCategories(newCategories));
-    handleClickFilter(newCategories);
+  const handleProfessorSelect = (newPivots: Pivot[]) => {
+    setPivots(newPivots);
   }
 
   // Generar horarios automáticamente cuando cambien las categorías, pivots o pinnedSubjects
@@ -203,11 +197,17 @@ const GeneratorPage = () => {
     mapCategories();
   }, []);
 
-  const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
-  const toggleSideBar = () => {
-    console.log(!isSideBarOpen)
-    setIsSideBarOpen(!isSideBarOpen);
-  }
+  const [isFilterPanelCollapsed, setIsFilterPanelCollapsed] = useState(false);
+  const [forceRenderKey, setForceRenderKey] = useState(0);
+
+  // Forzar re-render después de que termine la animación de colapsar/expandir
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setForceRenderKey(prev => prev + 1);
+    }, 350); // 350ms para dar tiempo a que termine la transición de 300ms
+    
+    return () => clearTimeout(timer);
+  }, [isFilterPanelCollapsed]);
 
   const [dayFormat, setDayFormat] = useState<"short" | "long">("long");
   useEffect(() => {
@@ -229,25 +229,9 @@ const GeneratorPage = () => {
     setIndexSelected(index);
   }
 
-  const subjectsView = () => {
-    return <SubjectsView
-      pivots={pivots}
-      setPivots={setPivots}
-      key={0}
-      toggleSideBar={toggleSideBar}
-      isSideBarOpen={isSideBarOpen}
-      currentCategories={currentCategories}
-      handleClickFilter={handleClickFilter}
-      pinnedSubjects={pinnedSubjects}
-      setPinnedSubjects={setPinnedSubjects}
-      onRemoveSubject={handleRemoveSubject}
-    />
-  }
-
   const schedulesView = () => {
     return <SchedulesView
-
-      key={1}
+      key={`schedules-${isFilterPanelCollapsed ? 'collapsed' : 'expanded'}-${forceRenderKey}`}
       schedulesToShow={schedulesToShow}
       dayFormat={dayFormat}
       onChangeSchedulePage={onChangeSchedulePage}
@@ -260,24 +244,93 @@ const GeneratorPage = () => {
 
 
 
-  return <div className="flex flex-1 flex-col  overflow-auto  ">
+  return <div className="flex flex-1 flex-row overflow-hidden">
+    {/* Backdrop para móvil cuando el panel está abierto */}
+    {!isFilterPanelCollapsed && dayFormat == "short" && (
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={() => setIsFilterPanelCollapsed(true)}
+      />
+    )}
+
+    {/* Panel izquierdo fijo - Filtros de materias */}
+    <div 
+      className={`border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-950 flex flex-col transition-all duration-300 ease-in-out ${
+        isFilterPanelCollapsed 
+          ? 'w-0 min-w-0 overflow-hidden' 
+          : dayFormat == "long" 
+            ? 'w-[25%] min-w-[300px] h-full' 
+            : 'fixed top-0 left-0 w-full h-full z-50'
+      }`}
+    >
+      <div className={`p-4 border-b border-gray-300 dark:border-gray-700 flex items-center justify-between ${isFilterPanelCollapsed ? 'hidden' : ''}`}>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white text-center flex-1">
+          Selecciona tus Materias
+        </h2>
+        <button
+          onClick={() => setIsFilterPanelCollapsed(true)}
+          className="p-1 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+          title="Ocultar panel"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
+      <div className={`flex-1 overflow-y-auto ${isFilterPanelCollapsed ? 'hidden' : ''}`}>
+        <FilterSelector
+          categories={currentCategories}
+          onClick={handleClickFilter}
+          onProfessorSelect={handleProfessorSelect}
+          pivots={pivots}
+        />
+      </div>
+    </div>
+
+    {/* Botón para expandir el panel cuando está colapsado */}
+    {isFilterPanelCollapsed && (
+      <button
+        onClick={() => setIsFilterPanelCollapsed(false)}
+        className={`border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors flex items-center justify-center ${
+          dayFormat == "long" ? 'h-full w-10' : 'fixed top-16 left-0 h-12 w-12 rounded-br-lg shadow-lg z-50'
+        }`}
+        title="Mostrar panel"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    )}
+
+    {/* Mensajes de estado */}
     {showMessage && (
       <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
         {generationMessage}
       </div>
     )}
-    <div className="flex flex-col flex-1 overflow-auto   relative">
 
+    {/* Contenido principal - Horarios */}
+    <div className="flex flex-1 flex-col overflow-auto relative">
       {dayFormat == "long" ?
-        <div className="flex flex-row  h-full">
-
-          <div className="w-[25%] md:dark:bg-gray-950 md:bg-gray-100 md:border-r md:border-gray-300 dark:border-none">
-            {subjectsView()}
-          </div>
-          <div className="w-[50%] ">
+        <div className="flex flex-row h-full">
+          <div className="flex-1">
             {schedulesView()}
           </div>
-          <div className="w-[25%] ">
+          <div className="w-[30%] border-l border-gray-300 dark:border-gray-700">
             <CurrentSchedule
               schedule={schedulesToShow[page]}
               pinnedSubjects={pinnedSubjects}
@@ -287,15 +340,10 @@ const GeneratorPage = () => {
               setShowConflicts={setShowConflicts}
             />
           </div>
-
         </div>
         : (
           <>
-            <div className="flex-1" style={{ display: indexSelected === 0 ? 'block' : 'none' }}>
-              {subjectsView()}
-            </div>
-
-            <div style={{ display: indexSelected === 0 ? 'none' : 'block' }}>
+            <div className="flex-1">
               {schedulesView()}
               <CurrentSchedule
                 schedule={schedulesToShow[page]}
@@ -306,39 +354,9 @@ const GeneratorPage = () => {
                 setShowConflicts={setShowConflicts}
               />
             </div>
-
           </>
         )}
-
-
-    </div>
-    <div style={{ boxShadow: "0px 6px 10px black" }} className="  p-2 gap-3 flex flex-row justify-center z-20 dark:bg-gray-900 bg-white fixed bottom-0 self-center w-full md:hidden">
-
-      <ButtonSwitchView index={0} isSelected={0 == indexSelected} label={"Materias"} onClick={handleSwitchView} />
-      <ButtonSwitchView index={1} isSelected={1 == indexSelected} label={"Horarios"} onClick={handleSwitchView} />
     </div>
   </div>
 };
 export default GeneratorPage;
-
-
-
-interface ButtonSwitchViewProps {
-  label: string;
-  isSelected: boolean;
-  onClick: (index: number) => void;
-  index: number;
-}
-
-const ButtonSwitchView = ({ isSelected, label, onClick, index }: ButtonSwitchViewProps) => {
-
-  return (
-    <button
-      onClick={() => {
-        onClick(index)
-      }}
-      className={`rounded-lg p-2  ${isSelected ? "bg-gray-700 text-white" : ""}`}>
-      {label}
-    </button>
-  )
-}

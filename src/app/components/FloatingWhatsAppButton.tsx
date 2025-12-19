@@ -17,14 +17,14 @@ const FloatingWhatsAppButton: React.FC = () => {
         }
     }, [])
 
-    const handleToggleVisibility = () => {
-        setIsVisible(!isVisible)
+    const handleToggleVisibility = React.useCallback(() => {
+        setIsVisible(prev => !prev)
         setIsExpanded(false)
-    }
+    }, [])
 
-    const handleWhatsAppClick = () => {
+    const handleWhatsAppClick = React.useCallback(() => {
         window.open('https://chat.whatsapp.com/FE1i4DqAYE3DzsOTtRlRag?mode=ac_t', '_blank', 'noopener,noreferrer')
-    }
+    }, [])
 
     return (
         <>

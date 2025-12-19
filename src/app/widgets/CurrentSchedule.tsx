@@ -91,12 +91,10 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
         <div className='md:h-full  overflow-auto p-2 md:pb-2 pb-32  top-0 relative'>
 
 
-            <div className='relative flex flex-col gap-2 mb-5 lg:sticky lg:top-0'>
+            <div className='relative flex flex-col gap-2 mb-2 lg:sticky lg:top-0'>
                 <div className='absolute h-full w-full -z-20 backdrop-blur-sm'></div>
                 
                 <div className='flex flex-row gap-2 items-center'>
-                    <h2 className="text-center text-lg p-2 font-bold bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
-
                     <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
 
                     {
@@ -159,41 +157,11 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                             </button>
                         )
                     }
-                    
-                    <div className='hidden lg:grid grid-cols-2 gap-2 ml-auto'>
-                        <div className='flex flex-col items-center'>
-                            <span className=''>Materias</span>
-                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                                {schedule?.subjects.length ?? 0}
-                            </div>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className=''>Créditos</span>
-                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                                {totalCredits}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='grid grid-cols-2 gap-2 lg:hidden'>
-                    <div className='flex flex-col items-center'>
-                        <span className=''>Materias</span>
-                        <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                            {schedule?.subjects.length ?? 0}
-                        </div>
-                    </div>
-                    <div className='flex flex-col items-center'>
-                        <span className=''>Créditos</span>
-                        <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                            {totalCredits}
-                        </div>
-                    </div>
                 </div>
             </div>
 
             {schedule.incompatibleCourses && schedule.incompatibleCourses.length > 0 ? (
-                <div className="my-6">
+                <div className="mb-4">
                     <button
                         onClick={() => setShowConflicts(!showConflicts)}
                         className={`w-full ${showConflicts ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700'} text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors`}
@@ -317,10 +285,22 @@ function CourseCard(course: Course, colors: string[], pivots: Pivot[], pinnedSub
                 {course.subject.credits} Créditos
             </div>
 
+            {/* Carrera y Semestre */}
+            <div className='flex flex-row items-center mt-2'>
+                <svg className='mr-2 dark:fill-white fill-black' xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                    <path d="M479.77-120Q460-120 446-134.23q-14-14.22-14-34Q432-188 446.23-202q14.22-14 34-14Q500-216 514-201.77q14 14.22 14 34Q528-148 513.77-134q-14.22 14-34 14Zm.23-144q-20 0-34-13.5T432-310v-140q0-20 14-34t34-14h1q60 0 114.5-24T691-582q51-50 77-108.5T794-820q0-11 7.62-18.5T820-846q11 0 18 7.5t7 18.5q0 77-29 145.5T736-546q-51 60-117.5 91T480-424v114q0 20-14 33.5T432-263h-1q-60 0-114.5 24T221-179q-51 50-77 108.5T118-141q0 11-7.62 18.5T92-115q-11 0-18-7.5T67-141q0-77 29-145.5T176-415q51-60 117.5-91T432-537v-113q0-20 14-33.5t34-13.5Z"/>
+                </svg>
+                {course.subject.degreeResume}
+                
+                <div className='h-2 w-2 bg-dark dark:bg-white rounded-full mx-2'></div>
+                
+                Semestre {course.subject.semestre.join(', ')}
+            </div>
 
 
 
-            <div className='flex flex-row items-center '>
+
+            <div className='flex flex-row items-center mt-2'>
                 {isProfessorPinned ? <div className='rounded-large bg-purple-900 inline h-max mr-2 my-1'>
                     <svg className='fill-white' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z" /></svg>
                 </div>

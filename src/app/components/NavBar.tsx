@@ -1,19 +1,19 @@
 'use client'
-import Link from 'next/link'
 import Image from 'next/image'
-import React from 'react'
-import { useState } from 'react'
+import Link from 'next/link'
+import React, { useCallback, useState } from 'react'
+
 interface NavBarProps {
     links: { label: string, route: string }[]
 }
 
 const navBarItem = (link: { label: string, route: string }, index: number) => {
     return (
-        <li key={index} className="flex items-center justify-center">
+        <li key={index} className="flex items-center justify-center" role="none">
             <Link
                 href={link.route}
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                aria-current="page"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent transition-colors duration-150"
+                role="menuitem"
             >
                 {link.label}
             </Link>
@@ -21,13 +21,13 @@ const navBarItem = (link: { label: string, route: string }, index: number) => {
     )
 }
 
-const AppLogo = () => {
+const AppLogo = React.memo(() => {
     return (
-        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse" aria-label="Volver a inicio">
             <div className="flex items-center justify-center h-8 w-8 logo">
                 <Image
                     src="/img/logo/color_black.png"
-                    alt=""
+                    alt="Logo Kiin"
                     className="dark:hidden"
                     width={32}
                     height={32}
@@ -35,30 +35,38 @@ const AppLogo = () => {
                 />
                 
                 {/*Logo para tema oscuro*/}
-                <Image src="/img/logo/color_white.png" alt="" width={32} height={32}
+                <Image src="/img/logo/color_white.png" alt="Logo Kiin" width={32} height={32}
                     className="hidden dark:block"
+                    priority
                 />
 
             </div>
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Kiin</span>
         </Link>
     )
-}
+});
+
+AppLogo.displayName = 'AppLogo';
 
 const NavBar: React.FC<NavBarProps> = ({ links }) => {
     const [isOpen, setIsOpen] = useState(false);
+    
+    const toggleMenu = useCallback(() => {
+        setIsOpen(prev => !prev);
+    }, []);
+    
     return (
-
-        <nav className="bg-white w-full sticky top-0 start-0 z-50 dark:bg-gray-900 shadow-md" >
+        <nav className="bg-white w-full sticky top-0 start-0 z-50 dark:bg-gray-900 shadow-md" role="navigation" aria-label="Navegación principal">
             <div className="container flex flex-wrap items-center justify-between mx-auto py-4 px-4 lg:py-0">
                 <AppLogo />
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700"
+                    onClick={toggleMenu}
+                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700"
                     aria-controls="navbar-default"
-                    aria-expanded="false"
+                    aria-expanded={isOpen}
+                    aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
                 >
-                    <span className="sr-only">Abrir menú</span>
+                    <span className="sr-only">{isOpen ? 'Cerrar' : 'Abrir'} menú</span>
                     {isOpen ? (
                         <svg
                             className="w-6 h-6"
@@ -92,10 +100,11 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
                     )}
                 </button>
                 <div
+                    id="navbar-default"
                     className={`${isOpen ? "block" : "hidden"
                         } w-full md:block md:w-auto`}
                 >
-                    <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700" role="menubar">
                         {links.map((link, index) => navBarItem(link, index))}
                         <li className=''>
                             <a href="https://github.com/iKinoo/Kiin" target='blank' className='flex flex-row justify-center'>
@@ -129,5 +138,5 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
     );
 };
 
-
-export default NavBar
+// Memoizar NavBar para evitar re-renders innecesarios
+export default React.memo(NavBar);

@@ -21,6 +21,9 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Custom scrollbar styles */
@@ -109,3 +112,52 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* Enhanced typewriter glow effect */
+/* Performance optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible para accesibilidad */
+:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reducir movimiento para usuarios con preferencia */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimización de will-change para animaciones comunes */
+.animate-spin,
+.animate-ping,
+.animate-pulse {
+  will-change: transform;
+}
+
+/* Contenido que aparece/desaparece */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

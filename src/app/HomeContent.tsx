@@ -1,8 +1,15 @@
 'use client'
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
-import ParticlesContainer from './components/ParticlesContainer';
+
+// Lazy load particles para mejorar performance inicial
+const ParticlesContainer = dynamic(() => import('./components/ParticlesContainer'), {
+  ssr: false, // No renderizar en el servidor
+  loading: () => null, // Sin loader visible
+});
+
 const HomeContent: React.FC = () => {
   const words = useMemo(() => ['Inteligente', 'Eficiente', 'Rápida', 'Fácil', 'Visual'], []);
   const colors = useMemo(() => [
@@ -100,9 +107,13 @@ const HomeContent: React.FC = () => {
             <Image
               className="max-w-full h-auto sm:h-80 sm:w-auto lg:h-5/6 lg:w-auto object-cover"
               src="/img/banner.png"
-              alt="Img bienvenida kiin"
+              alt="Banner de bienvenida Kiin - Planeación de carga académica"
               width={500}
               height={500}
+              priority
+              quality={85}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iI2VlZSIvPjwvc3ZnPg=="
             />
           </div>
         </div>
@@ -112,4 +123,5 @@ const HomeContent: React.FC = () => {
   );
 }
 
-export default HomeContent
+// Memoizar componente para evitar re-renders innecesarios
+export default React.memo(HomeContent);
