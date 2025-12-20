@@ -23,7 +23,7 @@ const navBarItem = (link: { label: string, route: string }, index: number) => {
 
 const AppLogo = () => {
     return (
-        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link href="/" className="flex items-end space-x-3 rtl:space-x-reverse">
             <div className="flex items-center justify-center h-8 w-8 logo">
                 <Image
                     src="/img/logo/color_black.png"
@@ -33,14 +33,22 @@ const AppLogo = () => {
                     height={32}
                     priority
                 />
-                
+
                 {/*Logo para tema oscuro*/}
                 <Image src="/img/logo/color_white.png" alt="" width={32} height={32}
                     className="hidden dark:block"
                 />
 
+
             </div>
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Kiin</span>
+            <span className='ml-2 italic'>
+                “tiempo” en maya
+            </span>
+            <span className='italic text-gray-500'>
+                K&apos;iin
+            </span>
+
         </Link>
     )
 }
