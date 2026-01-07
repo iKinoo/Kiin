@@ -1,6 +1,7 @@
 import { Course } from '@/domain/entities/Course';
 import { Schedule } from '@/domain/entities/Schedule';
 import { Session } from '@/domain/entities/Session';
+import Image from 'next/image';
 
 interface ICSButtonProps {
     schedule?: Schedule;
@@ -9,8 +10,8 @@ interface ICSButtonProps {
 }
 
 function ICSButton({ schedule, semesterStart, semesterEnd }: ICSButtonProps) {
-    const defaultStart = new Date('2025-01-12');
-    const defaultEnd = new Date('2025-30-05');
+    const defaultStart = new Date('2026-01-12');
+    const defaultEnd = new Date('2026-05-28');
 
     const start = semesterStart || defaultStart;
     const end = semesterEnd || defaultEnd;
@@ -68,6 +69,7 @@ X-WR-CALDESC:Horario generado desde Kiin
 
                 // Format dates for ICS (YYYYMMDDTHHMMSS)
                 const formatDateTime = (date: Date): string => {
+                    console.log("datetete:", date);
                     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
                 };
 
@@ -130,17 +132,11 @@ END:VEVENT
     return (
         <button
             onClick={downloadICS}
-            className="bg-green-600 hover:bg-green-700 p-2 rounded-full flex items-center justify-center transition-colors duration-200"
+            className=" px-5 mb-2 rounded-full flex text-sm items-center justify-start transition-colors duration-200 w-full h-full"
             title="Descargar horario como archivo ICS"
         >
-            <svg
-                className="w-6 h-6"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="white"
-            >
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-            </svg>
+            <Image src="/img/ics_icon.svg" alt="ICS Icon" width={24} height={24} className='mr-1'/>
+            .ics
         </button>
     );
 }

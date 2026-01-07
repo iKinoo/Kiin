@@ -4,7 +4,7 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useRef, useState } from 'react';
 import Pivot from '../../domain/entities/Pivot';
 import GoogleCalendarButton from '../components/GoogleCalendarButton';
-// import ICSButton from '../components/ICSButton';
+import ICSButton from '../components/ICSButton';
 
 type Props = {
     schedule: Schedule;
@@ -20,16 +20,19 @@ type Props = {
 function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflicts: externalShowConflicts, setShowConflicts: externalSetShowConflicts }: Props) {
 
     //Prueba de google
-    const [start] = useState(new Date('2025-01-12T08:00:00')); // new Date('2025-01-12');
-    const [end] = useState(new Date('2025-30-05T09:00:00')); // new Date('2025-30-05');
+    const [start] = useState(new Date('2026-01-12T08:00:00'));
+    const [end] = useState(new Date('2026-05-28T09:00:00'));
     const session = useSession();
     const supabase = useSupabaseClient();
 
 
     // Referencia para el popup
     const popupRef = useRef<Window | null>(null);
+    const exportMenuRef = useRef<HTMLDivElement | null>(null);
 
     const [internalShowConflicts, setInternalShowConflicts] = useState(false);
+    const [showShareLink, setShowShareLink] = useState<string | null>(null);
+    const [showExportMenu, setShowExportMenu] = useState(false);
 
     // Usar el estado externo si está disponible, de lo contrario usar el interno
     const showConflicts = externalShowConflicts !== undefined ? externalShowConflicts : internalShowConflicts;
@@ -65,12 +68,26 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
         }
     }, [session]);
 
+    // Cerrar el menú de exportación al hacer clic fuera
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (exportMenuRef.current && !exportMenuRef.current.contains(event.target as Node)) {
+                setShowExportMenu(false);
+            }
+        }
+
+        if (showExportMenu) {
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }
+    }, [showExportMenu]);
+
     // async function GoogleSignOut() {
     //     await supabase.auth.signOut();
     // }
     //google termina
-
-    const [showShareLink, setShowShareLink] = useState<string | null>(null);
 
     const colors = [
         "#AA6AFF",
@@ -93,19 +110,27 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
 
             <div className='relative flex flex-col gap-2 mb-5 lg:sticky lg:top-0'>
                 <div className='absolute h-full w-full -z-20 backdrop-blur-sm'></div>
-                
+
                 <div className='flex flex-row gap-2 items-center'>
                     <h2 className="text-center text-lg p-2 font-bold bg-black rounded-full text-white dark:bg-white dark:text-black">{label}</h2>
 
                     <ShareLinkButton schedule={schedule} setShowShareLink={setShowShareLink} showShareLink={showShareLink} />
 
-                    {
-                        session ? (
-                            <>
-                                {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
-                                    <div className="mb-4 hidden">
+                    <div className="relative" ref={exportMenuRef}>
+                        <button
+                            onClick={() => setShowExportMenu(!showExportMenu)}
+                            className="bg-blue-700 hover:bg-green-700 p-2 rounded-full flex items-center justify-center transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-480ZM202-65l-56-57 118-118h-90v-80h226v226h-80v-89L202-65Zm278-15v-80h240v-440H520v-200H240v400h-80v-400q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H480Z"/></svg>
+                        </button>
+
+                        {showExportMenu && (
+                            <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 min-w-[200px]">
+                                <div className="p-2">
+                                    {session && session.expires_at && session.expires_at < Date.now() / 1000 ? (
                                         <button
                                             onClick={async () => {
+                                                setShowExportMenu(false);
                                                 const Swal = (await import('sweetalert2')).default;
                                                 const result = await Swal.fire({
                                                     icon: 'info',
@@ -120,65 +145,67 @@ function CurrentSchedule({ schedule, pivots, label, pinnedSubjects, showConflict
                                                     await GoogleSignIn();
                                                 }
                                             }}
-                                            className="px-4 py-2 rounded-lg bg-[rgb(168,85,247)] text-white font-semibold shadow hover:bg-[rgb(139,54,232)] transition-colors duration-200"
+                                            className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center gap-2"
                                         >
-                                            Iniciar sesión con Google
+                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                                                <rect width="22" height="22" x="13" y="13" fill="#fff"></rect><polygon fill="#1e88e5" points="25.68,20.92 26.688,22.36 28.272,21.208 28.272,29.56 30,29.56 30,18.616 28.56,18.616"></polygon><path fill="#1e88e5" d="M22.943,23.745c0.625-0.574,1.013-1.37,1.013-2.249c0-1.747-1.533-3.168-3.417-3.168 c-1.602,0-2.972,1.009-3.33,2.453l1.657,0.421c0.165-0.664,0.868-1.146,1.673-1.146c0.942,0,1.709,0.646,1.709,1.44 c0,0.794-0.767,1.44-1.709,1.44h-0.997v1.728h0.997c1.081,0,1.993,0.751,1.993,1.64c0,0.904-0.866,1.64-1.931,1.64 c-0.962,0-1.784-0.61-1.914-1.418L17,26.802c0.262,1.636,1.81,2.87,3.6,2.87c2.007,0,3.64-1.511,3.64-3.368 C24.24,25.281,23.736,24.363,22.943,23.745z"></path><polygon fill="#fbc02d" points="34,42 14,42 13,38 14,34 34,34 35,38"></polygon><polygon fill="#4caf50" points="38,35 42,34 42,14 38,13 34,14 34,34"></polygon><path fill="#1e88e5" d="M34,14l1-4l-1-4H9C7.343,6,6,7.343,6,9v25l4,1l4-1V14H34z"></path><polygon fill="#e53935" points="34,34 34,42 42,34"></polygon><path fill="#1565c0" d="M39,6h-5v8h8V9C42,7.343,40.657,6,39,6z"></path><path fill="#1565c0" d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
+                                            </svg>
+                                            <span className="text-sm">Iniciar sesión con Google</span>
                                         </button>
-                                    </div>
-                                ) : (
-                                    <div className='hidden'>
-                                        <GoogleCalendarButton
-                                        schedule={schedule}
-                                        recurrenceStart={start}
-                                        recurrenceEnd={end}
-                                    />
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <button
-                                onClick={async () => {
-                                    const Swal = (await import('sweetalert2')).default;
-                                    const result = await Swal.fire({
-                                        title: 'Acceso Requerido',
-                                        text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
-                                        imageUrl: '/img/google_export.jpg',
-                                        imageHeight: 400,
-                                        confirmButtonText: 'Iniciar sesión',
-                                        showCancelButton: true,
-                                        cancelButtonText: 'Cancelar'
-                                    });
+                                    ) : session ? (
+                                        <div
+                                            onClick={() => setShowExportMenu(false)}
+                                            className="w-full"
+                                        >
+                                            <GoogleCalendarButton
+                                                schedule={schedule}
+                                                recurrenceStart={start}
+                                                recurrenceEnd={end}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={async () => {
+                                                setShowExportMenu(false);
+                                                const Swal = (await import('sweetalert2')).default;
+                                                const result = await Swal.fire({
+                                                    title: 'Acceso Requerido',
+                                                    text: 'Debes iniciar sesión con Google para exportar tu horario a tu calendario. Nos encontramos en proceso de validación de Google, tranquil@, no mordemos.',
+                                                    imageUrl: '/img/google_export.jpg',
+                                                    imageHeight: 400,
+                                                    confirmButtonText: 'Iniciar sesión',
+                                                    showCancelButton: true,
+                                                    cancelButtonText: 'Cancelar'
+                                                });
 
-                                    if (result.isConfirmed) {
-                                        await GoogleSignIn();
-                                    }
-                                }}
-                                className="bg-blue-700 hidden p-2 rounded-full items-center justify-center"
-                            >
-                                <svg className='-m-1' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="34" height="34" viewBox="0 0 48 48">
-                                    <rect width="22" height="22" x="13" y="13" fill="#fff"></rect><polygon fill="#1e88e5" points="25.68,20.92 26.688,22.36 28.272,21.208 28.272,29.56 30,29.56 30,18.616 28.56,18.616"></polygon><path fill="#1e88e5" d="M22.943,23.745c0.625-0.574,1.013-1.37,1.013-2.249c0-1.747-1.533-3.168-3.417-3.168 c-1.602,0-2.972,1.009-3.33,2.453l1.657,0.421c0.165-0.664,0.868-1.146,1.673-1.146c0.942,0,1.709,0.646,1.709,1.44 c0,0.794-0.767,1.44-1.709,1.44h-0.997v1.728h0.997c1.081,0,1.993,0.751,1.993,1.64c0,0.904-0.866,1.64-1.931,1.64 c-0.962,0-1.784-0.61-1.914-1.418L17,26.802c0.262,1.636,1.81,2.87,3.6,2.87c2.007,0,3.64-1.511,3.64-3.368 C24.24,25.281,23.736,24.363,22.943,23.745z"></path><polygon fill="#fbc02d" points="34,42 14,42 13,38 14,34 34,34 35,38"></polygon><polygon fill="#4caf50" points="38,35 42,34 42,14 38,13 34,14 34,34"></polygon><path fill="#1e88e5" d="M34,14l1-4l-1-4H9C7.343,6,6,7.343,6,9v25l4,1l4-1V14H34z"></path><polygon fill="#e53935" points="34,34 34,42 42,34"></polygon><path fill="#1565c0" d="M39,6h-5v8h8V9C42,7.343,40.657,6,39,6z"></path><path fill="#1565c0" d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
-                                </svg>
-                            </button>
-                        )
-                    }
-                    
-                    <div className='hidden lg:grid grid-cols-2 gap-2 ml-auto'>
-                        <div className='flex flex-col items-center'>
-                            <span className=''>Materias</span>
-                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                                {schedule?.subjects.length ?? 0}
+                                                if (result.isConfirmed) {
+                                                    await GoogleSignIn();
+                                                }
+                                            }}
+                                            className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center gap-2"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                                                <rect width="22" height="22" x="13" y="13" fill="#fff"></rect><polygon fill="#1e88e5" points="25.68,20.92 26.688,22.36 28.272,21.208 28.272,29.56 30,29.56 30,18.616 28.56,18.616"></polygon><path fill="#1e88e5" d="M22.943,23.745c0.625-0.574,1.013-1.37,1.013-2.249c0-1.747-1.533-3.168-3.417-3.168 c-1.602,0-2.972,1.009-3.33,2.453l1.657,0.421c0.165-0.664,0.868-1.146,1.673-1.146c0.942,0,1.709,0.646,1.709,1.44 c0,0.794-0.767,1.44-1.709,1.44h-0.997v1.728h0.997c1.081,0,1.993,0.751,1.993,1.64c0,0.904-0.866,1.64-1.931,1.64 c-0.962,0-1.784-0.61-1.914-1.418L17,26.802c0.262,1.636,1.81,2.87,3.6,2.87c2.007,0,3.64-1.511,3.64-3.368 C24.24,25.281,23.736,24.363,22.943,23.745z"></path><polygon fill="#fbc02d" points="34,42 14,42 13,38 14,34 34,34 35,38"></polygon><polygon fill="#4caf50" points="38,35 42,34 42,14 38,13 34,14 34,34"></polygon><path fill="#1e88e5" d="M34,14l1-4l-1-4H9C7.343,6,6,7.343,6,9v25l4,1l4-1V14H34z"></path><polygon fill="#e53935" points="34,34 34,42 42,34"></polygon><path fill="#1565c0" d="M39,6h-5v8h8V9C42,7.343,40.657,6,39,6z"></path><path fill="#1565c0" d="M9,42h5v-8H6v5C6,40.657,7.343,42,9,42z"></path>
+                                            </svg>
+                                            <span className="text-sm">Google Calendar</span>
+                                        </button>
+                                    )}
+
+                                    <div
+                                        onClick={() => setShowExportMenu(false)}
+                                        className="mt-1 w-full"
+                                    >
+                                        <ICSButton schedule={schedule} />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className='flex flex-col items-center'>
-                            <span className=''>Créditos</span>
-                            <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
-                                {totalCredits}
-                            </div>
-                        </div>
+                        )}
                     </div>
+
+                   
                 </div>
 
-                <div className='grid grid-cols-2 gap-2 lg:hidden'>
+                <div className='grid grid-cols-2 gap-2 '>
                     <div className='flex flex-col items-center'>
                         <span className=''>Materias</span>
                         <div className='text-white bg-black dark:bg-white dark:text-black px-2 rounded-full' style={{ lineHeight: 1.5 }}>
