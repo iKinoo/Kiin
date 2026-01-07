@@ -383,7 +383,7 @@ function ShareLinkButton({ schedule, setShowShareLink, showShareLink }: ShareLin
             </button>
             {showShareLink &&
 
-                <div className="absolute w-full animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5  rounded-lg">
+                <div className="absolute z-20 w-full animate-appearance-in  flex flex-row items-center justify-center gap-3 dark:bg-[#111] bg-white p-1.5  rounded-lg">
                     <div className="flex-1 text-xs dark:text-white text-black overflow-hidden truncate dark:bg-gray-800 dark:border-none border border-black  p-2 py-2.5 rounded-md">
                         {showShareLink}
                     </div>
