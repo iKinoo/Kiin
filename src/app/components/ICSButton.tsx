@@ -35,7 +35,7 @@ PRODID:-//Kiin//Horario Académico//ES
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME:Horario Académico
-X-WR-TIMEZONE:America/Bogota
+X-WR-TIMEZONE:America/Merida
 X-WR-CALDESC:Horario generado desde Kiin
 `;
 
